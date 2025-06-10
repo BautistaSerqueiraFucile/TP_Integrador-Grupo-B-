@@ -28,7 +28,7 @@ public class CuentaController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping("/crear")
     public Cuenta crear(@RequestBody Cuenta cuenta) {
         return cuentaService.crear(cuenta);
     }
