@@ -23,5 +23,7 @@ public class Usuario {
     private String email;
     @Column(name= "password", nullable = false)
     private String password;
-
+    @Column(name = "rol", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private RolUsuario rol;
 }
