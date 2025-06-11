@@ -3,6 +3,7 @@ package org.example.msvccuenta.services;
 import org.example.msvccuenta.entities.Cuenta;
 import org.example.msvccuenta.repositories.CuentaRepository;
 import org.springframework.stereotype.Service;
+import org.example.msvccuenta.entities.EstadoCuenta;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,5 +47,18 @@ public class CuentaService {
             return true;
         }
         return false;
+    }
+    public Optional<Cuenta> anularCuenta(Long id) {
+        return cuentaRepository.findById(id).map(c -> {
+            c.setEstadoCuenta(EstadoCuenta.ANULADA);
+            return cuentaRepository.save(c);
+        });
+    }
+
+    public Optional<Cuenta> activarCuenta(Long id) {
+        return cuentaRepository.findById(id).map(c -> {
+            c.setEstadoCuenta(EstadoCuenta.ACTIVA);
+            return cuentaRepository.save(c);
+        });
     }
 }

@@ -47,4 +47,17 @@ public class CuentaController {
         }
         return ResponseEntity.notFound().build();
     }
+    @PutMapping("/anular/{id}")
+    public ResponseEntity<Cuenta> anular(@PathVariable Long id) {
+        return cuentaService.anularCuenta(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/activar/{id}")
+    public ResponseEntity<Cuenta> activar(@PathVariable Long id) {
+        return cuentaService.activarCuenta(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 }

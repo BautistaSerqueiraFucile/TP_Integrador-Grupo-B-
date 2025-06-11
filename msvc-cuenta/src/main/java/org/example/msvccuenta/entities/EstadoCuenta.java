@@ -1,5 +1,5 @@
 package org.example.msvccuenta.entities;
 
-enum EstadoCuenta {
+public enum EstadoCuenta {
     ACTIVA, ANULADA
 }
