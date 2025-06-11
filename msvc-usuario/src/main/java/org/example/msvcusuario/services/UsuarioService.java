@@ -2,12 +2,14 @@ package org.example.msvcusuario.services;
 
 import org.example.msvcusuario.entities.Usuario;
 import org.example.msvcusuario.repositories.UsuarioRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
 
 public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public UsuarioService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
@@ -22,6 +24,7 @@ public class UsuarioService {
     }
 
     public Usuario crear(Usuario usuario) {
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         return usuarioRepository.save(usuario);
     }
 
@@ -31,6 +34,7 @@ public class UsuarioService {
             u.setApellido(usuario.getApellido());
             u.setNumeroCelular(usuario.getNumeroCelular());
             u.setEmail(usuario.getEmail());
+            u.setPassword(passwordEncoder.encode(usuario.getPassword()));
             return usuarioRepository.save(u);
         });
     }

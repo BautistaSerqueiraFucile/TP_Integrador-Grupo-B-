@@ -34,5 +34,5 @@ public class Cuenta {
     private Set<Long> usuariosId = new HashSet<>();
 
 }
-enum TipoCuenta { BASICA, PREMIUM }
-enum EstadoCuenta { ACTIVA, ANULADA }
+
+

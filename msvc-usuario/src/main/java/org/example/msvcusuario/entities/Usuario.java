@@ -21,9 +21,7 @@ public class Usuario {
     private String numeroCelular;
     @Column(name = "email", unique = true, nullable = false)
     private String email;
-    @Column(name = "latitud")
-    private Double latitud;
-    @Column(name = "longitud")
-    private Double longitud;
+    @Column(name= "password", nullable = false)
+    private String password;
 
 }
