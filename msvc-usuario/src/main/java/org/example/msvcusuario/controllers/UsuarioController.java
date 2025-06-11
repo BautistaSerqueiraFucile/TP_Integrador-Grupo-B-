@@ -4,7 +4,7 @@ import org.example.msvcusuario.entities.Usuario;
 import org.example.msvcusuario.services.UsuarioService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.example.msvcusuario.entities.RolUsuario;
 import java.util.List;
 
 @RestController
@@ -45,5 +45,19 @@ public class UsuarioController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/{id}/set-admin")
+    public ResponseEntity<Usuario> setAdmin(@PathVariable Long id) {
+        return usuarioService.actualizarRol(id, RolUsuario.ADMIN)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}/set-usuario")
+    public ResponseEntity<Usuario> setUsuario(@PathVariable Long id) {
+        return usuarioService.actualizarRol(id, RolUsuario.USUARIO)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }

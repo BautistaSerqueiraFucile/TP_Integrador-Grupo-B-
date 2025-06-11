@@ -4,7 +4,7 @@ import org.example.msvcusuario.entities.Usuario;
 import org.example.msvcusuario.repositories.UsuarioRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import org.example.msvcusuario.entities.RolUsuario;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -46,5 +46,11 @@ public class UsuarioService {
             return true;
         }
         return false;
+    }
+    public Optional<Usuario> actualizarRol(Long id, RolUsuario nuevoRol) {
+        return usuarioRepository.findById(id).map(u -> {
+            u.setRol(nuevoRol);
+            return usuarioRepository.save(u);
+        });
     }
 }
