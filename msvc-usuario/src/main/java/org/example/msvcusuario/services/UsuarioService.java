@@ -26,6 +26,7 @@ public class UsuarioService {
 
     public Usuario crear(Usuario usuario) {
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        usuario.setRol(RolUsuario.USUARIO);
         return usuarioRepository.save(usuario);
     }
 
