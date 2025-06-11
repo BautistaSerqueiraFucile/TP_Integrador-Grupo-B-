@@ -26,4 +26,8 @@ public class Usuario {
     @Column(name = "rol", nullable = false)
     @Enumerated(EnumType.STRING)
     private RolUsuario rol;
+    @Column(name = "latitud")
+    private Double latitud;
+    @Column(name = "longitud")
+    private Double longitud;
 }
