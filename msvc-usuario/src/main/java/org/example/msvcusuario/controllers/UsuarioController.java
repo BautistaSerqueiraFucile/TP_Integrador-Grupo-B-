@@ -1,7 +1,7 @@
 package org.example.msvcusuario.controllers;
 
 import org.example.msvcusuario.entities.Usuario;
-import org.example.msvcusuario.repositories.UsuarioRepository;
+import org.example.msvcusuario.services.UsuarioService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,46 +10,40 @@ import java.util.List;
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
-    private final UsuarioRepository usuarioRepository;
-    public UsuarioController(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
+    private final UsuarioService usuarioService;
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
     }
+
     @GetMapping("/")
     public List<Usuario> listar() {
-        return usuarioRepository.findAll();
+        return usuarioService.listar();
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> buscarPorId(@PathVariable Long id) {
-        return usuarioRepository.findById(id)
+        return usuarioService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("/crear")
     public Usuario crear(@RequestBody Usuario usuario) {
-        return usuarioRepository.save(usuario);
+        return usuarioService.crear(usuario);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> actualizar(@PathVariable Long id, @RequestBody Usuario usuario) {
-        return usuarioRepository.findById(id)
-                .map(u -> {
-                    u.setNombre(usuario.getNombre());
-                    u.setApellido(usuario.getApellido());
-                    u.setNumeroCelular(usuario.getNumeroCelular());
-                    u.setEmail(usuario.getEmail());
-                    return ResponseEntity.ok(usuarioRepository.save(u));
-                })
+        return usuarioService.actualizar(id, usuario)
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        if (usuarioRepository.existsById(id)) {
-            usuarioRepository.deleteById(id);
+        if (usuarioService.eliminar(id)) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
     }
-
 }

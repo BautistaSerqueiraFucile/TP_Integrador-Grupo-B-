@@ -3,10 +3,11 @@ package org.example.msvcusuario.services;
 import org.example.msvcusuario.entities.Usuario;
 import org.example.msvcusuario.repositories.UsuarioRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
