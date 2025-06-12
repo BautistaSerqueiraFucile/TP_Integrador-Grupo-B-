@@ -1,6 +1,8 @@
 package org.example.msvccuenta.services;
 
 import org.example.msvccuenta.entities.Cuenta;
+import org.example.msvccuenta.entities.dao.ParadaDao;
+import org.example.msvccuenta.entities.dao.UsuarioDao;
 import org.example.msvccuenta.repositories.CuentaRepository;
 import org.springframework.stereotype.Service;
 import org.example.msvccuenta.entities.EstadoCuenta;
@@ -60,5 +62,16 @@ public class CuentaService {
             c.setEstadoCuenta(EstadoCuenta.ACTIVA);
             return cuentaRepository.save(c);
         });
+    }
+    public Double calcularDistanciaAParada(ParadaDao parada, UsuarioDao usuario) {
+        if (parada == null || usuario == null) {
+            return null;
+        }
+        double x1 = parada.getPosX();
+        double y1 = parada.getPosY();
+        double x2 = usuario.getLatitud();
+        double y2 = usuario.getLongitud();
+
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 }
