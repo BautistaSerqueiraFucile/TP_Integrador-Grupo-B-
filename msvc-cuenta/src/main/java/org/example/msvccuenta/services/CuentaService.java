@@ -6,6 +6,7 @@ import org.example.msvccuenta.entities.dao.UsuarioDao;
 import org.example.msvccuenta.repositories.CuentaRepository;
 import org.springframework.stereotype.Service;
 import org.example.msvccuenta.entities.EstadoCuenta;
+import org.example.msvccuenta.entities.TipoCuenta;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -77,5 +78,11 @@ public class CuentaService {
     }
     public Optional<BigDecimal> obtenerSaldo(Long id) {
         return cuentaRepository.findById(id).map(Cuenta::getSaldo);
+    }
+    public Optional<Cuenta> actualizarTipoCuenta(Long id, TipoCuenta tipoCuenta) {
+        return cuentaRepository.findById(id).map(c -> {
+            c.setTipoCuenta(tipoCuenta);
+            return cuentaRepository.save(c);
+        });
     }
 }

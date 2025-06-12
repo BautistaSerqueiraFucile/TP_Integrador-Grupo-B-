@@ -1,5 +1,5 @@
 package org.example.msvccuenta.entities;
 
-enum TipoCuenta {
+public enum TipoCuenta {
     BASICA, PREMIUM
 }

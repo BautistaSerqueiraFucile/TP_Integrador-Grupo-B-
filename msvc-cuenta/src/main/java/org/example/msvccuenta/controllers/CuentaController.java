@@ -4,6 +4,7 @@ import org.example.msvccuenta.entities.Cuenta;
 import org.example.msvccuenta.services.CuentaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.example.msvccuenta.entities.TipoCuenta;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -64,6 +65,12 @@ public class CuentaController {
     @GetMapping("/saldo/{id}")
     public ResponseEntity<BigDecimal> obtenerSaldo(@PathVariable Long id) {
         return cuentaService.obtenerSaldo(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+    @PutMapping("/{id}/set-plan/{tipo}")
+    public ResponseEntity<Cuenta> setPlan(@PathVariable Long id, @PathVariable TipoCuenta tipo) {
+        return cuentaService.actualizarTipoCuenta(id, tipo)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
