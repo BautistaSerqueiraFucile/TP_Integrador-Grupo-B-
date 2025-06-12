@@ -7,6 +7,7 @@ import org.example.msvccuenta.repositories.CuentaRepository;
 import org.springframework.stereotype.Service;
 import org.example.msvccuenta.entities.EstadoCuenta;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,5 +74,8 @@ public class CuentaService {
         double y2 = usuario.getLongitud();
 
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    }
+    public Optional<BigDecimal> obtenerSaldo(Long id) {
+        return cuentaRepository.findById(id).map(Cuenta::getSaldo);
     }
 }
