@@ -1,0 +1,7 @@
+pongan esto en una consola bash
+
+docker run -d \
+  --name mongo-scooters \
+  -p 27017:27017 \
+  -v mongo_data_scooters:/data/db \
+  mongo:latest
