@@ -24,11 +24,4 @@ public class ViajeRequestDTO {
     @NotNull
     private String horaInicio; // formato esperado: "HH:mm:ss"
 
-    private String horaFin; // puede ser nulo
-
-    private int tiempoPausa;
-
-    @NotNull
-    private String estado; // "iniciado", "en pausa", "finalizado"
-
 }

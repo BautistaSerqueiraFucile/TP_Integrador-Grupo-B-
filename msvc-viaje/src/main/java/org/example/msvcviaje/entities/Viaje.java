@@ -40,13 +40,13 @@ public class Viaje {
     private LocalTime horaInicio; // Solo hora (HH:mm:ss)
 
     @Column(name = "hora_fin")
-    private LocalTime horaFin; // Solo hora (HH:mm:ss)
+    private LocalTime horaFin = null; // Solo hora (HH:mm:ss)
 
     @Column(name = "tiempo_pausa")
-    private int tiempoPausa; //minutos
+    private int tiempoPausa = 0; //minutos
 
     @Column(name = "estado", nullable = false)
-    private String estado; //iniciado, en pausa ,finalizado
+    private String estado = "activo"; //activo, pausado ,finalizado
 
     public Viaje(ViajeRequestDTO dto) {
         this.idUsuario = dto.getIdUsuario();
@@ -55,15 +55,5 @@ public class Viaje {
         this.idParadaFin = dto.getIdParadaFin();
         this.fecha = LocalDate.parse(dto.getFecha());
         this.horaInicio = LocalTime.parse(dto.getHoraInicio());
-
-        // Si se envía la hora fin, la parsea; si no, la deja null
-        if (dto.getHoraFin() != null && !dto.getHoraFin().isEmpty()) {
-            this.horaFin = LocalTime.parse(dto.getHoraFin());
-        } else {
-            this.horaFin = null;
-        }
-
-        this.tiempoPausa = dto.getTiempoPausa();
-        this.estado = dto.getEstado();
     }
 }
