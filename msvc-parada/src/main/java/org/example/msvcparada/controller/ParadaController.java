@@ -45,4 +45,12 @@ public class ParadaController {
         Parada result = paradaService.actualizar(parada,id);
         return ResponseEntity.accepted().body(result);
     }
+    @GetMapping("/distancia")
+    public ResponseEntity<?> calcularDistanciaEntreParadas(
+            @RequestParam("parada1Id") Long parada1Id, // Recibe el ID de la primera parada
+            @RequestParam("parada2Id") Long parada2Id) { // Recibe el ID de la segunda parada
+
+        double distancia = paradaService.calcularDistancia(parada1Id, parada2Id);
+        return ResponseEntity.ok().body(distancia);
+    }
 }

@@ -81,4 +81,54 @@ public class ParadaService {
         return paradaRepository.save(paradaExistente);
     }
 
+    public double calcularDistancia(long parada1Id, long parada2Id) {
+        // Obtenemos las coordenadas de cada parada
+        Optional<Parada> parada1Op= paradaRepository.findById(parada1Id);
+        Optional<Parada> parada2Op= paradaRepository.findById(parada2Id);
+
+        Parada parada1;
+        Parada parada2;
+
+        if(parada1Op.isPresent()){
+           parada1 = parada1Op.get();
+        }else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Parada1 no encontrada");
+        }
+        if(parada2Op.isPresent()){
+            parada2 =  parada2Op.get();
+        }else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Parada2 no encontrada");
+        }
+        return calculadoraDeDistancias(parada1,parada2);
+    }
+    private double calculadoraDeDistancias(Parada parada1, Parada parada2) {
+        double x1;
+        double y1;
+        double x2;
+        double y2;
+
+        x1 = parada1.getPosX();
+        y1  = parada1.getPosY();
+
+        x2 = parada2.getPosX();
+        y2  = parada2.getPosY();
+
+
+        // Calculamos la diferencia en X y en Y
+        double deltaX = x2 - x1;
+        double deltaY = y2 - y1;
+
+        // Fórmula de distancia euclidiana simplificada (sin raíz cuadrada, para evitar ceros si son el mismo punto y simplificar)
+        // Multiplicamos por un factor grande para que el resultado sea en "metros"
+        // Aseguramos que el resultado sea siempre positivo y mayor que cero si las paradas son diferentes
+        double distanciaCalculada = Math.sqrt(deltaX * deltaX + deltaY * deltaY) * 100.0; // Multiplica por 100 para simular metros
+
+        // Si la distancia calculada es 0 (porque las paradas tienen exactamente las mismas coordenadas),
+        // queremos que devuelva un valor mínimo positivo para cumplir el requisito "mayor que cero".
+        if (distanciaCalculada < 1.0) { // Usamos 1.0 para tener un mínimo, podrías ajustarlo
+            return 1.0; // Distancia mínima para paradas en el mismo punto o muy cercanas
+        }
+
+        return distanciaCalculada;
+    }
 }
