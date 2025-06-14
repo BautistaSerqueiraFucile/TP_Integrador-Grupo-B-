@@ -1,32 +1,40 @@
 package org.example.msvcadmin.controllers;
 
+import org.example.msvcadmin.entities.Admin;
 import org.example.msvcadmin.services.AdminService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
-
 public class AdminController {
 
-    private final AdminService adminService;
+    @Autowired
+    private AdminService service;
 
-    public AdminController(AdminService adminService){
-        this.adminService = adminService;
+    @PostMapping("/usuarios/{userId}")
+    public ResponseEntity<Admin> asignarAdmin(@PathVariable String userId) {
+        return ResponseEntity.ok(service.asignarRolAdmin(userId));
     }
 
-
-    @PutMapping("/cuentas/{cuentaId}/bloquear")
-    public ResponseEntity<String> bloquearCuenta(@PathVariable Long cuentaId) {
-        boolean resultado = adminService.bloquearCuenta(cuentaId);
-        if (resultado) {
-            return ResponseEntity.ok("Cuenta bloqueada exitosamente.");
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
-                    .body("No se pudo bloquear la cuenta.");
-        }
+    @DeleteMapping("/usuarios/{userId}")
+    public ResponseEntity<Void> quitarAdmin(@PathVariable String userId) {
+        service.quitarRolAdmin(userId);
+        return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/usuarios/{userId}")
+    public ResponseEntity<Admin> obtenerAdmin(@PathVariable String userId) {
+        return service.obtenerPorUserId(userId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 
-
+    @GetMapping("/usuarios")
+    public ResponseEntity<List<Admin>> listarAdmins(@RequestParam(required = false) Boolean activo) {
+        return ResponseEntity.ok(service.litarTodosAdmin(activo));
+    }
 }
