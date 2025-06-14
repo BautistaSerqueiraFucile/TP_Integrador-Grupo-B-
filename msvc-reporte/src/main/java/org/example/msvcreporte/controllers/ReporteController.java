@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/reportes")
-
 public class ReporteController {
     private final ReporteService reporteService;
 
