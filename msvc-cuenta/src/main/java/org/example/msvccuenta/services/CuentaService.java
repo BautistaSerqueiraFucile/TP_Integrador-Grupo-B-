@@ -1,9 +1,12 @@
 package org.example.msvccuenta.services;
 
 import org.example.msvccuenta.entities.Cuenta;
-import org.example.msvccuenta.entities.dao.ParadaDao;
-import org.example.msvccuenta.entities.dao.UsuarioDao;
+import org.example.msvccuenta.entities.dto.ParadaDto;
+import org.example.msvccuenta.entities.dto.UsuarioDto;
+import org.example.msvccuenta.feignClients.ParadaFeignClient;
+import org.example.msvccuenta.feignClients.UsuarioFeignClient;
 import org.example.msvccuenta.repositories.CuentaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.example.msvccuenta.entities.EstadoCuenta;
 import org.example.msvccuenta.entities.TipoCuenta;
@@ -15,9 +18,13 @@ import java.util.Optional;
 @Service
 public class CuentaService {
     private final CuentaRepository cuentaRepository;
+    private final ParadaFeignClient paradaFeignClient;
+    private final UsuarioFeignClient usuarioFeignClient;
 
-    public CuentaService(CuentaRepository cuentaRepository) {
+    public CuentaService(CuentaRepository cuentaRepository, ParadaFeignClient paradaFeignClient, UsuarioFeignClient usuarioFeignClient) {
         this.cuentaRepository = cuentaRepository;
+        this.paradaFeignClient = paradaFeignClient;
+        this.usuarioFeignClient = usuarioFeignClient;
     }
 
     public List<Cuenta> listar() {
@@ -65,10 +72,18 @@ public class CuentaService {
             return cuentaRepository.save(c);
         });
     }
-    public Double calcularDistanciaAParada(ParadaDao parada, UsuarioDao usuario) {
-        if (parada == null || usuario == null) {
-            return null;
-        }
+
+    public Double calcularDistanciaAParada(Long idCuenta, Long idParada) {
+        Optional<Cuenta> cuentaOpt = cuentaRepository.findById(idCuenta);
+        if (cuentaOpt.isEmpty()) return null;
+        Cuenta cuenta = cuentaOpt.get();
+        if (cuenta.getUsuariosId().isEmpty()) return null;
+        Long primerUsuarioId = cuenta.getUsuariosId().iterator().next();
+
+        ParadaDto parada = paradaFeignClient.getParadaById(idParada);
+        UsuarioDto usuario = usuarioFeignClient.getUsuarioById(primerUsuarioId);
+        if (parada == null || usuario == null) return null;
+
         double x1 = parada.getPosX();
         double y1 = parada.getPosY();
         double x2 = usuario.getLatitud();
@@ -76,6 +91,7 @@ public class CuentaService {
 
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
+
     public Optional<BigDecimal> obtenerSaldo(Long id) {
         return cuentaRepository.findById(id).map(Cuenta::getSaldo);
     }

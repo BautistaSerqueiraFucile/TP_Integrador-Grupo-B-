@@ -74,4 +74,13 @@ public class CuentaController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/{idCuenta}/distancia-parada/{idParada}")
+    public ResponseEntity<Double> calcularDistanciaAParada(@PathVariable Long idCuenta, @PathVariable Long idParada) {
+        Double distancia = cuentaService.calcularDistanciaAParada(idCuenta, idParada);
+        if (distancia == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(distancia);
+    }
 }
