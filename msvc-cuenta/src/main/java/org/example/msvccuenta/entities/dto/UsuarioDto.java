@@ -1,9 +1,9 @@
-package org.example.msvccuenta.entities.dao;
+package org.example.msvccuenta.entities.dto;
 
 import lombok.Getter;
 
 @Getter
-public class UsuarioDao {
+public class UsuarioDto {
     private Long id;
     private Double latitud;
     private Double longitud;
