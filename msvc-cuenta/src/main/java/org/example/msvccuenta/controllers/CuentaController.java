@@ -83,4 +83,14 @@ public class CuentaController {
         }
         return ResponseEntity.ok(distancia);
     }
+
+    @PutMapping("/recargar/{id}/monto/{monto}")
+    public ResponseEntity<Cuenta> recargarSaldo(@PathVariable Long id, @PathVariable BigDecimal monto) {
+        try {
+            Cuenta cuenta = cuentaService.recargarSaldo(id, monto);
+            return ResponseEntity.ok(cuenta);
+        } catch (RuntimeException ex) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }

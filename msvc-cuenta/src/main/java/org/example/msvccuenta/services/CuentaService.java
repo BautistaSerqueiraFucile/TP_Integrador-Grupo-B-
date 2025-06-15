@@ -101,4 +101,14 @@ public class CuentaService {
             return cuentaRepository.save(c);
         });
     }
+
+    public Cuenta recargarSaldo(Long id, BigDecimal monto) {
+        Cuenta cuenta = cuentaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+        if (cuenta.getTipoCuenta() == TipoCuenta.PREMIUM) {
+            throw new RuntimeException("No se puede recargar saldo en cuentas PREMIUM. Estas pagan una tarifa fija mensual.");
+        }
+        cuenta.setSaldo(cuenta.getSaldo().add(monto));
+        return cuentaRepository.save(cuenta);
+    }
 }
