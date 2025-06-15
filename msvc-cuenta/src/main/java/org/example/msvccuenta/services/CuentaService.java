@@ -105,8 +105,14 @@ public class CuentaService {
     public Cuenta recargarSaldo(Long id, BigDecimal monto) {
         Cuenta cuenta = cuentaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+        if (cuenta.getEstadoCuenta() == EstadoCuenta.ANULADA) {
+            throw new IllegalStateException("No se puede recargar saldo en una cuenta ANULADA.");
+        }
         if (cuenta.getTipoCuenta() == TipoCuenta.PREMIUM) {
             throw new RuntimeException("No se puede recargar saldo en cuentas PREMIUM. Estas pagan una tarifa fija mensual.");
+        }
+        if (monto.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("El monto de recarga debe ser positivo.");
         }
         cuenta.setSaldo(cuenta.getSaldo().add(monto));
         return cuentaRepository.save(cuenta);

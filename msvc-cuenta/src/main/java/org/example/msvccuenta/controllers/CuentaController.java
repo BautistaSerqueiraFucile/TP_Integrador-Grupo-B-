@@ -2,6 +2,7 @@ package org.example.msvccuenta.controllers;
 
 import org.example.msvccuenta.entities.Cuenta;
 import org.example.msvccuenta.services.CuentaService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.example.msvccuenta.entities.TipoCuenta;
@@ -78,6 +79,7 @@ public class CuentaController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
     @PatchMapping("/{id}/set-plan/{tipo}")
     public ResponseEntity<Cuenta> setPlan(@PathVariable Long id, @PathVariable TipoCuenta tipo) {
         try {
@@ -99,13 +101,25 @@ public class CuentaController {
     }
 
     @PatchMapping("/recargar/{id}/monto/{monto}")
-    public ResponseEntity<Cuenta> recargarSaldo(@PathVariable Long id, @PathVariable String monto) {
+    public ResponseEntity<?> recargarSaldo(@PathVariable Long id, @PathVariable String monto) { // Cambiado a ResponseEntity<?> para más flexibilidad
         try {
-            BigDecimal montoDecimal = new BigDecimal(monto);
+            BigDecimal montoDecimal;
+            try {
+                montoDecimal = new BigDecimal(monto);
+            } catch (NumberFormatException e) {
+                return ResponseEntity.badRequest().body("{\"error\":\"El monto proporcionado no es un número válido.\"}");
+            }
             Cuenta cuenta = cuentaService.recargarSaldo(id, montoDecimal);
             return ResponseEntity.ok(cuenta);
-        } catch (RuntimeException ex) {
-            return ResponseEntity.badRequest().build();
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("{\"error\":\"" + e.getMessage() + "\"}");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("{\"error\":\"" + e.getMessage() + "\"}");
+        } catch (RuntimeException e) {
+            if (e.getMessage() != null && e.getMessage().startsWith("Cuenta no encontrada")) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
+            }
+            return ResponseEntity.badRequest().body("{\"error\":\"" + e.getMessage() + "\"}");
         }
     }
 }
