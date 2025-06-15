@@ -13,28 +13,28 @@ import java.util.List;
 public class AdminController {
 
     @Autowired
-    private AdminService service;
+    private AdminService adminService;
 
     @PostMapping("/usuarios/{userId}")
     public ResponseEntity<Admin> asignarAdmin(@PathVariable String userId) {
-        return ResponseEntity.ok(service.asignarRolAdmin(userId));
+        return ResponseEntity.ok(adminService.asignarRolAdmin(userId));
     }
 
     @DeleteMapping("/usuarios/{userId}")
     public ResponseEntity<Void> quitarAdmin(@PathVariable String userId) {
-        service.quitarRolAdmin(userId);
+        adminService.quitarRolAdmin(userId);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/usuarios/{userId}")
     public ResponseEntity<Admin> obtenerAdmin(@PathVariable String userId) {
-        return service.obtenerPorUserId(userId)
+        return adminService.obtenerPorUserId(userId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/usuarios")
     public ResponseEntity<List<Admin>> listarAdmins(@RequestParam(required = false) Boolean activo) {
-        return ResponseEntity.ok(service.litarTodosAdmin(activo));
+        return ResponseEntity.ok(adminService.litarTodosAdmin(activo));
     }
 }

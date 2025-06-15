@@ -13,30 +13,30 @@ import java.util.Optional;
 public class AdminService {
 
     @Autowired
-    private AdminRepository repository;
+    private AdminRepository adminRepository;
 
     public Admin asignarRolAdmin(String userId) {
-        if (repository.existsByUserId(userId)) {
+        if (adminRepository.existsByUserId(userId)) {
             throw new IllegalArgumentException("El usuario ya existe");
         }
         Admin admin = new Admin();
         admin.setUserId(userId);
         admin.setFechaAsignacion(LocalDateTime.now());
         admin.setActivo(true);
-        return repository.save(admin);
+        return adminRepository.save(admin);
     }
 
     public void quitarRolAdmin(String userId) {
-        Optional<Admin> adminOpt = repository.findByUserId(userId);
-        adminOpt.ifPresent(repository::delete);
+        Optional<Admin> adminOpt = adminRepository.findByUserId(userId);
+        adminOpt.ifPresent(adminRepository::delete);
     }
 
     public Optional<Admin> obtenerPorUserId(String userId) {
-        return repository.findByUserId(userId);
+        return adminRepository.findByUserId(userId);
     }
 
     public List<Admin> litarTodosAdmin(Boolean soloActivos){
-        List<Admin> todos = repository.findAll();
+        List<Admin> todos = adminRepository.findAll();
         if (soloActivos != null && soloActivos){
             return todos.stream().filter(Admin::isActivo).toList();
         }
