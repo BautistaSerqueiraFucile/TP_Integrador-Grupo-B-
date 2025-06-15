@@ -49,30 +49,44 @@ public class CuentaController {
         }
         return ResponseEntity.notFound().build();
     }
-    @PutMapping("/anular/{id}")
+
+    @PatchMapping("/anular/{id}")
     public ResponseEntity<Cuenta> anular(@PathVariable Long id) {
-        return cuentaService.anularCuenta(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        try {
+            Cuenta cuenta = cuentaService.anularCuenta(id)
+                    .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+            return ResponseEntity.ok(cuenta);
+        } catch (RuntimeException ex) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @PutMapping("/activar/{id}")
+    @PatchMapping("/activar/{id}")
     public ResponseEntity<Cuenta> activar(@PathVariable Long id) {
-        return cuentaService.activarCuenta(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        try {
+            Cuenta cuenta = cuentaService.activarCuenta(id)
+                    .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+            return ResponseEntity.ok(cuenta);
+        } catch (RuntimeException ex) {
+            return ResponseEntity.notFound().build();
+        }
     }
+
     @GetMapping("/saldo/{id}")
     public ResponseEntity<BigDecimal> obtenerSaldo(@PathVariable Long id) {
         return cuentaService.obtenerSaldo(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-    @PutMapping("/{id}/set-plan/{tipo}")
+    @PatchMapping("/{id}/set-plan/{tipo}")
     public ResponseEntity<Cuenta> setPlan(@PathVariable Long id, @PathVariable TipoCuenta tipo) {
-        return cuentaService.actualizarTipoCuenta(id, tipo)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        try {
+            Cuenta cuenta = cuentaService.actualizarTipoCuenta(id, tipo)
+                    .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+            return ResponseEntity.ok(cuenta);
+        } catch (RuntimeException ex) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/{idCuenta}/distancia-parada/{idParada}")
