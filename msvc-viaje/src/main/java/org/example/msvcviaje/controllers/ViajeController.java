@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/viajes")
 public class ViajeController {
@@ -32,6 +34,19 @@ public class ViajeController {
             return ResponseEntity.status(HttpStatus.OK).body(viajeService.findById(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Por favor intente más tarde.\"}");
+        }
+    }
+
+    @GetMapping("historial")
+    public ResponseEntity<?> getViajesPorUsuarioYPeriodo(
+            @RequestParam Long idUsuario,
+            @RequestParam(required = false) String fechaDesde,
+            @RequestParam(required = false) String fechaHasta
+    ) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(viajeService.obtenerViajesPorUsuarioYPeriodo(idUsuario, fechaDesde, fechaHasta));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() + "\"}");
         }
     }
 
@@ -68,6 +83,15 @@ public class ViajeController {
             return ResponseEntity.status(HttpStatus.OK).body(viajeService.reanudarViaje(id));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() + "\"}");
+        }
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(viajeService.deleteById(id) + "\n eliminado correctamente"); // 204: eliminado correctamente
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
         }
     }
 

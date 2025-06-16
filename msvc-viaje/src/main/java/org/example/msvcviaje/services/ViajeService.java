@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.example.msvcviaje.dtos.FinalizarViajeDTO;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,6 +63,7 @@ public class ViajeService {
         return repoViaje.save(viaje);
     }
 
+    @Transactional
     public Viaje reanudarViaje(Long id) {
         Viaje viaje = findById(id);
 
@@ -71,5 +74,27 @@ public class ViajeService {
         viaje.setEstado("activo");
 
         return repoViaje.save(viaje);
+    }
+
+    @Transactional
+    public Viaje deleteById(Long id) throws Exception {
+        if (!repoViaje.existsById(id)) {
+            throw new Exception("El viaje con ID " + id + " no existe.");
+        }
+        Viaje viaje = findById(id);
+        repoViaje.deleteById(id);
+        return viaje;
+    }
+
+    @Transactional
+    public List<Viaje> obtenerViajesPorUsuarioYPeriodo(Long idUsuario, String fechaDesde, String fechaHasta) throws Exception {
+        try {
+            LocalDate desde = (fechaDesde != null) ? LocalDate.parse(fechaDesde) : LocalDate.of(1900, 1, 1);
+            LocalDate hasta = (fechaHasta != null) ? LocalDate.parse(fechaHasta) : LocalDate.of(3000, 1, 1);
+
+            return repoViaje.findByIdUsuarioAndFechaBetweenOrderByFechaAscHoraInicioAsc(idUsuario, desde, hasta);
+        } catch (DateTimeParseException e) {
+            throw new Exception("Formato de fecha inválido. Usar yyyy-MM-dd.");
+        }
     }
 }
