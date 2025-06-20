@@ -56,9 +56,9 @@ public class MonopatinController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PatchMapping("/{id}/estado")
-    public ResponseEntity<Monopatin> actualizarEstado(@PathVariable("id") String id, @RequestBody EstadoDTO estadoDTO) {
-        return monopatinService.actualizarEstado(id,estadoDTO);
+    @PatchMapping("/{id}/{estado}")
+    public ResponseEntity<Monopatin> actualizarEstado(@PathVariable("id") String id,@PathVariable("estado") String estado) {
+        return monopatinService.actualizarEstado(id,estado);
 
     }
 
@@ -75,5 +75,11 @@ public class MonopatinController {
     @GetMapping("/porKilometro")
     public ResponseEntity<List<Monopatin>> obtenerMonopatinesPorKilometro() {
         return monopatinService.obtenerMonopatinesPorKilometro();
+    }
+
+    @PatchMapping("{id}/tiemposYKilometros")
+    public void actualizarTiempos(@PathVariable("id") String id,@RequestParam double tiempoDeUso, @RequestParam double tiempoPausa,@RequestParam double kilometros) {
+        monopatinService.actualizarTiempos(id,tiempoDeUso,tiempoPausa,kilometros);
+
     }
 }

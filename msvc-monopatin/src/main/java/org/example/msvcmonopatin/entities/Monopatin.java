@@ -24,6 +24,9 @@ public class Monopatin {
 
     private String paradaActual;//id de la parada actual - es un string porque mongo
 
+    private double tiempoDeUso;
 
+    private double tiempoDePausa;
+// agregar tiempo y tiempo de pausa
 
 }

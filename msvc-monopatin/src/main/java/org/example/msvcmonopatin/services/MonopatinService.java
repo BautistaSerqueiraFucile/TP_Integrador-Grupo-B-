@@ -62,13 +62,12 @@ public class MonopatinService {
     }
 
 
-    public ResponseEntity<Monopatin> actualizarEstado(String id, EstadoDTO estadoDTO) {
+    public ResponseEntity<Monopatin> actualizarEstado(String id, String estado) {
         Optional<Monopatin> optional = monopatinRepository.findById(id);
         if (optional.isPresent()) {
             Monopatin monopatin = optional.get();
-            monopatin.setEstado(estadoDTO.getEstado());
-            monopatinRepository.save(monopatin);
-            return ResponseEntity.ok(monopatin);
+            monopatin.setEstado(estado);
+            return ResponseEntity.ok(monopatinRepository.save(monopatin));
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -98,6 +97,19 @@ public class MonopatinService {
 
     public ResponseEntity<List<Monopatin>> obtenerMonopatinesPorKilometro() {
         return ResponseEntity.ok(monopatinRepository.findAllByOrderByKilometrosActualesDesc());
+    }
+
+    public ResponseEntity<Monopatin> actualizarTiempos(String id, double tiempoDeUso, double tiempoPausa,double kilometros) {
+        Optional<Monopatin> optional = monopatinRepository.findById(id);
+        if (optional.isPresent()) {
+            Monopatin monopatin = optional.get();
+            monopatin.setTiempoDeUso(monopatin.getTiempoDeUso() + tiempoDeUso);
+            monopatin.setTiempoDePausa(monopatin.getTiempoDePausa() + tiempoPausa);
+            monopatin.setKilometrosActuales(monopatin.getKilometrosActuales() + kilometros);
+            return ResponseEntity.ok(monopatinRepository.save(monopatin));
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Monopatin no encontrado");
+        }
     }
 }
 
