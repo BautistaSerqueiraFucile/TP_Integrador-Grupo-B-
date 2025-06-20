@@ -15,3 +15,7 @@ public interface ScooterClient {
     @GetMapping("/scooters/{id}")
     Map<String, Object> obtenerScooterPorId(@PathVariable("id") Long id);
 }
+/*
+* mono guarda km
+* tiempo en total, sin pausa
+ */

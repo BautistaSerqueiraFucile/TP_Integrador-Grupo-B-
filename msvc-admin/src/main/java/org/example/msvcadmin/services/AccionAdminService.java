@@ -36,7 +36,7 @@ public class AccionAdminService {
 
     public void bloquearCuenta(Long cuentaId, String userIdAdmin) {
         // 1. Ejecutar acción externa
-        cuentaClient.bloquearCuenta(cuentaId);
+        cuentaClient.anularCuenta(cuentaId);
 
         // 2. Registrar auditoría
         registrarAuditoria(
@@ -47,21 +47,59 @@ public class AccionAdminService {
         );
     }
 
-    public void cambiarEstadoScooter(Long scooterId, String nuevoEstado, String userIdAdmin) {
-        // 1. Llamar al scooter-service para cambiar estado
-        scooterClient.cambiarEstado(scooterId, nuevoEstado);
+    public void reactivarCuenta(Long cuentaId, String userIdAdmin) {
+        // 1. Llamada al microservicio cuenta
+        cuentaClient.activarCuenta(cuentaId);
 
-        // 2. Si vuelve a estar disponible, reiniciar km
+        // 2. Registrar acción en auditoría
+        registrarAuditoria(
+                "reactivar_cuenta",
+                cuentaId.toString(),
+                userIdAdmin,
+                "Cuenta reactivada por admin " + userIdAdmin
+        );
+    }
+
+    public void cambiarEstadoScooter(Long scooterId, String nuevoEstado, String userIdAdmin) {
+        // 1. Armar body del request con el estado
+        Map<String, Object> body = Map.of("estado", nuevoEstado);
+
+        // 2. Llamar al scooter-service para cambiar estado
+        scooterClient.cambiarEstado(scooterId, body);
+
+        // 3. Si vuelve a estar disponible, reiniciar km
         if (nuevoEstado.equalsIgnoreCase("disponible")) {
             scooterClient.resetearKilometraje(scooterId);
         }
 
-        // 3. Registrar auditoría
+        // 4. Registrar auditoría
         registrarAuditoria(
                 "cambiar_estado_scooter",
                 scooterId.toString(),
                 userIdAdmin,
                 "Admin " + userIdAdmin + " cambió el estado del scooter a '" + nuevoEstado + "'"
+        );
+    }
+
+    public void agregarMonopatin(Map<String, Object> datos, String userIdAdmin) {
+        scooterClient.agregarMonopatin(datos);
+
+        registrarAuditoria(
+                "crear_monopatin",
+                datos.get("id").toString(),
+                userIdAdmin,
+                "Se creó un nuevo monopatín con datos: " + datos.toString()
+        );
+    }
+
+    public void eliminarMonopatin(Long id, String userIdAdmin) {
+        scooterClient.eliminarMonopatin(id);
+
+        registrarAuditoria(
+                "eliminar_monopatin",
+                id.toString(),
+                userIdAdmin,
+                "Se eliminó el monopatín con ID " + id
         );
     }
 
@@ -89,6 +127,9 @@ public class AccionAdminService {
         facturacionClient.modificarTarifa(tarifaId, datos);
         registrarAuditoria("modificar_tarifa", tarifaId.toString(), userIdAdmin, "Tarifa modificada: " + datos.toString());
     }
+    /*
+    agregar a partir de tal fecha cambiar tarifa
+     */
 
     public List<Map<String, Object>> consultarUsuariosTop(String desde, String hasta, String tipoUsuario, String userIdAdmin) {
         List<Map<String, Object>> resultado = reporteClient.getUsuariosTop(desde, hasta, tipoUsuario);
