@@ -1,6 +1,8 @@
 package org.example.msvcmonopatin.controller;
 
+import org.example.msvcmonopatin.DTO.EstadoDTO;
 import org.example.msvcmonopatin.entities.Monopatin;
+import org.example.msvcmonopatin.entities.Ubicacion;
 import org.example.msvcmonopatin.repositories.MonopatinRepository;
 import org.example.msvcmonopatin.services.MonopatinService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +47,6 @@ public class MonopatinController {
         return ResponseEntity.ok().body(monopatinService.eliminar(id));
     }
 
-
-
     @PutMapping("/{id}")
     public ResponseEntity<Monopatin> actualizarMonopatin(@PathVariable String id, @RequestBody Monopatin datosActualizados) {
         Optional<Monopatin> actualizado = monopatinService.actualizarMonopatin(id, datosActualizados);
@@ -56,4 +56,24 @@ public class MonopatinController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @PatchMapping("/{id}/estado")
+    public ResponseEntity<Monopatin> actualizarEstado(@PathVariable("id") String id, @RequestBody EstadoDTO estadoDTO) {
+        return monopatinService.actualizarEstado(id,estadoDTO);
+
+    }
+
+    @GetMapping("/{id}/estado")
+    public EstadoDTO obtenerEstado(@PathVariable String id) {
+        return monopatinService.obtenerEstado(id);
+    }
+
+    @GetMapping("/{id}/ubicacion")
+    public Ubicacion obtenerUbicacionPorId(@PathVariable String id) {
+        return monopatinService.obtenerUbicacion(id);
+    }
+
+    @GetMapping("/porKilometro")
+    public ResponseEntity<List<Monopatin>> obtenerMonopatinesPorKilometro() {
+        return monopatinService.obtenerMonopatinesPorKilometro();
+    }
 }

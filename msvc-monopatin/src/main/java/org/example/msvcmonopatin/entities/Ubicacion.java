@@ -13,6 +13,4 @@ public class Ubicacion {
     private int posX;
     private int posY;
 
-
-
 }

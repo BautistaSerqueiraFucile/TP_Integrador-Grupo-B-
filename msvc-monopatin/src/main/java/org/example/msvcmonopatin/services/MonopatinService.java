@@ -1,9 +1,12 @@
 package org.example.msvcmonopatin.services;
 
+import org.example.msvcmonopatin.DTO.EstadoDTO;
 import org.example.msvcmonopatin.entities.Monopatin;
+import org.example.msvcmonopatin.entities.Ubicacion;
 import org.example.msvcmonopatin.repositories.MonopatinRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -59,5 +62,42 @@ public class MonopatinService {
     }
 
 
+    public ResponseEntity<Monopatin> actualizarEstado(String id, EstadoDTO estadoDTO) {
+        Optional<Monopatin> optional = monopatinRepository.findById(id);
+        if (optional.isPresent()) {
+            Monopatin monopatin = optional.get();
+            monopatin.setEstado(estadoDTO.getEstado());
+            monopatinRepository.save(monopatin);
+            return ResponseEntity.ok(monopatin);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
+
+    public EstadoDTO obtenerEstado(String id) {
+        Optional<Monopatin> optional = monopatinRepository.findById(id);
+        EstadoDTO estadoDTO = new EstadoDTO();
+        if (optional.isPresent()) {
+            Monopatin monopatin = optional.get();
+            estadoDTO.setEstado(monopatin.getEstado());
+
+            return estadoDTO;
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Monopatin no encontrado");
+        }
+    }
+
+    public Ubicacion obtenerUbicacion(String id) {
+        Optional<Monopatin> optional = monopatinRepository.findById(id);
+        if (optional.isPresent()) {
+            return optional.get().getUbicacion();
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Monopatin no encontrado");
+        }
+    }
+
+    public ResponseEntity<List<Monopatin>> obtenerMonopatinesPorKilometro() {
+        return ResponseEntity.ok(monopatinRepository.findAllByOrderByKilometrosActualesDesc());
+    }
+}
 

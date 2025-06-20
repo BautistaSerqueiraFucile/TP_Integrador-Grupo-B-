@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/parada")
+@RequestMapping("/paradas")
 public class ParadaController {
 
     @Autowired
