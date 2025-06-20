@@ -29,3 +29,8 @@ public interface ViajeClient {
     );
 
 }
+/*
+ * junto los de mono
+ * pausa viaje
+ *
+ */

@@ -1,16 +1,28 @@
 package org.example.msvcadmin.clients;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "scooter", url = "http://localhost:8007")
+import java.util.Map;
+
+@FeignClient(name = "monopatin", url = "http://localhost:8007")
 public interface ScooterClient {
 
-    @PutMapping("/scooters/{id}/estado")
-    void cambiarEstado(@PathVariable("id") Long id, @RequestParam("estado") String estado);
+    @PatchMapping("/monopatines/{id}/estado")
+    void cambiarEstado(@PathVariable("id") Long id, @RequestBody Map<String, Object> body);
 
-    @PutMapping("/scooters/{id}/reset-km")
+    @PutMapping("/monopatin/{id}/reset-km")
     void resetearKilometraje(@PathVariable("id") Long id);
+
+    @PostMapping("/monopatines")
+    void agregarMonopatin(@RequestBody Map<String, Object> datos);
+
+    @DeleteMapping("/monopatines/{id}")
+    void eliminarMonopatin(@PathVariable("id") Long id);
 }
+/** monopatin
+ * {estado}
+ * agregar mono (exel)
+ * quitar moto
+ * @PutMapping("/scooters/{id}/estado") estado parametro {}
+ */

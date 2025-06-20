@@ -25,6 +25,15 @@ public class AccionAdminController {
         return ResponseEntity.noContent().build();
     }
 
+    @PatchMapping("/cuentas/{cuentaId}/activar")
+    public ResponseEntity<Void> reactivarCuenta(
+            @PathVariable Long cuentaId,
+            @RequestParam String userIdAdmin
+    ) {
+        accionAdminService.reactivarCuenta(cuentaId, userIdAdmin);
+        return ResponseEntity.noContent().build();
+    }
+
     @PutMapping("/scooters/{scooterId}/estado")
     public ResponseEntity<Void> cambiarEstadoScooter(
             @PathVariable Long scooterId,
@@ -32,6 +41,24 @@ public class AccionAdminController {
             @RequestParam String userIdAdmin
     ) {
         accionAdminService.cambiarEstadoScooter(scooterId, estado, userIdAdmin);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/monopatines")
+    public ResponseEntity<Void> agregarMonopatin(
+            @RequestBody Map<String, Object> datos,
+            @RequestParam String userIdAdmin
+    ) {
+        accionAdminService.agregarMonopatin(datos, userIdAdmin);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/monopatines/{id}")
+    public ResponseEntity<Void> eliminarMonopatin(
+            @PathVariable Long id,
+            @RequestParam String userIdAdmin
+    ) {
+        accionAdminService.eliminarMonopatin(id, userIdAdmin);
         return ResponseEntity.noContent().build();
     }
 

@@ -1,16 +1,25 @@
 package org.example.msvcadmin.clients;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @FeignClient(name = "cuenta", url = "http://localhost:8001")
 public interface CuentaClient {
 
-    @PutMapping("/cuentas/{id}/bloquear")
-    void bloquearCuenta(@PathVariable("id") Long id);
+    @PatchMapping("/cuentas/anular/{id}")
+    void anularCuenta(@PathVariable("id") Long id);
+
+    @PatchMapping("/cuentas/activar/{id}")
+    void activarCuenta(@PathVariable("id") Long id);
 
     @DeleteMapping("/cuentas/{id}")
-    void anularCuenta(@PathVariable("id") Long id);
+    void eliminarCuenta(@PathVariable("id") Long id);
+
+    @PostMapping("/cuentas")
+    void crearCuenta(@RequestBody Map<String, Object> datos);
+
+    @PutMapping("/cuentas/{id}")
+    void editarCuenta(@PathVariable("id") Long id, @RequestBody Map<String, Object> datos);
 }
