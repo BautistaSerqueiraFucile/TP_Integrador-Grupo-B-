@@ -1,17 +1,19 @@
 package org.example.msvccuenta.services;
 
 import org.example.msvccuenta.entities.Cuenta;
-import org.example.msvccuenta.entities.dto.ParadaDto;
-import org.example.msvccuenta.entities.dto.UsuarioDto;
-import org.example.msvccuenta.feignClients.ParadaFeignClient;
-import org.example.msvccuenta.feignClients.UsuarioFeignClient;
-import org.example.msvccuenta.repositories.CuentaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.example.msvccuenta.entities.EstadoCuenta;
 import org.example.msvccuenta.entities.TipoCuenta;
+import org.example.msvccuenta.entities.dto.ParadaDto;
+import org.example.msvccuenta.entities.dto.UsuarioDto;
+import org.example.msvccuenta.entities.dto.ViajeDto;
+import org.example.msvccuenta.feignClients.ParadaFeignClient;
+import org.example.msvccuenta.feignClients.UsuarioFeignClient;
+import org.example.msvccuenta.feignClients.ViajeFeignClient;
+import org.example.msvccuenta.repositories.CuentaRepository;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,11 +22,16 @@ public class CuentaService {
     private final CuentaRepository cuentaRepository;
     private final ParadaFeignClient paradaFeignClient;
     private final UsuarioFeignClient usuarioFeignClient;
+    private final ViajeFeignClient viajeFeignClient;
 
-    public CuentaService(CuentaRepository cuentaRepository, ParadaFeignClient paradaFeignClient, UsuarioFeignClient usuarioFeignClient) {
+    public CuentaService(CuentaRepository cuentaRepository,
+                         ParadaFeignClient paradaFeignClient,
+                         UsuarioFeignClient usuarioFeignClient,
+                         ViajeFeignClient viajeFeignClient) {
         this.cuentaRepository = cuentaRepository;
         this.paradaFeignClient = paradaFeignClient;
         this.usuarioFeignClient = usuarioFeignClient;
+        this.viajeFeignClient = viajeFeignClient;
     }
 
     public List<Cuenta> listar() {
@@ -116,5 +123,9 @@ public class CuentaService {
         }
         cuenta.setSaldo(cuenta.getSaldo().add(monto));
         return cuentaRepository.save(cuenta);
+    }
+
+    public List<ViajeDto> historialViajes(Long userId) {
+        return viajeFeignClient.getViajesPorUsuarioYPeriodo(userId);
     }
 }

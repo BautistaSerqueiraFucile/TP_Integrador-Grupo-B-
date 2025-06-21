@@ -122,4 +122,14 @@ public class CuentaController {
             return ResponseEntity.badRequest().body("{\"error\":\"" + e.getMessage() + "\"}");
         }
     }
+
+    @GetMapping("/viajes/{id}")
+    public ResponseEntity<?> getViajesPorUsuarioYPeriodo(@PathVariable Long id) {
+        try {
+            List<?> viajes = cuentaService.historialViajes(id);
+            return ResponseEntity.ok(viajes);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
+        }
+    }
 }
