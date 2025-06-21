@@ -1,8 +1,4 @@
----
 
-### `msvc-cuenta/README.md`
-
-```markdown
 # 💳 Microservicio de Cuenta
 
 Gestiona las cuentas asociadas a los usuarios del sistema de monopatines eléctricos.
