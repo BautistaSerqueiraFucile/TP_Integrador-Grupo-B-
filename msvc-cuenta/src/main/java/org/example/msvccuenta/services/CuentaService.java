@@ -71,18 +71,20 @@ public class CuentaService {
         }
         cuentaRepository.deleteById(id);
     }
-    public Optional<Cuenta> anularCuenta(Long id) {
-        return cuentaRepository.findById(id).map(c -> {
-            c.setEstadoCuenta(EstadoCuenta.ANULADA);
-            return cuentaRepository.save(c);
-        });
+    public Cuenta anularCuenta(Long id) {
+        Cuenta cuenta = cuentaRepository.findById(id)
+                .orElseThrow(() -> new CuentaNoEncontradaException("No se pudo anular. Cuenta no encontrada con ID: " + id));
+
+        cuenta.setEstadoCuenta(EstadoCuenta.ANULADA);
+        return cuentaRepository.save(cuenta);
     }
 
-    public Optional<Cuenta> activarCuenta(Long id) {
-        return cuentaRepository.findById(id).map(c -> {
-            c.setEstadoCuenta(EstadoCuenta.ACTIVA);
-            return cuentaRepository.save(c);
-        });
+    public Cuenta activarCuenta(Long id) {
+        Cuenta cuenta = cuentaRepository.findById(id)
+                .orElseThrow(() -> new CuentaNoEncontradaException("No se pudo activar. Cuenta no encontrada con ID: " + id));
+
+        cuenta.setEstadoCuenta(EstadoCuenta.ACTIVA);
+        return cuentaRepository.save(cuenta);
     }
 
     public Double calcularDistanciaAParada(Long idCuenta, Long idParada) {
@@ -104,14 +106,16 @@ public class CuentaService {
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
-    public Optional<BigDecimal> obtenerSaldo(Long id) {
-        return cuentaRepository.findById(id).map(Cuenta::getSaldo);
+    public BigDecimal obtenerSaldo(Long id) {
+        return cuentaRepository.findById(id)
+                .map(Cuenta::getSaldo)
+                .orElseThrow(() -> new CuentaNoEncontradaException("No se pudo obtener el saldo. Cuenta no encontrada con ID: " + id));
     }
-    public Optional<Cuenta> actualizarTipoCuenta(Long id, TipoCuenta tipoCuenta) {
-        return cuentaRepository.findById(id).map(c -> {
-            c.setTipoCuenta(tipoCuenta);
-            return cuentaRepository.save(c);
-        });
+    public Cuenta actualizarTipoCuenta(Long id, TipoCuenta tipo) {
+        Cuenta cuenta = cuentaRepository.findById(id)
+                .orElseThrow(() -> new CuentaNoEncontradaException("No se pudo cambiar el plan. Cuenta no encontrada con ID: " + id));
+        cuenta.setTipoCuenta(tipo);
+        return cuentaRepository.save(cuenta);
     }
 
     public Cuenta recargarSaldo(Long id, BigDecimal monto) {
