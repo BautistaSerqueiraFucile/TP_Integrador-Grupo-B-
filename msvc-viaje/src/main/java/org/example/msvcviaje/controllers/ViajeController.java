@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -95,4 +96,16 @@ public class ViajeController {
         }
     }
 
+    @GetMapping("monopatines")
+    public ResponseEntity<?> getMonopatines(
+            @RequestParam String idMonopatin,
+            @RequestParam(required = false) LocalDate fechaDesde,
+            @RequestParam(required = false) LocalDate fechaHasta
+    ) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(viajeService.getViajesPorMonopatinyFecha(idMonopatin, fechaDesde, fechaHasta));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() + "\"}");
+        }
+    }
 }

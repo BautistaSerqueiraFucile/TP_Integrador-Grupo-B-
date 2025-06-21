@@ -1,5 +1,7 @@
 package org.example.msvcviaje.services;
 
+import org.example.msvcviaje.clients.MonopatinClient;
+import org.example.msvcviaje.clients.ParadaClient;
 import org.example.msvcviaje.entities.Viaje;
 import org.example.msvcviaje.repositories.ViajeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.example.msvcviaje.dtos.FinalizarViajeDTO;
 
+import java.sql.Time;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.Year;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +23,12 @@ public class ViajeService {
 
     @Autowired
     private ViajeRepository repoViaje;
+
+    @Autowired
+    private ParadaClient paradaClient;
+
+    @Autowired
+    private MonopatinClient monopatinClient;
 
     @Transactional(readOnly = true)
     public List<Viaje> findAll() throws Exception {
@@ -30,12 +42,13 @@ public class ViajeService {
     }
 
     @Transactional
-    public Viaje save(Viaje viaje) {
+    public Viaje save(Viaje viaje) throws Exception {
+        this.setKilometros(viaje);
         return repoViaje.save(viaje);
     }
 
     @Transactional
-    public Viaje finalizarViaje(Long id, FinalizarViajeDTO dto) {
+    public Viaje finalizarViaje(Long id, FinalizarViajeDTO dto) throws Exception {
         Viaje viaje = findById(id);
 
         if (!viaje.getEstado().equals("activo") && !viaje.getEstado().equals("pausado")) {
@@ -46,6 +59,11 @@ public class ViajeService {
         viaje.setIdParadaFin(dto.getIdParadaFin());
         viaje.setTiempoPausa(dto.getTiempoPausa());
         viaje.setEstado("finalizado");
+
+        double tiempoTotal = this.calcularTiempo(viaje);
+        double tiempoPausa = viaje.getTiempoPausa();
+        double kilometros = viaje.getKilometros();
+        monopatinClient.tiemposYKilometros(viaje.getIdMonopatin(), tiempoTotal, tiempoPausa, kilometros);
 
         return repoViaje.save(viaje);
     }
@@ -96,5 +114,24 @@ public class ViajeService {
         } catch (DateTimeParseException e) {
             throw new Exception("Formato de fecha inválido. Usar yyyy-MM-dd.");
         }
+    }
+
+    private void setKilometros(Viaje viaje) throws Exception {
+        Long idParadaInicio = viaje.getIdParadaInicio();
+        Long idParadaFin = viaje.getIdParadaFin();
+        double distancia = paradaClient.getKilometros(idParadaInicio, idParadaFin);
+        viaje.setKilometros(distancia);
+    }
+
+    private double calcularTiempo(Viaje viaje) throws Exception {
+        LocalTime horaInicio = viaje.getHoraInicio();
+        LocalTime horaFin = viaje.getHoraFin();
+
+        return Duration.between(horaInicio, horaFin).toMinutes();
+    }
+
+    @Transactional
+    public Long getViajesPorMonopatinyFecha(String id_monopatin, LocalDate fechaini, LocalDate fechafin) throws Exception {
+        return repoViaje.getCantidadViajesPorMonopatin(id_monopatin, fechaini, fechafin);
     }
 }

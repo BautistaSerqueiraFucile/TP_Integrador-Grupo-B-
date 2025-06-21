@@ -25,7 +25,7 @@ public class Viaje {
     private Long idUsuario;
 
     @Column(name = "id_monopatin", nullable = false)
-    private Long idMonopatin;
+    private String idMonopatin;
 
     @Column(name = "id_parada_inicio", nullable = false)
     private Long idParadaInicio;
@@ -43,10 +43,13 @@ public class Viaje {
     private LocalTime horaFin = null; // Solo hora (HH:mm:ss)
 
     @Column(name = "tiempo_pausa")
-    private int tiempoPausa = 0; //minutos
+    private double tiempoPausa = 0; //minutos
 
     @Column(name = "estado", nullable = false)
     private String estado = "activo"; //activo, pausado ,finalizado
+
+    @Column(name = "kilometros", nullable = false)
+    private double kilometros = 0;
 
     public Viaje(ViajeRequestDTO dto) {
         this.idUsuario = dto.getIdUsuario();
