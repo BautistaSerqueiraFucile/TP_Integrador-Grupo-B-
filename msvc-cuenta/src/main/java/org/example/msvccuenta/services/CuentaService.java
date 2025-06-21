@@ -6,6 +6,7 @@ import org.example.msvccuenta.entities.TipoCuenta;
 import org.example.msvccuenta.entities.dto.ParadaDto;
 import org.example.msvccuenta.entities.dto.UsuarioDto;
 import org.example.msvccuenta.entities.dto.ViajeDto;
+import org.example.msvccuenta.exceptions.CuentaNoEncontradaException;
 import org.example.msvccuenta.feignClients.ParadaFeignClient;
 import org.example.msvccuenta.feignClients.UsuarioFeignClient;
 import org.example.msvccuenta.feignClients.ViajeFeignClient;
@@ -38,8 +39,12 @@ public class CuentaService {
         return cuentaRepository.findAll();
     }
 
-    public Optional<Cuenta> buscarPorId(Long id) {
-        return cuentaRepository.findById(id);
+    public Cuenta buscarPorId(Long id) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("El ID debe ser un número positivo.");
+        }
+        return cuentaRepository.findById(id)
+                .orElseThrow(() -> new CuentaNoEncontradaException("Cuenta no encontrada con ID: " + id));
     }
 
     public Cuenta crear(Cuenta cuenta) {

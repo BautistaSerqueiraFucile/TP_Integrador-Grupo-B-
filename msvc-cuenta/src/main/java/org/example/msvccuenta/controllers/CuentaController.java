@@ -1,6 +1,7 @@
 package org.example.msvccuenta.controllers;
 
 import org.example.msvccuenta.entities.Cuenta;
+import org.example.msvccuenta.exceptions.CuentaNoEncontradaException;
 import org.example.msvccuenta.services.CuentaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +26,18 @@ public class CuentaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Cuenta> buscarPorId(@PathVariable Long id) {
-        return cuentaService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> buscarPorId(@PathVariable String id) {
+        try {
+            Long cuentaId = Long.parseLong(id);
+            Cuenta cuenta = cuentaService.buscarPorId(cuentaId);
+            return ResponseEntity.ok(cuenta);
+        } catch (NumberFormatException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"El ID debe ser un número válido.\"}");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() + "\"}");
+        } catch (CuentaNoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
+        }
     }
 
     @PostMapping("/")
