@@ -1,0 +1,274 @@
+{
+	"info": {
+		"_postman_id": "74dc76c7-aaf7-44f8-8657-eab56ea7304a",
+		"name": "monopatin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28124022",
+		"_collection_link": "https://warped-trinity-652216.postman.co/workspace/exampleSpring~e17ea486-1ebc-45b9-950a-75aebbec154f/collection/28124022-74dc76c7-aaf7-44f8-8657-eab56ea7304a?action=share&source=collection_link&creator=28124022"
+	},
+	"item": [
+		{
+			"name": "agregar monopatin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"4\",\r\n  \"kilometrosActuales\": 432.7,\r\n  \"estado\": \"activado\",\r\n  \"ubicacion\": {\"posX\": 45,\"posY\": 65},\r\n  \"paradaActual\": \"3\",\r\n  \"tiempoDeUso\": 98.3,\r\n  \"tiempoDePausa\": 212.5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8007/monopatines",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8007",
+					"path": [
+						"monopatines"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "obtener todos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8007/monopatines",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8007",
+					"path": [
+						"monopatines"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "obtener por id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8007/monopatines/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8007",
+					"path": [
+						"monopatines",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "borrar por id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8007/monopatines/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8007",
+					"path": [
+						"monopatines",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "modificar",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n  \"kilometrosActuales\": 432.7,\r\n  \"estado\": \"desactivado\",\r\n  \"ubicacion\": {\"posX\": 45,\"posY\": 65},\r\n  \"paradaActual\": \"8\",\r\n  \"tiempoDeUso\": 98.3,\r\n  \"tiempoDePausa\": 212.5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8007/monopatines/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8007",
+					"path": [
+						"monopatines",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "modificar estado",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8007/monopatines/1/inactivo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8007",
+					"path": [
+						"monopatines",
+						"1",
+						"inactivo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "obtener estado por id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8007/monopatines/1/estado",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8007",
+					"path": [
+						"monopatines",
+						"1",
+						"estado"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "obtener ubicacion por id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8007/monopatines/4/ubicacion",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8007",
+					"path": [
+						"monopatines",
+						"4",
+						"ubicacion"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "obtener ordenados por km DES",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8007/monopatines/porKilometro",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8007",
+					"path": [
+						"monopatines",
+						"porKilometro"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "modificar km y tiempos",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8007/monopatines/1/tiemposYKilometros?tiempoDeUso=100&tiempoPausa=100&kilometros=100",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8007",
+					"path": [
+						"monopatines",
+						"1",
+						"tiemposYKilometros"
+					],
+					"query": [
+						{
+							"key": "tiempoDeUso",
+							"value": "100"
+						},
+						{
+							"key": "tiempoPausa",
+							"value": "100"
+						},
+						{
+							"key": "kilometros",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cargar por lote",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  { \"id\": \"1\",  \"kilometrosActuales\": 120.5, \"estado\": \"disponible\",   \"ubicacion\": { \"posX\": 100, \"posY\": 200 }, \"paradaActual\": \"1\", \"tiempoDeUso\": 50,  \"tiempoDePausa\": 10 },\r\n  { \"id\": \"2\",  \"kilometrosActuales\": 95.2,  \"estado\": \"ocupado\",      \"ubicacion\": { \"posX\": 100, \"posY\": 200 }, \"paradaActual\": \"1\", \"tiempoDeUso\": 60,  \"tiempoDePausa\": 5 },\r\n  { \"id\": \"3\",  \"kilometrosActuales\": 210.0, \"estado\": \"disponible\",   \"ubicacion\": { \"posX\": 100, \"posY\": 200 }, \"paradaActual\": \"1\", \"tiempoDeUso\": 40,  \"tiempoDePausa\": 8 },\r\n\r\n  { \"id\": \"4\",  \"kilometrosActuales\": 300.3, \"estado\": \"disponible\",   \"ubicacion\": { \"posX\": 150, \"posY\": 250 }, \"paradaActual\": \"2\", \"tiempoDeUso\": 90,  \"tiempoDePausa\": 20 },\r\n  { \"id\": \"5\",  \"kilometrosActuales\": 125.7, \"estado\": \"mantenimiento\",\"ubicacion\": { \"posX\": 150, \"posY\": 250 }, \"paradaActual\": \"2\", \"tiempoDeUso\": 15,  \"tiempoDePausa\": 15 },\r\n  { \"id\": \"6\",  \"kilometrosActuales\": 289.9, \"estado\": \"disponible\",   \"ubicacion\": { \"posX\": 150, \"posY\": 250 }, \"paradaActual\": \"2\", \"tiempoDeUso\": 75,  \"tiempoDePausa\": 12 },\r\n\r\n  { \"id\": \"7\",  \"kilometrosActuales\": 180.2, \"estado\": \"disponible\",   \"ubicacion\": { \"posX\": 200, \"posY\": 300 }, \"paradaActual\": \"3\", \"tiempoDeUso\": 55,  \"tiempoDePausa\": 9 },\r\n  { \"id\": \"8\",  \"kilometrosActuales\": 342.5, \"estado\": \"disponible\",   \"ubicacion\": { \"posX\": 200, \"posY\": 300 }, \"paradaActual\": \"3\", \"tiempoDeUso\": 95,  \"tiempoDePausa\": 6 },\r\n  { \"id\": \"9\",  \"kilometrosActuales\": 78.8,  \"estado\": \"inactivo\",     \"ubicacion\": { \"posX\": 200, \"posY\": 300 }, \"paradaActual\": \"3\", \"tiempoDeUso\": 10,  \"tiempoDePausa\": 30 },\r\n\r\n  { \"id\": \"10\", \"kilometrosActuales\": 153.4, \"estado\": \"disponible\",   \"ubicacion\": { \"posX\": 250, \"posY\": 350 }, \"paradaActual\": \"4\", \"tiempoDeUso\": 32,  \"tiempoDePausa\": 11 },\r\n  { \"id\": \"11\", \"kilometrosActuales\": 67.3,  \"estado\": \"disponible\",   \"ubicacion\": { \"posX\": 250, \"posY\": 350 }, \"paradaActual\": \"4\", \"tiempoDeUso\": 18,  \"tiempoDePausa\": 4 },\r\n  { \"id\": \"12\", \"kilometrosActuales\": 201.6, \"estado\": \"ocupado\",      \"ubicacion\": { \"posX\": 250, \"posY\": 350 }, \"paradaActual\": \"4\", \"tiempoDeUso\": 78,  \"tiempoDePausa\": 16 },\r\n\r\n  { \"id\": \"13\", \"kilometrosActuales\": 101.9, \"estado\": \"disponible\",   \"ubicacion\": { \"posX\": 300, \"posY\": 400 }, \"paradaActual\": \"5\", \"tiempoDeUso\": 45,  \"tiempoDePausa\": 10 },\r\n  { \"id\": \"14\", \"kilometrosActuales\": 263.8, \"estado\": \"disponible\",   \"ubicacion\": { \"posX\": 300, \"posY\": 400 }, \"paradaActual\": \"5\", \"tiempoDeUso\": 65,  \"tiempoDePausa\": 14 },\r\n  { \"id\": \"15\", \"kilometrosActuales\": 144.1, \"estado\": \"mantenimiento\",\"ubicacion\": { \"posX\": 300, \"posY\": 400 }, \"paradaActual\": \"5\", \"tiempoDeUso\": 21,  \"tiempoDePausa\": 7 },\r\n\r\n  { \"id\": \"16\", \"kilometrosActuales\": 378.6, \"estado\": \"disponible\",   \"ubicacion\": { \"posX\": 350, \"posY\": 450 }, \"paradaActual\": \"6\", \"tiempoDeUso\": 88,  \"tiempoDePausa\": 20 },\r\n  { \"id\": \"17\", \"kilometrosActuales\": 95.1,  \"estado\": \"ocupado\",      \"ubicacion\": { \"posX\": 350, \"posY\": 450 }, \"paradaActual\": \"6\", \"tiempoDeUso\": 34,  \"tiempoDePausa\": 8 },\r\n  { \"id\": \"18\", \"kilometrosActuales\": 226.4, \"estado\": \"disponible\",   \"ubicacion\": { \"posX\": 350, \"posY\": 450 }, \"paradaActual\": \"6\", \"tiempoDeUso\": 59,  \"tiempoDePausa\": 12 },\r\n\r\n  { \"id\": \"19\", \"kilometrosActuales\": 308.0, \"estado\": \"disponible\",   \"ubicacion\": { \"posX\": 400, \"posY\": 500 }, \"paradaActual\": \"7\", \"tiempoDeUso\": 77,  \"tiempoDePausa\": 15 },\r\n  { \"id\": \"20\", \"kilometrosActuales\": 157.2, \"estado\": \"disponible\",   \"ubicacion\": { \"posX\": 400, \"posY\": 500 }, \"paradaActual\": \"7\", \"tiempoDeUso\": 43,  \"tiempoDePausa\": 6 },\r\n  { \"id\": \"21\", \"kilometrosActuales\": 80.4,  \"estado\": \"inactivo\",     \"ubicacion\": { \"posX\": 400, \"posY\": 500 }, \"paradaActual\": \"7\", \"tiempoDeUso\": 12,  \"tiempoDePausa\": 21 },\r\n\r\n  { \"id\": \"22\", \"kilometrosActuales\": 200.5, \"estado\": \"disponible\",   \"ubicacion\": { \"posX\": 450, \"posY\": 550 }, \"paradaActual\": \"8\", \"tiempoDeUso\": 61,  \"tiempoDePausa\": 9 },\r\n  { \"id\": \"23\", \"kilometrosActuales\": 298.3, \"estado\": \"disponible\",   \"ubicacion\": { \"posX\": 450, \"posY\": 550 }, \"paradaActual\": \"8\", \"tiempoDeUso\": 94,  \"tiempoDePausa\": 22 },\r\n  { \"id\": \"24\", \"kilometrosActuales\": 132.9, \"estado\": \"mantenimiento\",\"ubicacion\": { \"posX\": 450, \"posY\": 550 }, \"paradaActual\": \"8\", \"tiempoDeUso\": 28,  \"tiempoDePausa\": 10 },\r\n\r\n  { \"id\": \"25\", \"kilometrosActuales\": 87.0,  \"estado\": \"disponible\",   \"ubicacion\": { \"posX\": 100, \"posY\": 200 }, \"paradaActual\": \"1\", \"tiempoDeUso\": 22,  \"tiempoDePausa\": 6 },\r\n  { \"id\": \"31\", \"kilometrosActuales\": 275.0, \"estado\": \"disponible\",   \"ubicacion\": { \"posX\": 100, \"posY\": 200 }, \"paradaActual\": \"1\", \"tiempoDeUso\": 52, \"tiempoDePausa\": 13 },\r\n  { \"id\": \"32\", \"kilometrosActuales\": 198.3, \"estado\": \"ocupado\",      \"ubicacion\": { \"posX\": 250, \"posY\": 350 }, \"paradaActual\": \"4\", \"tiempoDeUso\": 61, \"tiempoDePausa\": 19 },\r\n  { \"id\": \"33\", \"kilometrosActuales\": 342.6, \"estado\": \"disponible\",   \"ubicacion\": { \"posX\": 450, \"posY\": 550 }, \"paradaActual\": \"8\", \"tiempoDeUso\": 70, \"tiempoDePausa\": 10 },\r\n  { \"id\": \"34\", \"kilometrosActuales\": 123.9, \"estado\": \"mantenimiento\",\"ubicacion\": { \"posX\": 300, \"posY\": 400 }, \"paradaActual\": \"5\", \"tiempoDeUso\": 22, \"tiempoDePausa\": 14 },\r\n  { \"id\": \"35\", \"kilometrosActuales\": 159.5, \"estado\": \"disponible\",   \"ubicacion\": { \"posX\": 350, \"posY\": 450 }, \"paradaActual\": \"6\", \"tiempoDeUso\": 47, \"tiempoDePausa\": 9 }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8007/monopatines/lote",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8007",
+					"path": [
+						"monopatines",
+						"lote"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

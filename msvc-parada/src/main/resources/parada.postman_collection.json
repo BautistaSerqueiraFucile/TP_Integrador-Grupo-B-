@@ -1,0 +1,165 @@
+{
+	"info": {
+		"_postman_id": "8c12034e-54b7-405b-8ee7-c1c892f0fdcc",
+		"name": "parada",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28124022",
+		"_collection_link": "https://warped-trinity-652216.postman.co/workspace/exampleSpring~e17ea486-1ebc-45b9-950a-75aebbec154f/collection/28124022-8c12034e-54b7-405b-8ee7-c1c892f0fdcc?action=share&source=collection_link&creator=28124022"
+	},
+	"item": [
+		{
+			"name": "obtener por id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8008/paradas/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8008",
+					"path": [
+						"paradas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "agregar parada",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n  \"nombre\": \"parada1\",\r\n  \"posX\": 25.5,\r\n  \"posY\": 30.8,\r\n  \"activa\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8008/paradas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8008",
+					"path": [
+						"paradas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "eliminar por id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8008/paradas/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8008",
+					"path": [
+						"paradas",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "modificar parada",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "obtener distancia entre paradas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8008/paradas/distancia?parada1Id=1&parada2Id=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8008",
+					"path": [
+						"paradas",
+						"distancia"
+					],
+					"query": [
+						{
+							"key": "parada1Id",
+							"value": "1"
+						},
+						{
+							"key": "parada2Id",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "obtener todas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8008/paradas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8008",
+					"path": [
+						"paradas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cargar por lote",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n  { \"nombre\": \"Parada 1\", \"posX\": 100, \"posY\": 200, \"activa\": true },\r\n  { \"nombre\": \"Parada 2\", \"posX\": 150, \"posY\": 250, \"activa\": true },\r\n  { \"nombre\": \"Parada 3\", \"posX\": 200, \"posY\": 300, \"activa\": false },\r\n  { \"nombre\": \"Parada 4\", \"posX\": 250, \"posY\": 350, \"activa\": true },\r\n  { \"nombre\": \"Parada 5\", \"posX\": 300, \"posY\": 400, \"activa\": false },\r\n  { \"nombre\": \"Parada 6\", \"posX\": 350, \"posY\": 450, \"activa\": true },\r\n  { \"nombre\": \"Parada 7\", \"posX\": 400, \"posY\": 500, \"activa\": true },\r\n  { \"nombre\": \"Parada 8\", \"posX\": 450, \"posY\": 550, \"activa\": false }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8008/paradas/lote",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8008",
+					"path": [
+						"paradas",
+						"lote"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
