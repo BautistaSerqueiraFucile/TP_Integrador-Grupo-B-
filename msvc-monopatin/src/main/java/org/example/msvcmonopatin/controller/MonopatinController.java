@@ -80,4 +80,12 @@ public class MonopatinController {
         monopatinService.actualizarTiempos(id,tiempoDeUso,tiempoPausa,kilometros);
 
     }
+
+    @PostMapping("/lote")
+    public ResponseEntity<?> agregarMonopatines(@RequestBody List<Monopatin> monopatines) {
+        monopatinService.guardarLote(monopatines);
+        return ResponseEntity.ok("Monopatines guardados correctamente");
+    }
+
+
 }

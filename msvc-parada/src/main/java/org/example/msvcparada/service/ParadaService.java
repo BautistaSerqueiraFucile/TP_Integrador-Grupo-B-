@@ -131,4 +131,9 @@ public class ParadaService {
 
         return distanciaCalculada;
     }
+
+    public void guardarLote(List<Parada> paradas) {
+        paradaRepository.saveAll(paradas);
+
+    }
 }

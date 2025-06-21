@@ -118,5 +118,10 @@ public class MonopatinService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Monopatin no encontrado");
         }
     }
+
+    public void guardarLote(List<Monopatin> monopatines) {
+        monopatinRepository.saveAll(monopatines);
+
+    }
 }
 

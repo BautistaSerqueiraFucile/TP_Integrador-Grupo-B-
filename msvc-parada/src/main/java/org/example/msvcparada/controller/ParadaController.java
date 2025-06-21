@@ -27,11 +27,11 @@ public class ParadaController {
     public List<Parada> listarParadas() {
         return paradaService.obtenerParadas();
     }
+
     @PostMapping("")
     public ResponseEntity<Parada> agregar(@RequestBody Parada parada) {
         Parada result = paradaService.agregar(parada);
         return ResponseEntity.accepted().body(result);
-
     }
 
     // deveria poder eliminar una parada que tenga monopatines??
@@ -53,4 +53,15 @@ public class ParadaController {
         double distancia = paradaService.calcularDistancia(parada1Id, parada2Id);
         return ResponseEntity.ok().body(distancia);
     }
+
+
+    @PostMapping("/lote")
+    public ResponseEntity<?> agregarParadas(@RequestBody List<Parada>paradas) {
+        paradaService.guardarLote(paradas);
+        return ResponseEntity.ok("Paradas guardados correctamente");
+    }
+
+
+
+
 }
