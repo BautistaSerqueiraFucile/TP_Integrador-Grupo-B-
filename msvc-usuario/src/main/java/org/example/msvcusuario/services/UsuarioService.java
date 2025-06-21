@@ -9,7 +9,7 @@ import org.example.msvcusuario.entities.RolUsuario;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
+
 @Service
 public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
@@ -32,7 +32,6 @@ public class UsuarioService {
 
     @Transactional
     public Usuario crear(Usuario usuario) {
-        // Encriptamos la contraseña ANTES de guardarla.
         String passwordEncriptada = passwordEncoder.encode(usuario.getPassword());
         usuario.setPassword(passwordEncriptada);
         return usuarioRepository.save(usuario);
@@ -40,11 +39,8 @@ public class UsuarioService {
 
     @Transactional
     public Usuario actualizar(Long id, Usuario usuarioDetails) {
-        // 1. Buscamos el usuario para asegurarnos de que existe.
         this.buscarPorId(id);
 
-        // 2. Ejecutamos la actualización directa en la base de datos.
-        //    Esto evita completamente el problema de la validación de la contraseña.
         usuarioRepository.actualizarPerfil(
                 id,
                 usuarioDetails.getNombre(),
@@ -55,7 +51,6 @@ public class UsuarioService {
                 usuarioDetails.getLongitud()
         );
 
-        // 3. Volvemos a buscar el usuario para devolver el objeto actualizado.
         return this.buscarPorId(id);
     }
 

@@ -74,7 +74,7 @@ public class CuentaController {
         try {
             Long cuentaId = Long.parseLong(id);
             cuentaService.eliminar(cuentaId);
-            return ResponseEntity.noContent().build(); // 204 No Content
+            return ResponseEntity.noContent().build();
         } catch (NumberFormatException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"El ID debe ser un número válido.\"}");
         } catch (CuentaNoEncontradaException e) {
@@ -144,7 +144,7 @@ public class CuentaController {
     }
 
     @PatchMapping("/recargar/{id}/monto/{monto}")
-    public ResponseEntity<?> recargarSaldo(@PathVariable Long id, @PathVariable String monto) { // Cambiado a ResponseEntity<?> para más flexibilidad
+    public ResponseEntity<?> recargarSaldo(@PathVariable Long id, @PathVariable String monto) {
         try {
             BigDecimal montoDecimal;
             try {

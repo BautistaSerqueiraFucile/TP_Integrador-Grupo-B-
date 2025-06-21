@@ -41,7 +41,7 @@ public class UsuarioController {
         }
     }
 
-    @PostMapping("/") // Ruta corregida a la convención REST estándar
+    @PostMapping("/")
     public ResponseEntity<?> crear(@Valid @RequestBody Usuario usuario, BindingResult result) {
         if (result.hasErrors()) {
             return validar(result);
@@ -98,7 +98,7 @@ public class UsuarioController {
         try {
             Long usuarioId = Long.parseLong(id);
             usuarioService.eliminar(usuarioId);
-            return ResponseEntity.noContent().build(); // 204 No Content
+            return ResponseEntity.noContent().build();
         } catch (NumberFormatException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"El ID debe ser un número válido.\"}");
         } catch (UsuarioNoEncontradoException e) {
@@ -107,7 +107,7 @@ public class UsuarioController {
     }
 
     @PatchMapping("/{id}/set-admin")
-    public ResponseEntity<?> setAdmin(@PathVariable String id) { // Cambiado a String
+    public ResponseEntity<?> setAdmin(@PathVariable String id) {
         try {
             Long usuarioId = Long.parseLong(id);
             Usuario usuarioActualizado = usuarioService.actualizarRol(usuarioId, RolUsuario.ADMIN);
@@ -120,7 +120,7 @@ public class UsuarioController {
     }
 
     @PatchMapping("/{id}/set-usuario")
-    public ResponseEntity<?> setUsuario(@PathVariable String id) { // Cambiado a String
+    public ResponseEntity<?> setUsuario(@PathVariable String id) {
         try {
             Long usuarioId = Long.parseLong(id);
             Usuario usuarioActualizado = usuarioService.actualizarRol(usuarioId, RolUsuario.USUARIO);
