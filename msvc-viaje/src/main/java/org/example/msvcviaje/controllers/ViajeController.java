@@ -108,4 +108,13 @@ public class ViajeController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() + "\"}");
         }
     }
+
+    @GetMapping("tiempos/{id}")
+    public ResponseEntity<?> getTiempos(@PathVariable Long id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(viajeService.getViajeTiempos(id));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() + "\"}");
+        }
+    }
 }

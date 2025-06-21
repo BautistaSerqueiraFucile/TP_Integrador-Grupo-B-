@@ -29,31 +29,31 @@ public class Factura {
     @Column(name = "id_viaje", nullable = false)
     private Long idViaje;
 
-    @Column(name = "tarifa_basica", nullable = false)
-    private double tarifaBasica;
+    @Column(name = "tipo_cuenta", nullable = false)
+    private String tipoCuenta = null;
 
-    @Column(name = "tarifa_premium", nullable = false)
-    private double tarifaPremium;
+    @Column(name = "costo_tarifa", nullable = false)
+    private double costoTarifa = 0;
 
-    @Column(name = "precio", nullable = false)
-    private double precio;
+    @Column(name = "tarifa_pausa", nullable = false)
+    private double tarifaPausa = 0;
+
+    @Column(name = "precio_viaje", nullable = false)
+    private double precioViaje = 0;
 
     @Column(name = "fecha", nullable = false)
-    private Date fecha; // o popdria ser Solo la fecha con LocalDate (yyyy-MM-dd)
+    private LocalDate fecha; // o popdria ser Solo la fecha con LocalDate (yyyy-MM-dd)
 
     public Factura(FacturaRequestDTO entity) {
         this.idUsuario = entity.getIdUsuario();
         this.idViaje = entity.getIdViaje();
-        this.tarifaBasica = entity.getTarifaBasica();
-        this.tarifaPremium = entity.getTarifaPremium();
-        this.precio = entity.getPrecio();
         this.fecha = transformarFecha(entity.getFecha(), entity.getHora());
     }
 
-    private Date transformarFecha(String fecha, String hora){
+    private LocalDate transformarFecha(String fecha, String hora){
         LocalDate localDate = LocalDate.parse(fecha);
         LocalTime localTime = LocalTime.parse(hora);
         LocalDateTime localDateTime = LocalDateTime.of(localDate, localTime);
-        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+        return LocalDate.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 }

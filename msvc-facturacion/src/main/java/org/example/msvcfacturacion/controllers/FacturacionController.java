@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("/facturacion")
 public class FacturacionController {
@@ -33,6 +35,20 @@ public class FacturacionController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Por favor intente más tarde.\"}");
         }
     }
+
+    @GetMapping("historial")
+    public ResponseEntity<?> getHistorial(
+            @RequestParam (required = false) Long idUsuario,
+            @RequestParam LocalDate fechaDesde,
+            @RequestParam LocalDate fechaHasta
+    ) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(facturacionService.findByUserAndDate(idUsuario, fechaDesde, fechaHasta));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Por favor intente más tarde.\"}");
+        }
+    }
+
 
     @PostMapping("")
     public ResponseEntity<?> save(@Valid @RequestBody FacturaRequestDTO entity){

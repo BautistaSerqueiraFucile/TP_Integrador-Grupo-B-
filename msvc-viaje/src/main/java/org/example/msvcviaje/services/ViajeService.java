@@ -1,7 +1,9 @@
 package org.example.msvcviaje.services;
 
+import org.example.msvcviaje.clients.CuentaClient;
 import org.example.msvcviaje.clients.MonopatinClient;
 import org.example.msvcviaje.clients.ParadaClient;
+import org.example.msvcviaje.dtos.TiemposViajeDTO;
 import org.example.msvcviaje.entities.Viaje;
 import org.example.msvcviaje.repositories.ViajeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.example.msvcviaje.dtos.FinalizarViajeDTO;
 
+import java.math.BigDecimal;
 import java.sql.Time;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -30,6 +33,9 @@ public class ViajeService {
     @Autowired
     private MonopatinClient monopatinClient;
 
+    @Autowired
+    private CuentaClient cuentaClient;
+
     @Transactional(readOnly = true)
     public List<Viaje> findAll() throws Exception {
         return repoViaje.findAll();
@@ -43,8 +49,13 @@ public class ViajeService {
 
     @Transactional
     public Viaje save(Viaje viaje) throws Exception {
-        this.setKilometros(viaje);
-        return repoViaje.save(viaje);
+        BigDecimal saldoActual = cuentaClient.obtenerSaldo(viaje.getIdUsuario());
+        if (saldoActual.compareTo(BigDecimal.ZERO) > 0) {
+            this.setKilometros(viaje);
+            return repoViaje.save(viaje);
+        } else {
+            throw new RuntimeException("Saldo insuficiente");
+        }
     }
 
     @Transactional
@@ -133,5 +144,13 @@ public class ViajeService {
     @Transactional
     public Long getViajesPorMonopatinyFecha(String id_monopatin, LocalDate fechaini, LocalDate fechafin) throws Exception {
         return repoViaje.getCantidadViajesPorMonopatin(id_monopatin, fechaini, fechafin);
+    }
+
+    @Transactional
+    public TiemposViajeDTO getViajeTiempos(Long id) throws Exception {
+        Viaje viaje = findById(id);
+        double tiempoTotal = calcularTiempo(viaje);
+        double tiempoPausa = viaje.getTiempoPausa();
+        return new TiemposViajeDTO(tiempoTotal, tiempoPausa);
     }
 }
