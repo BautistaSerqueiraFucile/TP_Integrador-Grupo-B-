@@ -1,0 +1,12 @@
+package org.example.msvccuenta.feignClients;
+
+import org.example.msvccuenta.entities.dto.ParadaDto;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+@FeignClient(name = "msvc-parada", url = "http://localhost:8004/paradas")
+public interface ParadaFeignClient {
+    @GetMapping("/{id}")
+    ParadaDto getParadaById(@PathVariable("id") Long id);
+}
