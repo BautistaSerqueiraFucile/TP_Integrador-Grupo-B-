@@ -16,7 +16,11 @@ public interface FacturacionClient {
 
     @PutMapping("/tarifas/{id}")
     void modificarTarifa(@PathVariable("id") Long id, @RequestBody Map<String, Object> tarifa);
+
+    @PostMapping("/tarifas-extra")
+    void crearTarifaExtra(@RequestBody Map<String, Object> tarifaExtra);
+
+    @PutMapping("/tarifas-extra/{id}")
+    void modificarTarifaExtra(@PathVariable("id") Long id, @RequestBody Map<String, Object> tarifaExtra);
+
 }
-/*
-* hacer extras pausas
- */

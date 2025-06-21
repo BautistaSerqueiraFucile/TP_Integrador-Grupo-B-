@@ -109,6 +109,26 @@ public class AccionAdminController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/tarifas-extra")
+    public ResponseEntity<Void> crearTarifaExtra(
+            @RequestBody Map<String, Object> datos,
+            @RequestParam String userIdAdmin
+    ) {
+        accionAdminService.crearTarifaExtra(datos, userIdAdmin);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/tarifas-extra/{id}")
+    public ResponseEntity<Void> modificarTarifaExtra(
+            @PathVariable Long id,
+            @RequestBody Map<String, Object> datos,
+            @RequestParam String userIdAdmin
+    ) {
+        accionAdminService.modificarTarifaExtra(id, datos, userIdAdmin);
+        return ResponseEntity.noContent().build();
+    }
+
+
     @GetMapping("/reportes/usuarios-top")
     public ResponseEntity<List<Map<String, Object>>> usuariosTop(
             @RequestParam String fechaDesde,

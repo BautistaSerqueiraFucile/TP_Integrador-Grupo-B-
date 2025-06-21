@@ -127,6 +127,17 @@ public class AccionAdminService {
         facturacionClient.modificarTarifa(tarifaId, datos);
         registrarAuditoria("modificar_tarifa", tarifaId.toString(), userIdAdmin, "Tarifa modificada: " + datos.toString());
     }
+
+    public void crearTarifaExtra(Map<String, Object> datos, String userIdAdmin) {
+        facturacionClient.crearTarifaExtra(datos);
+        registrarAuditoria("crear_tarifa_extra", null, userIdAdmin, "Tarifa extra creada: " + datos.toString());
+    }
+
+    public void modificarTarifaExtra(Long tarifaExtraId, Map<String, Object> datos, String userIdAdmin) {
+        facturacionClient.modificarTarifaExtra(tarifaExtraId, datos);
+        registrarAuditoria("modificar_tarifa_extra", tarifaExtraId.toString(), userIdAdmin, "Tarifa extra modificada: " + datos.toString());
+    }
+
     /*
     agregar a partir de tal fecha cambiar tarifa
      */
