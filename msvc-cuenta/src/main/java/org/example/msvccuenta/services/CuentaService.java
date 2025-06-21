@@ -6,6 +6,7 @@ import org.example.msvccuenta.entities.TipoCuenta;
 import org.example.msvccuenta.entities.dto.ParadaDto;
 import org.example.msvccuenta.entities.dto.UsuarioDto;
 import org.example.msvccuenta.entities.dto.ViajeDto;
+import org.example.msvccuenta.exceptions.CuentaNoEncontradaException;
 import org.example.msvccuenta.feignClients.ParadaFeignClient;
 import org.example.msvccuenta.feignClients.UsuarioFeignClient;
 import org.example.msvccuenta.feignClients.ViajeFeignClient;
@@ -38,46 +39,52 @@ public class CuentaService {
         return cuentaRepository.findAll();
     }
 
-    public Optional<Cuenta> buscarPorId(Long id) {
-        return cuentaRepository.findById(id);
+    public Cuenta buscarPorId(Long id) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("El ID debe ser un número positivo.");
+        }
+        return cuentaRepository.findById(id)
+                .orElseThrow(() -> new CuentaNoEncontradaException("Cuenta no encontrada con ID: " + id));
     }
 
     public Cuenta crear(Cuenta cuenta) {
         return cuentaRepository.save(cuenta);
     }
 
-    public Optional<Cuenta> actualizar(Long id, Cuenta cuenta) {
-        return cuentaRepository.findById(id).map(c -> {
-            c.setFechaAlta(cuenta.getFechaAlta());
-            c.setTipoCuenta(cuenta.getTipoCuenta());
-            c.setSaldo(cuenta.getSaldo());
-            c.setMercadoPagoId(cuenta.getMercadoPagoId());
-            c.setEstadoCuenta(cuenta.getEstadoCuenta());
-            c.setKmRecorridosMesPremium(cuenta.getKmRecorridosMesPremium());
-            c.setUsuariosId(cuenta.getUsuariosId());
-            return cuentaRepository.save(c);
-        });
+    public Cuenta actualizar(Long id, Cuenta cuenta) {
+        return cuentaRepository.findById(id).map(cuentaDB -> {
+            cuentaDB.setFechaAlta(cuenta.getFechaAlta());
+            cuentaDB.setTipoCuenta(cuenta.getTipoCuenta());
+            cuentaDB.setSaldo(cuenta.getSaldo());
+            cuentaDB.setMercadoPagoId(cuenta.getMercadoPagoId());
+            cuentaDB.setEstadoCuenta(cuenta.getEstadoCuenta());
+            cuentaDB.setKmRecorridosMesPremium(cuenta.getKmRecorridosMesPremium());
+            cuentaDB.setUsuariosId(cuenta.getUsuariosId());
+
+            return cuentaRepository.save(cuentaDB);
+        }).orElseThrow(() -> new CuentaNoEncontradaException("No se pudo actualizar. Cuenta no encontrada con ID: " + id));
     }
 
-    public boolean eliminar(Long id) {
-        if (cuentaRepository.existsById(id)) {
-            cuentaRepository.deleteById(id);
-            return true;
+    public void eliminar(Long id) {
+        if (!cuentaRepository.existsById(id)) {
+            throw new CuentaNoEncontradaException("No se pudo eliminar. Cuenta no encontrada con ID: " + id);
         }
-        return false;
+        cuentaRepository.deleteById(id);
     }
-    public Optional<Cuenta> anularCuenta(Long id) {
-        return cuentaRepository.findById(id).map(c -> {
-            c.setEstadoCuenta(EstadoCuenta.ANULADA);
-            return cuentaRepository.save(c);
-        });
+    public Cuenta anularCuenta(Long id) {
+        Cuenta cuenta = cuentaRepository.findById(id)
+                .orElseThrow(() -> new CuentaNoEncontradaException("No se pudo anular. Cuenta no encontrada con ID: " + id));
+
+        cuenta.setEstadoCuenta(EstadoCuenta.ANULADA);
+        return cuentaRepository.save(cuenta);
     }
 
-    public Optional<Cuenta> activarCuenta(Long id) {
-        return cuentaRepository.findById(id).map(c -> {
-            c.setEstadoCuenta(EstadoCuenta.ACTIVA);
-            return cuentaRepository.save(c);
-        });
+    public Cuenta activarCuenta(Long id) {
+        Cuenta cuenta = cuentaRepository.findById(id)
+                .orElseThrow(() -> new CuentaNoEncontradaException("No se pudo activar. Cuenta no encontrada con ID: " + id));
+
+        cuenta.setEstadoCuenta(EstadoCuenta.ACTIVA);
+        return cuentaRepository.save(cuenta);
     }
 
     public Double calcularDistanciaAParada(Long idCuenta, Long idParada) {
@@ -99,14 +106,16 @@ public class CuentaService {
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
-    public Optional<BigDecimal> obtenerSaldo(Long id) {
-        return cuentaRepository.findById(id).map(Cuenta::getSaldo);
+    public BigDecimal obtenerSaldo(Long id) {
+        return cuentaRepository.findById(id)
+                .map(Cuenta::getSaldo)
+                .orElseThrow(() -> new CuentaNoEncontradaException("No se pudo obtener el saldo. Cuenta no encontrada con ID: " + id));
     }
-    public Optional<Cuenta> actualizarTipoCuenta(Long id, TipoCuenta tipoCuenta) {
-        return cuentaRepository.findById(id).map(c -> {
-            c.setTipoCuenta(tipoCuenta);
-            return cuentaRepository.save(c);
-        });
+    public Cuenta actualizarTipoCuenta(Long id, TipoCuenta tipo) {
+        Cuenta cuenta = cuentaRepository.findById(id)
+                .orElseThrow(() -> new CuentaNoEncontradaException("No se pudo cambiar el plan. Cuenta no encontrada con ID: " + id));
+        cuenta.setTipoCuenta(tipo);
+        return cuentaRepository.save(cuenta);
     }
 
     public Cuenta recargarSaldo(Long id, BigDecimal monto) {

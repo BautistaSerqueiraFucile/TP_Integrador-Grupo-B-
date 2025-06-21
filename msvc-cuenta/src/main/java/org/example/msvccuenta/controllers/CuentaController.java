@@ -1,11 +1,16 @@
 package org.example.msvccuenta.controllers;
 
+import jakarta.validation.Valid;
 import org.example.msvccuenta.entities.Cuenta;
+import org.example.msvccuenta.exceptions.CuentaNoEncontradaException;
 import org.example.msvccuenta.services.CuentaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.example.msvccuenta.entities.TipoCuenta;
+import java.util.HashMap;
+import java.util.Map;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -25,69 +30,107 @@ public class CuentaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Cuenta> buscarPorId(@PathVariable Long id) {
-        return cuentaService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> buscarPorId(@PathVariable String id) {
+        try {
+            Long cuentaId = Long.parseLong(id);
+            Cuenta cuenta = cuentaService.buscarPorId(cuentaId);
+            return ResponseEntity.ok(cuenta);
+        } catch (NumberFormatException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"El ID debe ser un número válido.\"}");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() + "\"}");
+        } catch (CuentaNoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
+        }
     }
 
     @PostMapping("/")
-    public Cuenta crear(@RequestBody Cuenta cuenta) {
-        return cuentaService.crear(cuenta);
+    public ResponseEntity<?> crear(@Valid @RequestBody Cuenta cuenta, BindingResult result) {
+        if (result.hasErrors()) {
+            return validar(result);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(cuentaService.crear(cuenta));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cuenta> actualizar(@PathVariable Long id, @RequestBody Cuenta cuenta) {
-        return cuentaService.actualizar(id, cuenta)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> actualizar(@Valid @RequestBody Cuenta cuenta, BindingResult result, @PathVariable String id) {
+        if (result.hasErrors()) {
+            return validar(result);
+        }
+        try {
+            Long cuentaId = Long.parseLong(id);
+            Cuenta cuentaActualizada = cuentaService.actualizar(cuentaId, cuenta);
+            return ResponseEntity.ok(cuentaActualizada);
+        } catch (NumberFormatException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"El ID debe ser un número válido.\"}");
+        } catch (CuentaNoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
+        }
     }
 
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        if (cuentaService.eliminar(id)) {
+    public ResponseEntity<?> eliminar(@PathVariable String id) {
+        try {
+            Long cuentaId = Long.parseLong(id);
+            cuentaService.eliminar(cuentaId);
             return ResponseEntity.noContent().build();
+        } catch (NumberFormatException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"El ID debe ser un número válido.\"}");
+        } catch (CuentaNoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
         }
-        return ResponseEntity.notFound().build();
     }
 
     @PatchMapping("/anular/{id}")
-    public ResponseEntity<Cuenta> anular(@PathVariable Long id) {
+    public ResponseEntity<?> anular(@PathVariable String id) {
         try {
-            Cuenta cuenta = cuentaService.anularCuenta(id)
-                    .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
-            return ResponseEntity.ok(cuenta);
-        } catch (RuntimeException ex) {
-            return ResponseEntity.notFound().build();
+            Long cuentaId = Long.parseLong(id);
+            Cuenta cuentaAnulada = cuentaService.anularCuenta(cuentaId);
+            return ResponseEntity.ok(cuentaAnulada);
+        } catch (NumberFormatException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"El ID debe ser un número válido.\"}");
+        } catch (CuentaNoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
         }
     }
 
     @PatchMapping("/activar/{id}")
-    public ResponseEntity<Cuenta> activar(@PathVariable Long id) {
+    public ResponseEntity<?> activar(@PathVariable String id) {
         try {
-            Cuenta cuenta = cuentaService.activarCuenta(id)
-                    .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
-            return ResponseEntity.ok(cuenta);
-        } catch (RuntimeException ex) {
-            return ResponseEntity.notFound().build();
+            Long cuentaId = Long.parseLong(id);
+            Cuenta cuentaActivada = cuentaService.activarCuenta(cuentaId);
+            return ResponseEntity.ok(cuentaActivada);
+        } catch (NumberFormatException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"El ID debe ser un número válido.\"}");
+        } catch (CuentaNoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
         }
     }
 
     @GetMapping("/saldo/{id}")
-    public ResponseEntity<BigDecimal> obtenerSaldo(@PathVariable Long id) {
-        return cuentaService.obtenerSaldo(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> obtenerSaldo(@PathVariable String id) {
+        try {
+            Long cuentaId = Long.parseLong(id);
+            BigDecimal saldo = cuentaService.obtenerSaldo(cuentaId);
+            return ResponseEntity.ok(saldo);
+        } catch (NumberFormatException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"El ID debe ser un número válido.\"}");
+        } catch (CuentaNoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
+        }
     }
 
     @PatchMapping("/{id}/set-plan/{tipo}")
-    public ResponseEntity<Cuenta> setPlan(@PathVariable Long id, @PathVariable TipoCuenta tipo) {
+    public ResponseEntity<?> setPlan(@PathVariable String id, @PathVariable TipoCuenta tipo) {
         try {
-            Cuenta cuenta = cuentaService.actualizarTipoCuenta(id, tipo)
-                    .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
-            return ResponseEntity.ok(cuenta);
-        } catch (RuntimeException ex) {
-            return ResponseEntity.notFound().build();
+            Long cuentaId = Long.parseLong(id);
+            Cuenta cuentaActualizada = cuentaService.actualizarTipoCuenta(cuentaId, tipo);
+            return ResponseEntity.ok(cuentaActualizada);
+        } catch (NumberFormatException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"El ID debe ser un número válido.\"}");
+        } catch (CuentaNoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
         }
     }
 
@@ -101,7 +144,7 @@ public class CuentaController {
     }
 
     @PatchMapping("/recargar/{id}/monto/{monto}")
-    public ResponseEntity<?> recargarSaldo(@PathVariable Long id, @PathVariable String monto) { // Cambiado a ResponseEntity<?> para más flexibilidad
+    public ResponseEntity<?> recargarSaldo(@PathVariable Long id, @PathVariable String monto) {
         try {
             BigDecimal montoDecimal;
             try {
@@ -131,5 +174,12 @@ public class CuentaController {
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
         }
+    }
+    private static ResponseEntity<Map<String, String>> validar(BindingResult result) {
+        Map<String, String> errores = new HashMap<>();
+        result.getFieldErrors().forEach(err -> {
+            errores.put(err.getField(), "El campo " + err.getField() + " " + err.getDefaultMessage());
+        });
+        return ResponseEntity.badRequest().body(errores);
     }
 }
