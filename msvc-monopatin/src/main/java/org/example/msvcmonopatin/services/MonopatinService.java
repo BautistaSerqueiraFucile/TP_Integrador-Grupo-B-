@@ -51,14 +51,21 @@ public class MonopatinService {
     }
 
 
-    public Optional<Monopatin> actualizarMonopatin(String id, Monopatin datosActualizados) {
-        return monopatinRepository.findById(id).map(monopatin -> {
+    public ResponseEntity<Monopatin> actualizarMonopatin(String id, Monopatin datosActualizados) {
+        Optional<Monopatin> optional = monopatinRepository.findById(id);
+        if (optional.isPresent()) {
+            Monopatin monopatin = optional.get();
+            monopatin.setTiempoDeUso(datosActualizados.getTiempoDeUso() );
+            monopatin.setTiempoDePausa(datosActualizados.getTiempoDePausa() );
             monopatin.setKilometrosActuales(datosActualizados.getKilometrosActuales());
             monopatin.setEstado(datosActualizados.getEstado());
             monopatin.setUbicacion(datosActualizados.getUbicacion());
             monopatin.setParadaActual(datosActualizados.getParadaActual());
-            return monopatinRepository.save(monopatin);
-        });
+            return ResponseEntity.ok(monopatinRepository.save(monopatin));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
 

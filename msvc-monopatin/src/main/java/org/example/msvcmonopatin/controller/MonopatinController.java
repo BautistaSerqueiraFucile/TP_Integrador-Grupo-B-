@@ -49,11 +49,9 @@ public class MonopatinController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Monopatin> actualizarMonopatin(@PathVariable String id, @RequestBody Monopatin datosActualizados) {
-        Optional<Monopatin> actualizado = monopatinService.actualizarMonopatin(id, datosActualizados);
+        ResponseEntity<Monopatin> actualizado = monopatinService.actualizarMonopatin(id, datosActualizados);
 
-        return actualizado
-                .map(monopatin -> new ResponseEntity<>(monopatin, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return actualizado;
     }
 
     @PatchMapping("/{id}/{estado}")
