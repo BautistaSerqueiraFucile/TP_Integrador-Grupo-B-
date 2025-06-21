@@ -51,25 +51,25 @@ public class CuentaService {
         return cuentaRepository.save(cuenta);
     }
 
-    public Optional<Cuenta> actualizar(Long id, Cuenta cuenta) {
-        return cuentaRepository.findById(id).map(c -> {
-            c.setFechaAlta(cuenta.getFechaAlta());
-            c.setTipoCuenta(cuenta.getTipoCuenta());
-            c.setSaldo(cuenta.getSaldo());
-            c.setMercadoPagoId(cuenta.getMercadoPagoId());
-            c.setEstadoCuenta(cuenta.getEstadoCuenta());
-            c.setKmRecorridosMesPremium(cuenta.getKmRecorridosMesPremium());
-            c.setUsuariosId(cuenta.getUsuariosId());
-            return cuentaRepository.save(c);
-        });
+    public Cuenta actualizar(Long id, Cuenta cuenta) {
+        return cuentaRepository.findById(id).map(cuentaDB -> {
+            cuentaDB.setFechaAlta(cuenta.getFechaAlta());
+            cuentaDB.setTipoCuenta(cuenta.getTipoCuenta());
+            cuentaDB.setSaldo(cuenta.getSaldo());
+            cuentaDB.setMercadoPagoId(cuenta.getMercadoPagoId());
+            cuentaDB.setEstadoCuenta(cuenta.getEstadoCuenta());
+            cuentaDB.setKmRecorridosMesPremium(cuenta.getKmRecorridosMesPremium());
+            cuentaDB.setUsuariosId(cuenta.getUsuariosId());
+
+            return cuentaRepository.save(cuentaDB);
+        }).orElseThrow(() -> new CuentaNoEncontradaException("No se pudo actualizar. Cuenta no encontrada con ID: " + id));
     }
 
-    public boolean eliminar(Long id) {
-        if (cuentaRepository.existsById(id)) {
-            cuentaRepository.deleteById(id);
-            return true;
+    public void eliminar(Long id) {
+        if (!cuentaRepository.existsById(id)) {
+            throw new CuentaNoEncontradaException("No se pudo eliminar. Cuenta no encontrada con ID: " + id);
         }
-        return false;
+        cuentaRepository.deleteById(id);
     }
     public Optional<Cuenta> anularCuenta(Long id) {
         return cuentaRepository.findById(id).map(c -> {

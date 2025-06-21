@@ -53,18 +53,33 @@ public class CuentaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cuenta> actualizar(@PathVariable Long id, @RequestBody Cuenta cuenta) {
-        return cuentaService.actualizar(id, cuenta)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> actualizar(@Valid @RequestBody Cuenta cuenta, BindingResult result, @PathVariable String id) {
+        if (result.hasErrors()) {
+            return validar(result);
+        }
+        try {
+            Long cuentaId = Long.parseLong(id);
+            Cuenta cuentaActualizada = cuentaService.actualizar(cuentaId, cuenta);
+            return ResponseEntity.ok(cuentaActualizada);
+        } catch (NumberFormatException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"El ID debe ser un número válido.\"}");
+        } catch (CuentaNoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
+        }
     }
 
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        if (cuentaService.eliminar(id)) {
-            return ResponseEntity.noContent().build();
+    public ResponseEntity<?> eliminar(@PathVariable String id) {
+        try {
+            Long cuentaId = Long.parseLong(id);
+            cuentaService.eliminar(cuentaId);
+            return ResponseEntity.noContent().build(); // 204 No Content
+        } catch (NumberFormatException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"El ID debe ser un número válido.\"}");
+        } catch (CuentaNoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
         }
-        return ResponseEntity.notFound().build();
     }
 
     @PatchMapping("/anular/{id}")
