@@ -1,12 +1,16 @@
 package org.example.msvccuenta.controllers;
 
+import jakarta.validation.Valid;
 import org.example.msvccuenta.entities.Cuenta;
 import org.example.msvccuenta.exceptions.CuentaNoEncontradaException;
 import org.example.msvccuenta.services.CuentaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.example.msvccuenta.entities.TipoCuenta;
+import java.util.HashMap;
+import java.util.Map;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -40,9 +44,12 @@ public class CuentaController {
         }
     }
 
-    @PostMapping("/")
-    public Cuenta crear(@RequestBody Cuenta cuenta) {
-        return cuentaService.crear(cuenta);
+    @PostMapping("/crear")
+    public ResponseEntity<?> crear(@Valid @RequestBody Cuenta cuenta, BindingResult result) {
+        if (result.hasErrors()) {
+            return validar(result);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(cuentaService.crear(cuenta));
     }
 
     @PutMapping("/{id}")
@@ -140,5 +147,12 @@ public class CuentaController {
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
         }
+    }
+    private static ResponseEntity<Map<String, String>> validar(BindingResult result) {
+        Map<String, String> errores = new HashMap<>();
+        result.getFieldErrors().forEach(err -> {
+            errores.put(err.getField(), "El campo " + err.getField() + " " + err.getDefaultMessage());
+        });
+        return ResponseEntity.badRequest().body(errores);
     }
 }

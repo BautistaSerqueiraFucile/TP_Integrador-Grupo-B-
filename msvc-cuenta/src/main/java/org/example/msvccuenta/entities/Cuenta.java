@@ -35,7 +35,7 @@ public class Cuenta {
     @Column(name = "mercadoPagoId", nullable = false)
     private String mercadoPagoId;
 
-    @NotEmpty
+    @NotNull
     @Column(name = "estadoCuenta", nullable = false)
     @Enumerated(EnumType.STRING)
     private EstadoCuenta estadoCuenta;
