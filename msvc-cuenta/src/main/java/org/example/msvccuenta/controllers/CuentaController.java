@@ -44,7 +44,7 @@ public class CuentaController {
         }
     }
 
-    @PostMapping("/crear")
+    @PostMapping("/")
     public ResponseEntity<?> crear(@Valid @RequestBody Cuenta cuenta, BindingResult result) {
         if (result.hasErrors()) {
             return validar(result);
