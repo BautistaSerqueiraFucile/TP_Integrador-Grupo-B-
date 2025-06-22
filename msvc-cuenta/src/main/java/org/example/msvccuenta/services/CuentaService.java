@@ -12,8 +12,6 @@ import org.example.msvccuenta.feignClients.ViajeFeignClient;
 import org.example.msvccuenta.repositories.CuentaRepository;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -99,7 +97,7 @@ public class CuentaService {
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
-    public Optional<BigDecimal> obtenerSaldo(Long id) {
+    public Optional<Double> obtenerSaldo(Long id) {
         return cuentaRepository.findById(id).map(Cuenta::getSaldo);
     }
     public Optional<Cuenta> actualizarTipoCuenta(Long id, TipoCuenta tipoCuenta) {
@@ -109,7 +107,7 @@ public class CuentaService {
         });
     }
 
-    public Cuenta recargarSaldo(Long id, BigDecimal monto) {
+    public Cuenta recargarSaldo(Long id, Double monto) {
         Cuenta cuenta = cuentaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
         if (cuenta.getEstadoCuenta() == EstadoCuenta.ANULADA) {
@@ -118,10 +116,10 @@ public class CuentaService {
         if (cuenta.getTipoCuenta() == TipoCuenta.PREMIUM) {
             throw new RuntimeException("No se puede recargar saldo en cuentas PREMIUM. Estas pagan una tarifa fija mensual.");
         }
-        if (monto.compareTo(BigDecimal.ZERO) <= 0) {
+        if (monto <= 0) {
             throw new IllegalArgumentException("El monto de recarga debe ser positivo.");
         }
-        cuenta.setSaldo(cuenta.getSaldo().add(monto));
+        cuenta.setSaldo(cuenta.getSaldo() + monto);
         return cuentaRepository.save(cuenta);
     }
 

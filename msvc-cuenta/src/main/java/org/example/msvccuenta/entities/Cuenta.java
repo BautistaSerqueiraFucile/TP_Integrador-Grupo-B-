@@ -15,20 +15,20 @@ public class Cuenta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "fechaAlta", nullable = false)
+    @Column(name = "fechaAlta")
     private LocalDate fechaAlta;
     @Column(name = "tipoCuenta", nullable = false)
     @Enumerated(EnumType.STRING)
     private TipoCuenta tipoCuenta;
-    @Column(name = "saldo", nullable = false)
-    private BigDecimal saldo;
-    @Column(name = "mercadoPagoId", nullable = false)
+    @Column(name = "saldo")
+    private Double saldo;
+    @Column(name = "mercadoPagoId")
     private String mercadoPagoId;
-    @Column(name = "estadoCuenta", nullable = false)
+    @Column(name = "estadoCuenta")
     @Enumerated(EnumType.STRING)
     private EstadoCuenta estadoCuenta;
     @Column(name = "kmRecorridosMesPremium")
-    private BigDecimal kmRecorridosMesPremium;
+    private Double kmRecorridosMesPremium;
     @Column(name = "usuarios")
     @ElementCollection
     private Set<Long> usuariosId = new HashSet<>();

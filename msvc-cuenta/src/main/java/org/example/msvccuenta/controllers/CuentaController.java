@@ -19,7 +19,7 @@ public class CuentaController {
         this.cuentaService = cuentaService;
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public List<Cuenta> listar() {
         return cuentaService.listar();
     }
@@ -31,7 +31,7 @@ public class CuentaController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public Cuenta crear(@RequestBody Cuenta cuenta) {
         return cuentaService.crear(cuenta);
     }
@@ -74,7 +74,7 @@ public class CuentaController {
     }
 
     @GetMapping("/saldo/{id}")
-    public ResponseEntity<BigDecimal> obtenerSaldo(@PathVariable Long id) {
+    public ResponseEntity<Double> obtenerSaldo(@PathVariable Long id) {
         return cuentaService.obtenerSaldo(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -103,13 +103,12 @@ public class CuentaController {
     @PatchMapping("/recargar/{id}/monto/{monto}")
     public ResponseEntity<?> recargarSaldo(@PathVariable Long id, @PathVariable String monto) { // Cambiado a ResponseEntity<?> para más flexibilidad
         try {
-            BigDecimal montoDecimal;
             try {
-                montoDecimal = new BigDecimal(monto);
+               Double.parseDouble(monto);
             } catch (NumberFormatException e) {
                 return ResponseEntity.badRequest().body("{\"error\":\"El monto proporcionado no es un número válido.\"}");
             }
-            Cuenta cuenta = cuentaService.recargarSaldo(id, montoDecimal);
+            Cuenta cuenta = cuentaService.recargarSaldo(id, Double.parseDouble(monto));
             return ResponseEntity.ok(cuenta);
         } catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("{\"error\":\"" + e.getMessage() + "\"}");
