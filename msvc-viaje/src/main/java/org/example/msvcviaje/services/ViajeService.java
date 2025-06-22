@@ -50,13 +50,13 @@ public class ViajeService {
 
     @Transactional
     public Viaje save(Viaje viaje) throws Exception {
-        BigDecimal saldoActual;
+        double saldoActual;
         try {
             saldoActual = cuentaClient.obtenerSaldo(viaje.getIdUsuario());
         } catch (Exception e) {
             throw new Exception("Error al obtener el saldo del viaje" + e.getMessage());
         }
-        if (saldoActual.compareTo(BigDecimal.ZERO) > 0) {
+        if (saldoActual > 0) {
             this.setKilometros(viaje);
             return repoViaje.save(viaje);
         } else {

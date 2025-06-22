@@ -10,5 +10,5 @@ import java.math.BigDecimal;
 public interface CuentaClient {
 
     @GetMapping("/cuentas/saldo/{id}")
-    BigDecimal obtenerSaldo(@PathVariable Long id);
+    double obtenerSaldo(@PathVariable Long id);
 }
