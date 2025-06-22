@@ -34,10 +34,10 @@ public class AccionAdminController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/scooters/{scooterId}/estado")
+    @PutMapping("/scooters/{scooterId}/estado/{estado}")
     public ResponseEntity<Void> cambiarEstadoScooter(
             @PathVariable Long scooterId,
-            @RequestParam String estado,
+            @PathVariable String estado,
             @RequestParam String userIdAdmin
     ) {
         accionAdminService.cambiarEstadoScooter(scooterId, estado, userIdAdmin);

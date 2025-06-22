@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.Map;
 
-@FeignClient(name = "user", url = "http://localhost:8006")
+@FeignClient(name = "user", url = "http://localhost:8002")
 public interface UserClient {
     @GetMapping("/usuarios/{id}")
     Map<String, Object> obtenerUsuario(@PathVariable("id") Long id);
