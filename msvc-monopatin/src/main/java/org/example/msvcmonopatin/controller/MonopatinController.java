@@ -87,5 +87,10 @@ public class MonopatinController {
         return ResponseEntity.ok("Monopatines guardados correctamente");
     }
 
+    @GetMapping("/porParada")
+    public ResponseEntity<Monopatin> obtenerMonopatinActivoPorParada(@RequestParam String parada) {
+        return monopatinService.obtenerMonopatinActivoPorParada(parada);
+
+    }
 
 }

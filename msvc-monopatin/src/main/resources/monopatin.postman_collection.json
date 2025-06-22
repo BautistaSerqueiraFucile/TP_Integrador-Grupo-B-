@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "74dc76c7-aaf7-44f8-8657-eab56ea7304a",
+		"_postman_id": "f2fd684e-abe9-4192-8419-ca275c4f7abe",
 		"name": "monopatin",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "28124022",
-		"_collection_link": "https://warped-trinity-652216.postman.co/workspace/exampleSpring~e17ea486-1ebc-45b9-950a-75aebbec154f/collection/28124022-74dc76c7-aaf7-44f8-8657-eab56ea7304a?action=share&source=collection_link&creator=28124022"
+		"_exporter_id": "31875489"
 	},
 	"item": [
 		{
@@ -267,6 +266,14 @@
 						"lote"
 					]
 				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
 			},
 			"response": []
 		}
