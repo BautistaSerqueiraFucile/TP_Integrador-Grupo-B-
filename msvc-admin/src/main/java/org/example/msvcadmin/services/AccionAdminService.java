@@ -61,18 +61,15 @@ public class AccionAdminService {
     }
 
     public void cambiarEstadoScooter(Long scooterId, String nuevoEstado, String userIdAdmin) {
-        // 1. Armar body del request con el estado
-        Map<String, Object> body = Map.of("estado", nuevoEstado);
+        // 1. Llamar al scooter-service para cambiar estado
+        scooterClient.cambiarEstado(scooterId, nuevoEstado);
 
-        // 2. Llamar al scooter-service para cambiar estado
-        scooterClient.cambiarEstado(scooterId, body);
-
-        // 3. Si vuelve a estar disponible, reiniciar km
+        // 2. Si vuelve a estar disponible, reiniciar km
         if (nuevoEstado.equalsIgnoreCase("disponible")) {
             scooterClient.resetearKilometraje(scooterId);
         }
 
-        // 4. Registrar auditoría
+        // 3. Registrar auditoría
         registrarAuditoria(
                 "cambiar_estado_scooter",
                 scooterId.toString(),
@@ -80,6 +77,7 @@ public class AccionAdminService {
                 "Admin " + userIdAdmin + " cambió el estado del scooter a '" + nuevoEstado + "'"
         );
     }
+
 
     public void agregarMonopatin(Map<String, Object> datos, String userIdAdmin) {
         scooterClient.agregarMonopatin(datos);
