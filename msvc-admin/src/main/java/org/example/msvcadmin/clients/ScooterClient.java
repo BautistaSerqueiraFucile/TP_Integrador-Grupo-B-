@@ -17,7 +17,7 @@ public interface ScooterClient {
     @PatchMapping("/monopatines/{id}/estado/{estado}")
     void cambiarEstado(@PathVariable("id") Long id, @PathVariable("estado") String estado);
     /**
-     * Resetea el kilometraje de un monopatín (por mantenimiento, por ejemplo).
+     * Resetea el kilometraje de un monopatín (por mantenimiento).
      */
     @PutMapping("/monopatin/{id}/reset-km")
     void resetearKilometraje(@PathVariable("id") Long id);
