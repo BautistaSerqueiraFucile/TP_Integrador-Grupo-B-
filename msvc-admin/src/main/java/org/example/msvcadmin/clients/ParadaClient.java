@@ -8,12 +8,12 @@ import java.util.Map;
 @FeignClient(name = "parada", url = "http://localhost:8002")
 public interface ParadaClient {
 
-    @PostMapping("/paradas")
+    @PostMapping("/parada")
     void crearParada(@RequestBody Map<String, Object> datos);
 
-    @PutMapping("/paradas/{id}")
+    @PutMapping("/parada/{id}")
     void editarParada(@PathVariable("id") Long id, @RequestBody Map<String, Object> datos);
 
-    @DeleteMapping("/paradas/{id}")
+    @DeleteMapping("/parada/{id}")
     void eliminarParada(@PathVariable("id") Long id);
 }
