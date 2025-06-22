@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@FeignClient(name = "parada", url = "http://localhost:8002")
+@FeignClient(name = "parada", url = "http://localhost:8008")
 public interface ParadaClient {
 
     @PostMapping("/parada")
