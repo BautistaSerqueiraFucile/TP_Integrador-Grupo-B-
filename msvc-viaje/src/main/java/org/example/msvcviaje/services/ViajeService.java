@@ -4,6 +4,7 @@ import org.example.msvcviaje.clients.CuentaClient;
 import org.example.msvcviaje.clients.MonopatinClient;
 import org.example.msvcviaje.clients.ParadaClient;
 import org.example.msvcviaje.dtos.TiemposViajeDTO;
+import org.example.msvcviaje.entities.EstadoViaje;
 import org.example.msvcviaje.entities.Viaje;
 import org.example.msvcviaje.repositories.ViajeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,12 +50,17 @@ public class ViajeService {
 
     @Transactional
     public Viaje save(Viaje viaje) throws Exception {
-        BigDecimal saldoActual = cuentaClient.obtenerSaldo(viaje.getIdUsuario());
+        BigDecimal saldoActual;
+        try {
+            saldoActual = cuentaClient.obtenerSaldo(viaje.getIdUsuario());
+        } catch (Exception e) {
+            throw new Exception("Error al obtener el saldo del viaje" + e.getMessage());
+        }
         if (saldoActual.compareTo(BigDecimal.ZERO) > 0) {
             this.setKilometros(viaje);
             return repoViaje.save(viaje);
         } else {
-            throw new RuntimeException("Saldo insuficiente");
+            throw new Exception("Error: Saldo insuficiente");
         }
     }
 
@@ -62,14 +68,14 @@ public class ViajeService {
     public Viaje finalizarViaje(Long id, FinalizarViajeDTO dto) throws Exception {
         Viaje viaje = findById(id);
 
-        if (!viaje.getEstado().equals("activo") && !viaje.getEstado().equals("pausado")) {
+        if (!viaje.getEstado().equals(EstadoViaje.activo) && !viaje.getEstado().equals(EstadoViaje.pausado)) {
             throw new RuntimeException("No se puede finalizar el viaje porque no está en curso.");
         }
 
         viaje.setHoraFin(dto.getHoraFin());
         viaje.setIdParadaFin(dto.getIdParadaFin());
         viaje.setTiempoPausa(dto.getTiempoPausa());
-        viaje.setEstado("finalizado");
+        viaje.setEstado(EstadoViaje.finalizado);
 
         double tiempoTotal = this.calcularTiempo(viaje);
         double tiempoPausa = viaje.getTiempoPausa();
@@ -83,11 +89,11 @@ public class ViajeService {
     public Viaje pausarViaje(Long id) {
         Viaje viaje = findById(id);
 
-        if (!viaje.getEstado().equals("activo")) {
+        if (!viaje.getEstado().equals(EstadoViaje.activo)) {
             throw new RuntimeException("Solo se pueden pausar viajes en estado 'activo'.");
         }
 
-        viaje.setEstado("pausado");
+        viaje.setEstado(EstadoViaje.pausado);
 
         return repoViaje.save(viaje);
     }
@@ -96,11 +102,11 @@ public class ViajeService {
     public Viaje reanudarViaje(Long id) {
         Viaje viaje = findById(id);
 
-        if (!viaje.getEstado().equals("pausado")) {
+        if (!viaje.getEstado().equals(EstadoViaje.pausado)) {
             throw new RuntimeException("Solo se pueden reanudar viajes en estado 'pausado'.");
         }
 
-        viaje.setEstado("activo");
+        viaje.setEstado(EstadoViaje.activo);
 
         return repoViaje.save(viaje);
     }

@@ -46,7 +46,8 @@ public class Viaje {
     private double tiempoPausa = 0; //minutos
 
     @Column(name = "estado", nullable = false)
-    private String estado = "activo"; //activo, pausado ,finalizado
+    @Enumerated(EnumType.STRING)
+    private EstadoViaje estado = EstadoViaje.activo; //activo, pausado ,finalizado
 
     @Column(name = "kilometros", nullable = false)
     private double kilometros = 0;

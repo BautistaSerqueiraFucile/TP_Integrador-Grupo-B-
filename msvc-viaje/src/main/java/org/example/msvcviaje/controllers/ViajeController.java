@@ -56,7 +56,7 @@ public class ViajeController {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(viajeService.save(new Viaje(entity)));
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo ingresar, revise los campos e intente nuevamente.\"}");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo ingresar, revise los campos e intente nuevamente.\"}\n"+ e.getMessage());
         }
     }
 
