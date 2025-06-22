@@ -2,18 +2,17 @@ package org.example.msvccuenta.controllers;
 
 import jakarta.validation.Valid;
 import org.example.msvccuenta.entities.Cuenta;
+import org.example.msvccuenta.entities.TipoCuenta;
 import org.example.msvccuenta.exceptions.CuentaNoEncontradaException;
 import org.example.msvccuenta.services.CuentaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.example.msvccuenta.entities.TipoCuenta;
-import java.util.HashMap;
-import java.util.Map;
 
-import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/cuentas")
@@ -24,7 +23,7 @@ public class CuentaController {
         this.cuentaService = cuentaService;
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public List<Cuenta> listar() {
         return cuentaService.listar();
     }
@@ -44,7 +43,7 @@ public class CuentaController {
         }
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<?> crear(@Valid @RequestBody Cuenta cuenta, BindingResult result) {
         if (result.hasErrors()) {
             return validar(result);
@@ -112,7 +111,7 @@ public class CuentaController {
     public ResponseEntity<?> obtenerSaldo(@PathVariable String id) {
         try {
             Long cuentaId = Long.parseLong(id);
-            BigDecimal saldo = cuentaService.obtenerSaldo(cuentaId);
+            Double saldo = cuentaService.obtenerSaldo(cuentaId);
             return ResponseEntity.ok(saldo);
         } catch (NumberFormatException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"El ID debe ser un número válido.\"}");
@@ -146,13 +145,12 @@ public class CuentaController {
     @PatchMapping("/recargar/{id}/monto/{monto}")
     public ResponseEntity<?> recargarSaldo(@PathVariable Long id, @PathVariable String monto) {
         try {
-            BigDecimal montoDecimal;
             try {
-                montoDecimal = new BigDecimal(monto);
+                Double.parseDouble(monto);
             } catch (NumberFormatException e) {
                 return ResponseEntity.badRequest().body("{\"error\":\"El monto proporcionado no es un número válido.\"}");
             }
-            Cuenta cuenta = cuentaService.recargarSaldo(id, montoDecimal);
+            Cuenta cuenta = cuentaService.recargarSaldo(id, Double.parseDouble(monto));
             return ResponseEntity.ok(cuenta);
         } catch (IllegalStateException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("{\"error\":\"" + e.getMessage() + "\"}");

@@ -29,7 +29,7 @@ public class Cuenta {
 
     @NotNull
     @Column(name = "saldo", nullable = false)
-    private BigDecimal saldo;
+    private Double saldo;
 
     @NotEmpty
     @Column(name = "mercadoPagoId", nullable = false)
@@ -41,7 +41,7 @@ public class Cuenta {
     private EstadoCuenta estadoCuenta;
 
     @Column(name = "kmRecorridosMesPremium")
-    private BigDecimal kmRecorridosMesPremium;
+    private Double kmRecorridosMesPremium;
 
     @NotNull
     @Column(name = "usuarios")
