@@ -123,5 +123,15 @@ public class MonopatinService {
         monopatinRepository.saveAll(monopatines);
 
     }
+
+    public ResponseEntity<Monopatin> obtenerMonopatinActivoPorParada(String parada) {
+        Optional<Monopatin> optional = monopatinRepository.findFirstByParadaActualAndEstado(parada, "disponible");
+        if (optional.isPresent()) {
+            return ResponseEntity.ok(optional.get());
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Monopatin no encontrado");
+        }
+
+    }
 }
 
