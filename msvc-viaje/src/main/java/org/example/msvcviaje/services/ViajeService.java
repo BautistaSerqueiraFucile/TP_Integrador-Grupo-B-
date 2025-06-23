@@ -91,7 +91,7 @@ public class ViajeService {
 
         monopatinClient.tiemposYKilometros(viaje.getIdMonopatin(), tiempoTotal, tiempoPausa, kilometros);
         monopatinClient.modificarEstado(viaje.getIdMonopatin(), "disponible");
-        //cambiar parada de monopatin
+        monopatinClient.modificarParada(viaje.getIdMonopatin(), String.valueOf(viaje.getIdParadaFin()));
         facturaClient.postFactura(datos);
 
         return repoViaje.save(viaje);

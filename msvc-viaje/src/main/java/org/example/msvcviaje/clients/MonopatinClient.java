@@ -27,4 +27,9 @@ public interface MonopatinClient {
             @PathVariable("estado") String estado
     );
 
+    @PutMapping("/monopatines/{id}/paradaActual")
+    ResponseEntity<Monopatin> modificarParada(
+            @PathVariable("id") String id,
+            @RequestParam String paradaActual
+    );
 }
