@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 import java.util.Map;
 
-@FeignClient(name = "scooter", url = "http://localhost:8007")
+@FeignClient(name = "msv-monopatin", url = "http://localhost:8007")
 public interface ScooterClient {
-    @GetMapping("/scooters")
+    @GetMapping("/monopatines")
     List<Map<String, Object>> obtenerTodosLosScooters();
 
-    @GetMapping("/scooters/{id}")
+    @GetMapping("/monopatines/{id}")
     Map<String, Object> obtenerScooterPorId(@PathVariable("id") Long id);
 }
 /*
