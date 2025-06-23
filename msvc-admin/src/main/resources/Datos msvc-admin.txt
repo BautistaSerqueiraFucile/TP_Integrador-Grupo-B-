@@ -1,0 +1,89 @@
+Base de datos de msvc-admin: bbdd_msvcAdmin
+
+--------------------------------------
+
+SCRIPT SQL PARA CREACION DE TABLAS:  
+
+-- Crear base de datos (si no existe)
+CREATE DATABASE IF NOT EXISTS bbdd_msvcAdmin;
+USE bbdd_msvcAdmin;
+
+-- Tabla: admins
+CREATE TABLE admins (
+    id BINARY(16) NOT NULL PRIMARY KEY,                -- UUID
+    user_id VARCHAR(255) NOT NULL UNIQUE,
+    fecha_asignacion DATETIME NOT NULL,
+    activo BOOLEAN NOT NULL DEFAULT TRUE
+);
+
+-- Tabla: auditoria_admin
+CREATE TABLE auditoria_admin (
+    id BINARY(16) NOT NULL PRIMARY KEY,                -- UUID
+    admin_id BINARY(16) NOT NULL,                      -- UUID referencia a Admin
+    fecha DATETIME NOT NULL,
+    tipo_accion VARCHAR(255) NOT NULL,
+    entidad_afectada_id VARCHAR(255) NOT NULL,
+    detalle VARCHAR(1000),
+
+    CONSTRAINT fk_admin_id FOREIGN KEY (admin_id) REFERENCES admins(id)
+);
+
+---------------------------------------------------
+
+SCRIPT SQL CON DATOS DE EJEMPLO PARA LAS DOS TABLAS:
+
+-- Crear base de datos si no existe
+CREATE DATABASE IF NOT EXISTS bbdd_msvcAdmin;
+USE bbdd_msvcAdmin;
+
+-- ========================
+-- Tabla: admins
+-- ========================
+DROP TABLE IF EXISTS auditoria_admin;
+DROP TABLE IF EXISTS admins;
+
+CREATE TABLE admins (
+    id BINARY(16) NOT NULL PRIMARY KEY,                -- UUID
+    user_id VARCHAR(255) NOT NULL UNIQUE,
+    fecha_asignacion DATETIME NOT NULL,
+    activo BOOLEAN NOT NULL DEFAULT TRUE
+);
+
+-- ========================
+-- Tabla: auditoria_admin
+-- ========================
+CREATE TABLE auditoria_admin (
+    id BINARY(16) NOT NULL PRIMARY KEY,
+    admin_id BINARY(16) NOT NULL,
+    fecha DATETIME NOT NULL,
+    tipo_accion VARCHAR(255) NOT NULL,
+    entidad_afectada_id VARCHAR(255) NOT NULL,
+    detalle VARCHAR(1000),
+    CONSTRAINT fk_admin_id FOREIGN KEY (admin_id) REFERENCES admins(id)
+);
+
+-- ========================
+-- Insert de ejemplo
+-- ========================
+
+-- Admin: Juan Pérez (UUID: 0x11111111111111111111111111111111)
+INSERT INTO admins (id, user_id, fecha_asignacion, activo) VALUES
+(
+    UNHEX('11111111111111111111111111111111'),
+    'juan_admin',
+    NOW(),
+    TRUE
+);
+
+-- Auditoría: acción de prueba (UUID: 0x22222222222222222222222222222222)
+INSERT INTO auditoria_admin (id, admin_id, fecha, tipo_accion, entidad_afectada_id, detalle) VALUES
+(
+    UNHEX('22222222222222222222222222222222'),
+    UNHEX('11111111111111111111111111111111'),
+    NOW(),
+    'crear_monopatin',
+    '42',
+    'El admin juan_admin creó un nuevo monopatín con ID 42'
+);
+
+------------------------------------------------------
