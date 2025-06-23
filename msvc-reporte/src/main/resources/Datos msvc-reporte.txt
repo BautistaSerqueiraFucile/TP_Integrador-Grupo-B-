@@ -1,0 +1,28 @@
+Base de datos de msvc-reporte: bbdd_msvcReporte
+
+--------------------------------------------
+
+SCRIPT SQL DE CREACION DE TABLA + DATOS DE EJEMPLOS
+
+CREATE DATABASE IF NOT EXISTS bbdd_msvcReporte;
+USE bbdd_msvcReporte;
+
+CREATE TABLE reportes (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    fecha_generacion DATETIME NOT NULL,
+    tipo VARCHAR(255) NOT NULL,
+    parametros TEXT,
+    resultado LONGTEXT,
+    solicitado_por VARCHAR(255),
+    estado VARCHAR(100) NOT NULL,
+    mensaje_error TEXT
+);
+
+-- Datos de ejemplo
+INSERT INTO reportes (fecha_generacion, tipo, parametros, resultado, solicitado_por, estado, mensaje_error)
+VALUES 
+(NOW(), 'uso_monopatin', '{"incluirPausas":true}', '{"total":12,"promedio":5.2}', 'admin-uuid-123', 'OK', NULL),
+(NOW(), 'facturacion_periodo', '{"anio":2024,"mesDesde":1,"mesHasta":3}', '{"totalFacturado":30500}', 'admin-uuid-123', 'OK', NULL),
+(NOW(), 'usuarios_top', '{"desde":"2024-01-01","hasta":"2024-06-30","tipoUsuario":"normal"}', NULL, 'admin-uuid-999', 'ERROR', 'Fallo al conectar con microservicio user');
+
+-----------------------------------------------------
