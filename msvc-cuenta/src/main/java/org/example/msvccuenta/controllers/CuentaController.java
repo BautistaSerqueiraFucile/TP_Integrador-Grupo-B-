@@ -81,7 +81,7 @@ public class CuentaController {
         }
     }
 
-    @PatchMapping("/anular/{id}")
+    @PutMapping("/anular/{id}")
     public ResponseEntity<?> anular(@PathVariable String id) {
         try {
             Long cuentaId = Long.parseLong(id);
@@ -94,7 +94,7 @@ public class CuentaController {
         }
     }
 
-    @PatchMapping("/activar/{id}")
+    @PutMapping("/activar/{id}")
     public ResponseEntity<?> activar(@PathVariable String id) {
         try {
             Long cuentaId = Long.parseLong(id);
@@ -120,7 +120,7 @@ public class CuentaController {
         }
     }
 
-    @PatchMapping("/{id}/set-plan/{tipo}")
+    @PutMapping("/{id}/set-plan/{tipo}")
     public ResponseEntity<?> setPlan(@PathVariable String id, @PathVariable TipoCuenta tipo) {
         try {
             Long cuentaId = Long.parseLong(id);
@@ -142,7 +142,8 @@ public class CuentaController {
         return ResponseEntity.ok(distancia);
     }
 
-    @PatchMapping("/recargar/{id}/monto/{monto}")
+
+    @PutMapping("/recargar/{id}/monto/{monto}")
     public ResponseEntity<?> recargarSaldo(@PathVariable Long id, @PathVariable String monto) {
         try {
             try {
