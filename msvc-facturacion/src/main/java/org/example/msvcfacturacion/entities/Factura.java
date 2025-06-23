@@ -47,7 +47,7 @@ public class Factura {
     public Factura(FacturaRequestDTO entity) {
         this.idUsuario = entity.getIdUsuario();
         this.idViaje = entity.getIdViaje();
-        this.fecha = transformarFecha(entity.getFecha(), entity.getHora());
+        this.fecha = LocalDate.parse(entity.getFecha());
     }
 
     private LocalDate transformarFecha(String fecha, String hora){

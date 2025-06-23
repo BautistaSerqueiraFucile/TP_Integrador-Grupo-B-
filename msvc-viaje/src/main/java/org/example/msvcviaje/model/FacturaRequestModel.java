@@ -1,12 +1,13 @@
-package org.example.msvcviaje.dtos;
+package org.example.msvcviaje.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
+@Data
 @AllArgsConstructor
-public class FacturaRequestDTO {
+public class FacturaRequestModel {
 
     private Long idUsuario;
 
@@ -14,6 +15,8 @@ public class FacturaRequestDTO {
 
     private LocalDate fecha; // formato esperado: "2025-04-10"
 
-    private LocalTime hora;// formato esperado: "22:33:13"
+    private double tiempoTotal;
+
+    private double tiempoPausa;
 
 }

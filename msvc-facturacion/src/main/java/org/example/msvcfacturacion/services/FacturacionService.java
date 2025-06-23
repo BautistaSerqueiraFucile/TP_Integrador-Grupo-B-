@@ -5,7 +5,6 @@ import org.example.msvcfacturacion.dtos.FacturaRequestDTO;
 import org.example.msvcfacturacion.entities.Factura;
 import org.example.msvcfacturacion.entities.Tarifa;
 import org.example.msvcfacturacion.models.Cuenta;
-import org.example.msvcfacturacion.models.TiemposViaje;
 import org.example.msvcfacturacion.repositories.FacturacionRepository;
 import org.example.msvcfacturacion.repositories.TarifaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +39,7 @@ public class FacturacionService {
         double costoTarifa = factura.getCostoTarifa();
         double tarifaPausa = factura.getTarifaPausa();
 
-        factura.setPrecioViaje(calcularCostoTotal(datos.getTiempos(), costoTarifa, tarifaPausa));
+        factura.setPrecioViaje(calcularCostoTotal(datos.getTiempoTotal(), datos.getTiempoPausa(), costoTarifa, tarifaPausa));
         cobrar(factura);
         return repoFacturacion.save(factura);
     }
@@ -67,10 +66,10 @@ public class FacturacionService {
         return cuenta.getTipoCuenta();
     }
 
-    private double calcularCostoTotal(TiemposViaje tiempo, double tipoTarifa, double tarifaPausa){
-        double costoViaje = tiempo.getTiempoTotal() * tipoTarifa;
-        if (tiempo.getTiempoPausa() > 15.0){
-            costoViaje += ((tiempo.getTiempoTotal()/2) * tarifaPausa);
+    private double calcularCostoTotal(double tiempoTotal, double tiempoPausa, double tipoTarifa, double tarifaPausa){
+        double costoViaje = tiempoTotal * tipoTarifa;
+        if (tiempoPausa > 15.0){
+            costoViaje += ((tiempoTotal/2) * tarifaPausa);
         } return costoViaje;
     }
 

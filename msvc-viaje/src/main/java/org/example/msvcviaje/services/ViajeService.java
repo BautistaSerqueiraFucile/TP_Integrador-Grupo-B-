@@ -4,8 +4,7 @@ import org.example.msvcviaje.clients.CuentaClient;
 import org.example.msvcviaje.clients.FacturacionClient;
 import org.example.msvcviaje.clients.MonopatinClient;
 import org.example.msvcviaje.clients.ParadaClient;
-import org.example.msvcviaje.dtos.FacturaRequestDTO;
-import org.example.msvcviaje.dtos.TiemposViajeDTO;
+import org.example.msvcviaje.model.FacturaRequestModel;
 import org.example.msvcviaje.entities.EstadoViaje;
 import org.example.msvcviaje.entities.Viaje;
 import org.example.msvcviaje.model.Monopatin;
@@ -15,15 +14,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.example.msvcviaje.dtos.FinalizarViajeDTO;
 
-import java.math.BigDecimal;
-import java.sql.Time;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.Year;
 import java.time.format.DateTimeParseException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ViajeService {
@@ -63,7 +58,11 @@ public class ViajeService {
             throw new Exception("Error al obtener el saldo del viaje" + e.getMessage());
         }
         if (saldoActual > 0) {
-            setMonopatin(viaje);
+            try {
+                setMonopatin(viaje);
+            } catch (Exception e) {
+                throw new Exception("Error monopatin" + e.getMessage());
+            }
             return repoViaje.save(viaje);
         } else {
             throw new Exception("Error: Saldo insuficiente");
@@ -79,7 +78,6 @@ public class ViajeService {
         }
 
         viaje.setHoraFin(dto.getHoraFin());
-        viaje.setIdParadaFin(dto.getIdParadaFin());
         viaje.setTiempoPausa(dto.getTiempoPausa());
         viaje.setEstado(EstadoViaje.finalizado);
         setKilometros(viaje);
@@ -87,11 +85,11 @@ public class ViajeService {
         double tiempoTotal = this.calcularTiempo(viaje);
         double tiempoPausa = viaje.getTiempoPausa();
         double kilometros = viaje.getKilometros();
-        TiemposViajeDTO tiempos = getViajeTiempos(viaje);
-        FacturaRequestDTO datos = new FacturaRequestDTO(viaje.getIdUsuario(), viaje.getIdViaje(), viaje.getFecha() ,dto.getHoraFin());
 
-        monopatinClient.tiemposYKilometros(viaje.getIdMonopatin(), tiempos.getTiempoTotal(), tiempos.getTiempoPausa(), kilometros);
-        monopatinClient.modificarEstado(viaje.getIdMonopatin(), "disponible");
+        FacturaRequestModel datos = new FacturaRequestModel(viaje.getIdUsuario(), viaje.getIdViaje(), viaje.getFecha() ,tiempoTotal, tiempoPausa);
+
+//        monopatinClient.tiemposYKilometros(viaje.getIdMonopatin(), tiempoTotal, tiempoPausa, kilometros);
+//        monopatinClient.modificarEstado(viaje.getIdMonopatin(), "disponible");
         facturaClient.postFactura(datos);
 
 
@@ -157,7 +155,11 @@ public class ViajeService {
         Long idParadaInicio = viaje.getIdParadaInicio();
         Monopatin disponible = monopatinClient.getMonopatinPorParada(idParadaInicio);
         viaje.setIdMonopatin(disponible.getId());
-        monopatinClient.modificarEstado(disponible.getId(), "ocupado");
+//        try {
+//            monopatinClient.modificarEstado(disponible.getId(), "ocupado");
+//        } catch (Exception e) {
+//            throw new RuntimeException("Error " + e.getMessage());
+//        }
     }
 
     private double calcularTiempo(Viaje viaje) throws Exception {
@@ -172,9 +174,4 @@ public class ViajeService {
         return repoViaje.getCantidadViajesPorMonopatin(id_monopatin, fechaini, fechafin);
     }
 
-    private TiemposViajeDTO getViajeTiempos(Viaje viaje) throws Exception {
-        double tiempoTotal = calcularTiempo(viaje);
-        double tiempoPausa = viaje.getTiempoPausa();
-        return new TiemposViajeDTO(tiempoTotal, tiempoPausa);
-    }
 }

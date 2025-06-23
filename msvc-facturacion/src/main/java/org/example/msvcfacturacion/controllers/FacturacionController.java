@@ -3,7 +3,6 @@ package org.example.msvcfacturacion.controllers;
 import jakarta.validation.Valid;
 import org.example.msvcfacturacion.dtos.FacturaRequestDTO;
 import org.example.msvcfacturacion.entities.Factura;
-import org.example.msvcfacturacion.models.TiemposViaje;
 import org.example.msvcfacturacion.services.FacturacionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
