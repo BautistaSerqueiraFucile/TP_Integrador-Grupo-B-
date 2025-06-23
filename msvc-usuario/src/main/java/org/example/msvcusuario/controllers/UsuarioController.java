@@ -23,7 +23,7 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public List<Usuario> listar() {
         return usuarioService.listar();
     }
@@ -41,7 +41,7 @@ public class UsuarioController {
         }
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<?> crear(@Valid @RequestBody Usuario usuario, BindingResult result) {
         if (result.hasErrors()) {
             return validar(result);
@@ -106,7 +106,7 @@ public class UsuarioController {
         }
     }
 
-    @PatchMapping("/{id}/set-admin")
+    @PutMapping("/{id}/set-admin")
     public ResponseEntity<?> setAdmin(@PathVariable String id) {
         try {
             Long usuarioId = Long.parseLong(id);
@@ -119,7 +119,7 @@ public class UsuarioController {
         }
     }
 
-    @PatchMapping("/{id}/set-usuario")
+    @PutMapping("/{id}/set-usuario")
     public ResponseEntity<?> setUsuario(@PathVariable String id) {
         try {
             Long usuarioId = Long.parseLong(id);
