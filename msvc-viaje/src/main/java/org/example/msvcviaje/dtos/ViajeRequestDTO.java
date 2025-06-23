@@ -10,9 +10,6 @@ public class ViajeRequestDTO {
     private Long idUsuario;
 
     @NotNull
-    private String idMonopatin;
-
-    @NotNull
     private Long idParadaInicio;
 
     @NotNull

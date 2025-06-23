@@ -25,7 +25,7 @@ public class Viaje {
     private Long idUsuario;
 
     @Column(name = "id_monopatin", nullable = false)
-    private String idMonopatin;
+    private String idMonopatin = null;
 
     @Column(name = "id_parada_inicio", nullable = false)
     private Long idParadaInicio;
@@ -54,7 +54,6 @@ public class Viaje {
 
     public Viaje(ViajeRequestDTO dto) {
         this.idUsuario = dto.getIdUsuario();
-        this.idMonopatin = dto.getIdMonopatin();
         this.idParadaInicio = dto.getIdParadaInicio();
         this.idParadaFin = dto.getIdParadaFin();
         this.fecha = LocalDate.parse(dto.getFecha());

@@ -3,6 +3,7 @@ package org.example.msvcfacturacion.controllers;
 import jakarta.validation.Valid;
 import org.example.msvcfacturacion.dtos.FacturaRequestDTO;
 import org.example.msvcfacturacion.entities.Factura;
+import org.example.msvcfacturacion.models.TiemposViaje;
 import org.example.msvcfacturacion.services.FacturacionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -53,7 +54,7 @@ public class FacturacionController {
     @PostMapping("")
     public ResponseEntity<?> save(@Valid @RequestBody FacturaRequestDTO entity){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(facturacionService.save(new Factura(entity)));
+            return ResponseEntity.status(HttpStatus.OK).body(facturacionService.save(entity));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. No se pudo ingresar, revise los campos e intente nuevamente.\"}");
         }

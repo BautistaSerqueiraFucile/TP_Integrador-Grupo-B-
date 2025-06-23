@@ -12,9 +12,9 @@ public class Cuenta {
     private Long id;
     private LocalDate fechaAlta;
     private String tipoCuenta;
-    private BigDecimal saldo;
+    private double saldo;
     private String mercadoPagoId;
     private String estadoCuenta;
-    private BigDecimal kmRecorridosMesPremium;
+    private double kmRecorridosMesPremium;
     private Set<Long> usuariosId = new HashSet<>();
 }

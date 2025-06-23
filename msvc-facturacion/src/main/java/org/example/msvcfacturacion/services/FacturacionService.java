@@ -1,7 +1,7 @@
 package org.example.msvcfacturacion.services;
 
 import org.example.msvcfacturacion.clients.CuentaClient;
-import org.example.msvcfacturacion.clients.ViajeClient;
+import org.example.msvcfacturacion.dtos.FacturaRequestDTO;
 import org.example.msvcfacturacion.entities.Factura;
 import org.example.msvcfacturacion.entities.Tarifa;
 import org.example.msvcfacturacion.models.Cuenta;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,23 +28,20 @@ public class FacturacionService {
     @Autowired
     private CuentaClient cuentaClient;
 
-    @Autowired
-    private ViajeClient viajeClient;
-
     @Transactional
     public List<Factura> findAll() throws Exception {
         return repoFacturacion.findAll();
     }
 
     @Transactional
-    public Factura save(Factura factura) throws Exception {
-        TiemposViaje tiempos = viajeClient.getTiemposViaje(factura.getIdViaje());
+    public Factura save(FacturaRequestDTO datos) throws Exception {
+        Factura factura = new Factura(datos);
         setPreciosTarifas(factura);
         double costoTarifa = factura.getCostoTarifa();
         double tarifaPausa = factura.getTarifaPausa();
 
-        factura.setPrecioViaje(calcularCostoTotal(tiempos, costoTarifa, tarifaPausa));
-
+        factura.setPrecioViaje(calcularCostoTotal(datos.getTiempos(), costoTarifa, tarifaPausa));
+        cobrar(factura);
         return repoFacturacion.save(factura);
     }
 
@@ -57,6 +53,13 @@ public class FacturacionService {
     @Transactional
     public List<Factura> findByUserAndDate(Long id, LocalDate fechaIni, LocalDate fechaFin){
        return repoFacturacion.findAllByIdUsuarioAndFechaBetweenOrderByFecha(id, fechaIni, fechaFin);
+    }
+
+    @Transactional
+    public void cobrar(Factura factura) throws Exception {
+        Cuenta cuenta = cuentaClient.obtenerCuentaPorId(factura.getIdUsuario());
+        cuenta.setSaldo(cuenta.getSaldo() - (factura.getPrecioViaje()));
+        cuentaClient.actualizarCuenta(cuenta.getId(), cuenta);
     }
 
     private String getTipoCuenta(Long id){

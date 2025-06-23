@@ -1,11 +1,14 @@
 package org.example.msvcviaje.services;
 
 import org.example.msvcviaje.clients.CuentaClient;
+import org.example.msvcviaje.clients.FacturacionClient;
 import org.example.msvcviaje.clients.MonopatinClient;
 import org.example.msvcviaje.clients.ParadaClient;
+import org.example.msvcviaje.dtos.FacturaRequestDTO;
 import org.example.msvcviaje.dtos.TiemposViajeDTO;
 import org.example.msvcviaje.entities.EstadoViaje;
 import org.example.msvcviaje.entities.Viaje;
+import org.example.msvcviaje.model.Monopatin;
 import org.example.msvcviaje.repositories.ViajeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +40,9 @@ public class ViajeService {
     @Autowired
     private CuentaClient cuentaClient;
 
+    @Autowired
+    private FacturacionClient facturaClient;
+
     @Transactional(readOnly = true)
     public List<Viaje> findAll() throws Exception {
         return repoViaje.findAll();
@@ -57,7 +63,7 @@ public class ViajeService {
             throw new Exception("Error al obtener el saldo del viaje" + e.getMessage());
         }
         if (saldoActual > 0) {
-            this.setKilometros(viaje);
+            setMonopatin(viaje);
             return repoViaje.save(viaje);
         } else {
             throw new Exception("Error: Saldo insuficiente");
@@ -76,11 +82,18 @@ public class ViajeService {
         viaje.setIdParadaFin(dto.getIdParadaFin());
         viaje.setTiempoPausa(dto.getTiempoPausa());
         viaje.setEstado(EstadoViaje.finalizado);
+        setKilometros(viaje);
 
         double tiempoTotal = this.calcularTiempo(viaje);
         double tiempoPausa = viaje.getTiempoPausa();
         double kilometros = viaje.getKilometros();
-        monopatinClient.tiemposYKilometros(viaje.getIdMonopatin(), tiempoTotal, tiempoPausa, kilometros);
+        TiemposViajeDTO tiempos = getViajeTiempos(viaje);
+        FacturaRequestDTO datos = new FacturaRequestDTO(viaje.getIdUsuario(), viaje.getIdViaje(), viaje.getFecha() ,dto.getHoraFin());
+
+        monopatinClient.tiemposYKilometros(viaje.getIdMonopatin(), tiempos.getTiempoTotal(), tiempos.getTiempoPausa(), kilometros);
+        monopatinClient.modificarEstado(viaje.getIdMonopatin(), "disponible");
+        facturaClient.postFactura(datos);
+
 
         return repoViaje.save(viaje);
     }
@@ -140,6 +153,13 @@ public class ViajeService {
         viaje.setKilometros(distancia);
     }
 
+    private void setMonopatin(Viaje viaje) throws Exception {
+        Long idParadaInicio = viaje.getIdParadaInicio();
+        Monopatin disponible = monopatinClient.getMonopatinPorParada(idParadaInicio);
+        viaje.setIdMonopatin(disponible.getId());
+        monopatinClient.modificarEstado(disponible.getId(), "ocupado");
+    }
+
     private double calcularTiempo(Viaje viaje) throws Exception {
         LocalTime horaInicio = viaje.getHoraInicio();
         LocalTime horaFin = viaje.getHoraFin();
@@ -152,9 +172,7 @@ public class ViajeService {
         return repoViaje.getCantidadViajesPorMonopatin(id_monopatin, fechaini, fechafin);
     }
 
-    @Transactional
-    public TiemposViajeDTO getViajeTiempos(Long id) throws Exception {
-        Viaje viaje = findById(id);
+    private TiemposViajeDTO getViajeTiempos(Viaje viaje) throws Exception {
         double tiempoTotal = calcularTiempo(viaje);
         double tiempoPausa = viaje.getTiempoPausa();
         return new TiemposViajeDTO(tiempoTotal, tiempoPausa);
