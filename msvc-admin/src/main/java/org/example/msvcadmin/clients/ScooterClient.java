@@ -9,12 +9,12 @@ import java.util.Map;
  * Cliente Feign que se comunica con el microservicio de monopatines (puerto 8007).
  * Define los endpoints que el microservicio de administración puede consumir.
  */
-@FeignClient(name = "monopatin", url = "http://localhost:8007")
+@FeignClient(name = "msv-monopatin", url = "http://localhost:8007")
 public interface ScooterClient {
     /**
      * Cambia el estado de un monopatín (por ejemplo: "activo", "en reparacion", etc.).
      */
-    @PatchMapping("/monopatines/{id}/estado/{estado}")
+    @PutMapping("/monopatines/estado/{id}/{estado}")
     void cambiarEstado(@PathVariable("id") Long id, @PathVariable("estado") String estado);
     /**
      * Resetea el kilometraje de un monopatín (por mantenimiento).
