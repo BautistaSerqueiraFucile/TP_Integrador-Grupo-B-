@@ -1,0 +1,1 @@
+INSERT INTO tarifa (tarifa_basica, tarifa_pausa, tarifa_premium) VALUES (20, 2, 10);
