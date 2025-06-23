@@ -60,7 +60,7 @@ public class ViajeController {
         }
     }
 
-    @PatchMapping("/{id}/finalizar")
+    @PutMapping("/{id}/finalizar")
     public ResponseEntity<?> finalizarViaje(@PathVariable Long id, @RequestBody FinalizarViajeDTO dto) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(viajeService.finalizarViaje(id, dto));
@@ -69,7 +69,7 @@ public class ViajeController {
         }
     }
 
-    @PatchMapping("/{id}/pausar")
+    @PutMapping("/{id}/pausar")
     public ResponseEntity<?> pausarViaje(@PathVariable Long id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(viajeService.pausarViaje(id));
@@ -78,7 +78,7 @@ public class ViajeController {
         }
     }
 
-    @PatchMapping("/{id}/reanudar")
+    @PutMapping("/{id}/reanudar")
     public ResponseEntity<?> reanudarViaje(@PathVariable Long id) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(viajeService.reanudarViaje(id));

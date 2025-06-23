@@ -11,7 +11,7 @@ public class Monopatin {
     private double kilometrosActuales;
     private String estado;
     private Ubicacion ubicacion;
-    private Long parada;
+    private String paradaActual;
     private double tiempoDeUso;
     private double tiempoDePausa;
 }

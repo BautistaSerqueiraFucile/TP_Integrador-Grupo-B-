@@ -10,6 +10,7 @@ import org.example.msvcviaje.entities.Viaje;
 import org.example.msvcviaje.model.Monopatin;
 import org.example.msvcviaje.repositories.ViajeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.example.msvcviaje.dtos.FinalizarViajeDTO;
@@ -88,10 +89,10 @@ public class ViajeService {
 
         FacturaRequestModel datos = new FacturaRequestModel(viaje.getIdUsuario(), viaje.getIdViaje(), viaje.getFecha() ,tiempoTotal, tiempoPausa);
 
-//        monopatinClient.tiemposYKilometros(viaje.getIdMonopatin(), tiempoTotal, tiempoPausa, kilometros);
-//        monopatinClient.modificarEstado(viaje.getIdMonopatin(), "disponible");
+        monopatinClient.tiemposYKilometros(viaje.getIdMonopatin(), tiempoTotal, tiempoPausa, kilometros);
+        monopatinClient.modificarEstado(viaje.getIdMonopatin(), "disponible");
+        //cambiar parada de monopatin
         facturaClient.postFactura(datos);
-
 
         return repoViaje.save(viaje);
     }
@@ -155,11 +156,11 @@ public class ViajeService {
         Long idParadaInicio = viaje.getIdParadaInicio();
         Monopatin disponible = monopatinClient.getMonopatinPorParada(idParadaInicio);
         viaje.setIdMonopatin(disponible.getId());
-//        try {
-//            monopatinClient.modificarEstado(disponible.getId(), "ocupado");
-//        } catch (Exception e) {
-//            throw new RuntimeException("Error " + e.getMessage());
-//        }
+        try {
+            monopatinClient.modificarEstado(disponible.getId(), "ocupado");
+        } catch (Exception e) {
+            throw new RuntimeException("Error " + e.getMessage());
+        }
     }
 
     private double calcularTiempo(Viaje viaje) throws Exception {

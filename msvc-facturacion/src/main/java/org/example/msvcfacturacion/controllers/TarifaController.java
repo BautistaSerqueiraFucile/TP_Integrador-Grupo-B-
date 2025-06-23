@@ -22,7 +22,7 @@ public class TarifaController {
         }
     }
 
-    @PatchMapping("tarifa/{tipo}/{valor}")
+    @PutMapping("tarifa/{tipo}/{valor}")
     public ResponseEntity<?> updateBasica(@PathVariable("tipo") String tipo ,@PathVariable("valor") double valor) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(tarifaService.updateTarifa(tipo,valor));
