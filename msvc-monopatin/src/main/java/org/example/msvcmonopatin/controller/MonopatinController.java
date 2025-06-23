@@ -93,4 +93,9 @@ public class MonopatinController {
 
     }
 
+    @PutMapping("/{id}/paradaActual")
+    public ResponseEntity<Monopatin> actualizarTiempos(@PathVariable("id") String id, @RequestParam String paradaActual) {
+        return monopatinService.actualizarParada(id,paradaActual);
+
+    }
 }

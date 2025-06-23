@@ -133,5 +133,17 @@ public class MonopatinService {
         }
 
     }
+
+    public ResponseEntity<Monopatin> actualizarParada(String id, String paradaActual) {
+        Optional<Monopatin> optional = monopatinRepository.findById(id);
+
+        if (optional.isPresent()) {
+            Monopatin monopatin = optional.get();
+            monopatin.setParadaActual(paradaActual);
+            return ResponseEntity.ok(monopatinRepository.save(monopatin));
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Monopatin no encontrado");
+        }
+    }
 }
 
