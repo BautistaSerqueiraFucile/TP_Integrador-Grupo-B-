@@ -25,7 +25,7 @@ public class AccionAdminController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/cuentas/{cuentaId}/activar")
+    @PutMapping("/cuentas/{cuentaId}/activar")
     public ResponseEntity<Void> reactivarCuenta(
             @PathVariable Long cuentaId,
             @RequestParam String userIdAdmin

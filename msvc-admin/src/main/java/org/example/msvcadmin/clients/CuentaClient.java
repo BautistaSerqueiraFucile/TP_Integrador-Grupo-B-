@@ -18,7 +18,7 @@ public interface CuentaClient {
      *
      * @param id ID de la cuenta a anular.
      */
-    @PatchMapping("/cuentas/anular/{id}")
+    @PutMapping("/cuentas/anular/{id}")
     void anularCuenta(@PathVariable("id") Long id);
 
     /**
@@ -26,7 +26,7 @@ public interface CuentaClient {
      *
      * @param id ID de la cuenta a reactivar.
      */
-    @PatchMapping("/cuentas/activar/{id}")
+    @PutMapping("/cuentas/activar/{id}")
     void activarCuenta(@PathVariable("id") Long id);
 
     /**
