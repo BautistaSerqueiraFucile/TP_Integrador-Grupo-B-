@@ -3,6 +3,7 @@ package org.example.msvcreporte.services;
 import org.example.msvcreporte.clients.ScooterClient;
 import org.example.msvcreporte.clients.ViajeClient;
 import org.example.msvcreporte.dto.ReporteUsoMonopatinDTO;
+import org.example.msvcreporte.models.Monopatin;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -22,13 +23,13 @@ public class ReporteUsoMonopatinService {
     }
 
     public List<ReporteUsoMonopatinDTO> generarReporte(Boolean incluirPausas) {
-        List<Map<String, Object>> monopatines = scooterClient.obtenerTodosLosScooters();
+        List<Monopatin> monopatines = scooterClient.obtenerTodosLosScooters();
 
         List<ReporteUsoMonopatinDTO> reportes = new ArrayList<>();
 
-        for (Map<String, Object> monopatin : monopatines) {
-            Long id = Long.valueOf(monopatin.get("id").toString());
-            double kmRecorridos = Double.parseDouble(monopatin.get("kmRecorridos").toString());
+        for (Monopatin monopatin : monopatines) {
+           String id = monopatin.getId();
+            double kmRecorridos = monopatin.getKilometrosActuales();
 
             List<Map<String, Object>> viajes = viajeClient.obtenerViajesPorMonopatin(id);
 

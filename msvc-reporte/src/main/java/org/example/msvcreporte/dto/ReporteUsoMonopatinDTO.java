@@ -1,7 +1,7 @@
 package org.example.msvcreporte.dto;
 
 public class ReporteUsoMonopatinDTO {
-    private Long idMonopatin;
+    private String idMonopatin;
     private Double kmRecorridos;
     private Long tiempoTotal;
     private Long tiempoConPausas;
@@ -11,7 +11,7 @@ public class ReporteUsoMonopatinDTO {
 
     public ReporteUsoMonopatinDTO() {}
 
-    public ReporteUsoMonopatinDTO(Long idMonopatin, Double kmRecorridos, Long tiempoTotal,
+    public ReporteUsoMonopatinDTO(String idMonopatin, Double kmRecorridos, Long tiempoTotal,
                                   Long tiempoConPausas, Long tiempoSinPausas,
                                   Boolean requiereMantenimiento, Integer cantidadViajes) {
         this.idMonopatin = idMonopatin;
