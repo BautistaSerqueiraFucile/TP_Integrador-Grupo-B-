@@ -1,0 +1,539 @@
+{
+	"info": {
+		"_postman_id": "51ee8b53-3c50-44e5-b44d-ee875424d7b7",
+		"name": "usuarios",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24234675"
+	},
+	"item": [
+		{
+			"name": "obtener usuarios",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8002/usuarios/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8002",
+					"path": [
+						"usuarios",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "obtener un usuario",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8002/usuarios/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"usuarios",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 22 Jun 2025 22:22:32 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 3,\n        \"nombre\": \"Juan Carlos\",\n        \"apellido\": \"Perez\",\n        \"numeroCelular\": \"111222333\",\n        \"email\": \"juan.perez@example.com\",\n        \"password\": \"12345\",\n        \"rol\": \"USUARIO\",\n        \"latitud\": 33.2,\n        \"longitud\": 33.4\n    },\n    {\n        \"id\": 13,\n        \"nombre\": \"Sofía\",\n        \"apellido\": \"Pérez\",\n        \"numeroCelular\": \"112356789\",\n        \"email\": \"123@example.com\",\n        \"password\": \"1234567\",\n        \"rol\": \"USUARIO\",\n        \"latitud\": 22,\n        \"longitud\": 33.5\n    },\n    {\n        \"id\": 20,\n        \"nombre\": \"Carlos\",\n        \"apellido\": \"Santana\",\n        \"numeroCelular\": \"5551122\",\n        \"email\": \"carlos.santaa@eample.com\",\n        \"password\": \"$2a$10$xr7K1eYDhFXuYEJDFJWs6eR.Zyuzrr2iK7YOkL2Z0IcnUJbMtiGva\",\n        \"rol\": \"USUARIO\",\n        \"latitud\": 23.5,\n        \"longitud\": 22.5\n    },\n    {\n        \"id\": 21,\n        \"nombre\": \"Carlos\",\n        \"apellido\": \"Santana\",\n        \"numeroCelular\": \"555112\",\n        \"email\": \"carlos.santaa@eamle.com\",\n        \"password\": \"$2a$10$40j9.gr/XSaZ7vGqZL1IluK9zPmIR8i60mo302GV38xkaWM8Sul1m\",\n        \"rol\": \"USUARIO\",\n        \"latitud\": 23.5,\n        \"longitud\": 22.5\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "crear usuario",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Carlos\",\r\n  \"apellido\": \"Santana\",\r\n  \"numeroCelular\": \"55112\",\r\n  \"email\": \"carlos.santana@examle.com\",\r\n  \"password\": \"mipasswrd123\",\r\n  \"rol\": \"USUARIO\",\r\n    \"longitud\":22.5,\r\n    \"latitud\":23.5\r\n\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8002/usuarios",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8002",
+					"path": [
+						"usuarios"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \r\n  \"apellido\": \"Pérez\",\r\n  \"email\": \"sofia.perez@example.com\",\r\n  \"nombre\": \"Sofía\",\r\n  \"numeroCelular\": \"1123456789\"\r\n\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8002/usuarios/crear",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"usuarios",
+								"crear"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 11 Jun 2025 00:18:30 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"nombre\": \"Sofía\",\n    \"apellido\": \"Pérez\",\n    \"numeroCelular\": \"1123456789\",\n    \"email\": \"sofia.perez@example.com\"\n}"
+				}
+			]
+		},
+		{
+			"name": "editar un usuario",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Juan Carlos\",\r\n  \"apellido\": \"Perez\",\r\n  \"email\": \"juan.perez@example.com\",\r\n    \"password\": \"passwordValida123\",\r\n  \"numeroCelular\": \"111222333\",\r\n  \"rol\": \"ADMIN\",\r\n  \"longitud\":33.4,\r\n  \"latitud\":33.2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8002/usuarios/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8002",
+					"path": [
+						"usuarios",
+						"3"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"nombre\": \"Sofía\",\r\n  \"apellido\": \"Pérez\",\r\n  \"numeroCelular\": \"1199998888\",\r\n  \"email\": \"sofia.actualizada@example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8002/usuarios/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"usuarios",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 11 Jun 2025 00:26:24 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"nombre\": \"Sofía\",\n    \"apellido\": \"Pérez\",\n    \"numeroCelular\": \"1199998888\",\n    \"email\": \"sofia.actualizada@example.com\"\n}"
+				}
+			]
+		},
+		{
+			"name": "eliminar un usuario",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 1,\r\n  \"nombre\": \"Sofía\",\r\n  \"apellido\": \"Pérez\",\r\n  \"numeroCelular\": \"1199998888\",\r\n  \"email\": \"sofia.actualizada@example.com\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8002/usuarios/17",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8002",
+					"path": [
+						"usuarios",
+						"17"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"nombre\": \"Sofía\",\r\n  \"apellido\": \"Pérez\",\r\n  \"numeroCelular\": \"1199998888\",\r\n  \"email\": \"sofia.actualizada@example.com\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8002/usuarios/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"usuarios",
+								"1"
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Wed, 11 Jun 2025 00:28:45 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "setear admin",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8002/usuarios/3/set-admin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8002",
+					"path": [
+						"usuarios",
+						"3",
+						"set-admin"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "setear admin",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8002/usuarios/3/set-admin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"usuarios",
+								"3",
+								"set-admin"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 22 Jun 2025 22:18:54 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 3,\n    \"nombre\": \"Juan Carlos\",\n    \"apellido\": \"Perez\",\n    \"numeroCelular\": \"111222333\",\n    \"email\": \"juan.perez@example.com\",\n    \"password\": \"12345\",\n    \"rol\": \"ADMIN\",\n    \"latitud\": 33.2,\n    \"longitud\": 33.4\n}"
+				}
+			]
+		},
+		{
+			"name": "setear usuario no admin",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8002/usuarios/3/set-usuario",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8002",
+					"path": [
+						"usuarios",
+						"3",
+						"set-usuario"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "setear usuario no admin",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8002/usuarios/3/set-usuario",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"usuarios",
+								"3",
+								"set-usuario"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 22 Jun 2025 22:19:20 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 3,\n    \"nombre\": \"Juan Carlos\",\n    \"apellido\": \"Perez\",\n    \"numeroCelular\": \"111222333\",\n    \"email\": \"juan.perez@example.com\",\n    \"password\": \"12345\",\n    \"rol\": \"USUARIO\",\n    \"latitud\": 33.2,\n    \"longitud\": 33.4\n}"
+				}
+			]
+		},
+		{
+			"name": "buscar por id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8002/usuarios/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8002",
+					"path": [
+						"usuarios",
+						"3"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "buscar por id",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8002/usuarios/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"usuarios",
+								"3"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 22 Jun 2025 22:21:15 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 3,\n    \"nombre\": \"Juan Carlos\",\n    \"apellido\": \"Perez\",\n    \"numeroCelular\": \"111222333\",\n    \"email\": \"juan.perez@example.com\",\n    \"password\": \"12345\",\n    \"rol\": \"USUARIO\",\n    \"latitud\": 33.2,\n    \"longitud\": 33.4\n}"
+				}
+			]
+		}
+	]
+}

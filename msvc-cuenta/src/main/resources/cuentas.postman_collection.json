@@ -1,0 +1,742 @@
+{
+	"info": {
+		"_postman_id": "d56aeab8-451c-4ec7-a71e-4a7fb3f9efc3",
+		"name": "cuentas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24234675"
+	},
+	"item": [
+		{
+			"name": "obtener cuentas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8001/cuentas/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"cuentas",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8001/cuentas/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"cuentas",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 10 Jun 2025 23:44:24 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[]"
+				}
+			]
+		},
+		{
+			"name": "agregar una nueva cuenta",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"fechaAlta\": \"2024-10-28\",\r\n  \"tipoCuenta\": \"BASICA\",\r\n  \"saldo\": 1500.00,\r\n  \"mercadoPagoId\": \"mp-78910\",\r\n  \"estadoCuenta\": \"ACTIVA\",\r\n  \"usuariosId\": [3]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8001/cuentas/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"cuentas",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"fechaAlta\": \"2025-06-10\",\r\n  \"tipoCuenta\": \"PREMIUM\",\r\n  \"saldo\": 15000.50,\r\n  \"mercadoPagoId\": \"mp_123456789\",\r\n  \"estadoCuenta\": \"ACTIVA\",\r\n  \"kmRecorridosMesPremium\": 120.75,\r\n  \"usuariosId\": [1, 2, 3]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8001/cuentas/crear",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"cuentas",
+								"crear"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 10 Jun 2025 23:48:55 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"fechaAlta\": \"2025-06-10\",\n    \"tipoCuenta\": \"PREMIUM\",\n    \"saldo\": 15000.5,\n    \"mercadoPagoId\": \"mp_123456789\",\n    \"estadoCuenta\": \"ACTIVA\",\n    \"kmRecorridosMesPremium\": 120.75,\n    \"usuariosId\": [\n        1,\n        2,\n        3\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "obtener por id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8001/cuentas/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"cuentas",
+						"3"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8001/cuentas/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"cuentas",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 10 Jun 2025 23:50:53 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"fechaAlta\": \"2025-06-10\",\n    \"tipoCuenta\": \"PREMIUM\",\n    \"saldo\": 15000.5,\n    \"mercadoPagoId\": \"mp_123456789\",\n    \"estadoCuenta\": \"ACTIVA\",\n    \"kmRecorridosMesPremium\": 120.75,\n    \"usuariosId\": [\n        1,\n        2,\n        3\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "editar cuenta",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"fechaAlta\": \"2024-10-28\",\r\n  \"tipoCuenta\": \"BASICA\",\r\n  \"saldo\": 550.70,\r\n  \"mercadoPagoId\": \"11\",\r\n  \"estadoCuenta\": \"ACTIVA\",\r\n  \"usuariosId\": [1]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8001/cuentas/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"cuentas",
+						"3"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"fechaAlta\": \"2025-06-01\",\r\n  \"tipoCuenta\": \"BASICA\",\r\n  \"saldo\": 8000.00,\r\n  \"mercadoPagoId\": \"mp_987654321\",\r\n  \"estadoCuenta\": \"ANULADA\",\r\n  \"kmRecorridosMesPremium\": null,\r\n  \"usuariosId\": [2, 4]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8001/cuentas/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"cuentas",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 10 Jun 2025 23:57:45 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"fechaAlta\": \"2025-06-01\",\n    \"tipoCuenta\": \"BASICA\",\n    \"saldo\": 8000,\n    \"mercadoPagoId\": \"mp_987654321\",\n    \"estadoCuenta\": \"ANULADA\",\n    \"kmRecorridosMesPremium\": null,\n    \"usuariosId\": [\n        2,\n        4\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "eliminar una cuenta",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8001/cuentas/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"cuentas",
+						"5"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8001/cuentas/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"cuentas",
+								"1"
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 10 Jun 2025 23:59:21 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "anular cuenta",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 1,\r\n  \"nombre\": \"Sofía\",\r\n  \"apellido\": \"Pérez\",\r\n  \"numeroCelular\": \"1199998888\",\r\n  \"email\": \"sofia.actualizada@example.com\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8001/cuentas/anular/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"cuentas",
+						"anular",
+						"3"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"nombre\": \"Sofía\",\r\n  \"apellido\": \"Pérez\",\r\n  \"numeroCelular\": \"1199998888\",\r\n  \"email\": \"sofia.actualizada@example.com\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8001/cuentas/anular/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"cuentas",
+								"anular",
+								"3"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 11 Jun 2025 14:24:02 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 3,\n    \"fechaAlta\": \"2025-06-10\",\n    \"tipoCuenta\": \"PREMIUM\",\n    \"saldo\": 15000.5,\n    \"mercadoPagoId\": \"mp_123456789\",\n    \"estadoCuenta\": \"ANULADA\",\n    \"kmRecorridosMesPremium\": 120.75,\n    \"usuariosId\": [\n        1,\n        2,\n        3\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "activar cuenta",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8001/cuentas/activar/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"cuentas",
+						"activar",
+						"3"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8001/cuentas/activar/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"cuentas",
+								"activar",
+								"3"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 11 Jun 2025 14:24:39 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 3,\n    \"fechaAlta\": \"2025-06-10\",\n    \"tipoCuenta\": \"PREMIUM\",\n    \"saldo\": 15000.5,\n    \"mercadoPagoId\": \"mp_123456789\",\n    \"estadoCuenta\": \"ACTIVA\",\n    \"kmRecorridosMesPremium\": 120.75,\n    \"usuariosId\": [\n        1,\n        2,\n        3\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "obtener saldo actual de una cuenta",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 1,\r\n  \"nombre\": \"Sofía\",\r\n  \"apellido\": \"Pérez\",\r\n  \"numeroCelular\": \"1199998888\",\r\n  \"email\": \"sofia.actualizada@example.com\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8001/saldo/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"saldo",
+						"1"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "obtener saldo actual de una cuenta",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"nombre\": \"Sofía\",\r\n  \"apellido\": \"Pérez\",\r\n  \"numeroCelular\": \"1199998888\",\r\n  \"email\": \"sofia.actualizada@example.com\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8001/cuentas/saldo/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"cuentas",
+								"saldo",
+								"3"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 22 Jun 2025 22:16:33 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "560.5"
+				}
+			]
+		},
+		{
+			"name": "Setear plan",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8001/cuentas/3/set-plan/BASICA",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"cuentas",
+						"3",
+						"set-plan",
+						"BASICA"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Setear plan",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8001/cuentas/3/set-plan/BASICA",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"cuentas",
+								"3",
+								"set-plan",
+								"BASICA"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 22 Jun 2025 22:16:43 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 3,\n    \"fechaAlta\": \"2024-10-28\",\n    \"tipoCuenta\": \"BASICA\",\n    \"saldo\": 560.5,\n    \"mercadoPagoId\": \"11\",\n    \"estadoCuenta\": \"ACTIVA\",\n    \"kmRecorridosMesPremium\": null,\n    \"usuariosId\": [\n        1\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Recargar credito en la cuenta",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8001/cuentas/recargar/3/monto/10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"cuentas",
+						"recargar",
+						"3",
+						"monto",
+						"10"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Recargar credito en la cuenta",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8001/cuentas/recargar/3/monto/10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"cuentas",
+								"recargar",
+								"3",
+								"monto",
+								"10"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 22 Jun 2025 22:08:19 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 3,\n    \"fechaAlta\": \"2024-10-28\",\n    \"tipoCuenta\": \"BASICA\",\n    \"saldo\": 560.5,\n    \"mercadoPagoId\": \"11\",\n    \"estadoCuenta\": \"ACTIVA\",\n    \"kmRecorridosMesPremium\": null,\n    \"usuariosId\": [\n        1\n    ]\n}"
+				}
+			]
+		}
+	]
+}

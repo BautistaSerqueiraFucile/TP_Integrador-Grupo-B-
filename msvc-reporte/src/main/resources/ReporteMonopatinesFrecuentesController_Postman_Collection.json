@@ -1,0 +1,28 @@
+{
+  "info": {
+    "name": "ReporteMonopatinesFrecuentesController",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "reporte-monopatines-frecuentes-collection"
+  },
+  "item": [
+    {
+      "name": "GET /reporte/monopatines-mas-usados",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8006/reporte/monopatines-mas-usados?anio=2024&minViajes=10",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8006",
+          "path": ["reporte", "monopatines-mas-usados"],
+          "query": [
+            { "key": "anio", "value": "2024" },
+            { "key": "minViajes", "value": "10" }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
