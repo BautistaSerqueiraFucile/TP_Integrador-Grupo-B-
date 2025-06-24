@@ -14,4 +14,20 @@ public class ReporteFacturacionPeriodoDTO {
         this.mesHasta = mesHasta;
         this.totalFacturado = totalFacturado;
     }
+
+    public Integer getAnio() {
+        return anio;
+    }
+
+    public Integer getMesDesde() {
+        return mesDesde;
+    }
+
+    public Integer getMesHasta() {
+        return mesHasta;
+    }
+
+    public Double getTotalFacturado() {
+        return totalFacturado;
+    }
 }

@@ -3,10 +3,9 @@ package org.example.msvcreporte.services;
 import org.example.msvcreporte.clients.FacturacionClient;
 import org.example.msvcreporte.dto.ReporteFacturacionPeriodoDTO;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -19,23 +18,22 @@ public class ReporteFacturacionPeriodoService {
     }
 
     public ReporteFacturacionPeriodoDTO generarReporte(int anio, int mesDesde, int mesHasta) {
-        // Armamos fechas
+        // Crear fechas
         LocalDate fechaDesde = LocalDate.of(anio, mesDesde, 1);
-        LocalDate fechaHasta = LocalDate.of(anio, mesHasta, fechaDesde.withMonth(mesHasta).lengthOfMonth());
+        LocalDate fechaHasta = LocalDate.of(anio, mesHasta, LocalDate.of(anio, mesHasta, 1).lengthOfMonth());
 
-        // Simulación: llamada a facturación
-        // En una implementación real usarías:
-        // GET http://facturacion/facturas?fechaDesde=...&fechaHasta=...
+        // Llamar al microservicio de facturación
+        List<Map<String, Object>> facturas = facturacionClient.obtenerFacturas(
+                fechaDesde.toString(),
+                fechaHasta.toString(),
+                null // sin filtrar por usuario
+        );
 
-        String url = "http://localhost:8085/facturas?fechaDesde={desde}&fechaHasta={hasta}";
+        // Sumar los montos
+        double total = facturas.stream()
+                .mapToDouble(f -> Double.parseDouble(f.get("monto").toString()))
+                .sum();
 
-        Map<String, String> params = new HashMap<>();
-        params.put("desde", fechaDesde.toString());
-        params.put("hasta", fechaHasta.toString());
-
-        // Simulación de respuesta: suponemos que devuelve un número
-        Double total = facturacionClient.obtenerTotalFacturado(fechaDesde.toString(), fechaHasta.toString());
-
-        return new ReporteFacturacionPeriodoDTO(anio, mesDesde, mesHasta, total != null ? total : 0.0);
+        return new ReporteFacturacionPeriodoDTO(anio, mesDesde, mesHasta, total);
     }
 }
