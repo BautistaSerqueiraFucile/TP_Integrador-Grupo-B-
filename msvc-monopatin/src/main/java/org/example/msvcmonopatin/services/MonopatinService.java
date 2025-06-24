@@ -145,5 +145,16 @@ public class MonopatinService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Monopatin no encontrado");
         }
     }
+
+    public void resetearKilometraje(String id) {
+        Optional<Monopatin> optional = monopatinRepository.findById(id);
+        if (optional.isPresent()) {
+            Monopatin monopatin = optional.get();
+            monopatin.setKilometrosActuales(0);
+            monopatinRepository.save(monopatin);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Monopatin no encontrado");
+        }
+    }
 }
 

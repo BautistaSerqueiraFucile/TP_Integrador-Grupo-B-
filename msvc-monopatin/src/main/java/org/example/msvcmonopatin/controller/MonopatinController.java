@@ -98,4 +98,9 @@ public class MonopatinController {
         return monopatinService.actualizarParada(id,paradaActual);
 
     }
+
+    @PutMapping("/{id}/reset-km")
+    void resetearKilometraje(@PathVariable("id") String id){
+        monopatinService.resetearKilometraje(id);
+    }
 }
