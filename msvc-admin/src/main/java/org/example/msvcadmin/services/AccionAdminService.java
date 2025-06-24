@@ -3,6 +3,8 @@ package org.example.msvcadmin.services;
 import org.example.msvcadmin.clients.*;
 import org.example.msvcadmin.entities.Admin;
 import org.example.msvcadmin.entities.AuditoriaAdmin;
+import org.example.msvcadmin.models.Monopatin;
+import org.example.msvcadmin.models.Parada;
 import org.example.msvcadmin.repositories.AdminRepository;
 import org.example.msvcadmin.repositories.AuditoriaAdminRepository;
 import org.springframework.stereotype.Service;
@@ -79,12 +81,12 @@ public class AccionAdminService {
     }
 
 
-    public void agregarMonopatin(Map<String, Object> datos, String userIdAdmin) {
+    public void agregarMonopatin(Monopatin datos, String userIdAdmin) {
         scooterClient.agregarMonopatin(datos);
 
         registrarAuditoria(
                 "crear_monopatin",
-                datos.get("id").toString(),
+                datos.getId().toString(),
                 userIdAdmin,
                 "Se creó un nuevo monopatín con datos: " + datos.toString()
         );
@@ -101,12 +103,12 @@ public class AccionAdminService {
         );
     }
 
-    public void crearParada(Map<String, Object> datos, String userIdAdmin) {
+    public void crearParada(Parada datos, String userIdAdmin) {
         paradaClient.crearParada(datos);
         registrarAuditoria("crear_parada", null, userIdAdmin, "Parada creada: " + datos.toString());
     }
 
-    public void editarParada(Long paradaId, Map<String, Object> datos, String userIdAdmin) {
+    public void editarParada(Long paradaId, Parada datos, String userIdAdmin) {
         paradaClient.editarParada(paradaId, datos);
         registrarAuditoria("editar_parada", paradaId.toString(), userIdAdmin, "Parada editada: " + datos.toString());
     }

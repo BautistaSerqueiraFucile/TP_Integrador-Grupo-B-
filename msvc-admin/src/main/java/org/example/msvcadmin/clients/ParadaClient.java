@@ -1,5 +1,6 @@
 package org.example.msvcadmin.clients;
 
+import org.example.msvcadmin.models.Parada;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +18,8 @@ public interface ParadaClient {
      *
      * @param datos Mapa con los datos necesarios para la creación (nombre, ubicación, etc.).
      */
-    @PostMapping("/parada")
-    void crearParada(@RequestBody Map<String, Object> datos);
+    @PostMapping("/paradas")
+    void crearParada(@RequestBody Parada datos);
 
     /**
      * Edita una parada existente.
@@ -26,14 +27,14 @@ public interface ParadaClient {
      * @param id ID de la parada a editar.
      * @param datos Mapa con los nuevos datos de la parada.
      */
-    @PutMapping("/parada/{id}")
-    void editarParada(@PathVariable("id") Long id, @RequestBody Map<String, Object> datos);
+    @PutMapping("/paradas/{id}")
+    void editarParada(@PathVariable("id") Long id, @RequestBody Parada datos);
 
     /**
      * Elimina una parada del sistema.
      *
      * @param id ID de la parada a eliminar.
      */
-    @DeleteMapping("/parada/{id}")
+    @DeleteMapping("/paradas/{id}")
     void eliminarParada(@PathVariable("id") Long id);
 }

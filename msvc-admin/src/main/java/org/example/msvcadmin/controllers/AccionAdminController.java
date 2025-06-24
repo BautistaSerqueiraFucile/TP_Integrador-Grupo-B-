@@ -1,5 +1,7 @@
 package org.example.msvcadmin.controllers;
 
+import org.example.msvcadmin.models.Monopatin;
+import org.example.msvcadmin.models.Parada;
 import org.example.msvcadmin.services.AccionAdminService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +36,7 @@ public class AccionAdminController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/scooters/{scooterId}/estado/{estado}")
+    @PutMapping("/monopatines/{scooterId}/estado/{estado}")
     public ResponseEntity<Void> cambiarEstadoScooter(
             @PathVariable Long scooterId,
             @PathVariable String estado,
@@ -46,7 +48,7 @@ public class AccionAdminController {
 
     @PostMapping("/monopatines")
     public ResponseEntity<Void> agregarMonopatin(
-            @RequestBody Map<String, Object> datos,
+            @RequestBody Monopatin datos,
             @RequestParam String userIdAdmin
     ) {
         accionAdminService.agregarMonopatin(datos, userIdAdmin);
@@ -64,7 +66,7 @@ public class AccionAdminController {
 
     @PostMapping("/paradas")
     public ResponseEntity<Void> crearParada(
-            @RequestBody Map<String, Object> datos,
+            @RequestBody Parada datos,
             @RequestParam String userIdAdmin
     ) {
         accionAdminService.crearParada(datos, userIdAdmin);
@@ -74,7 +76,7 @@ public class AccionAdminController {
     @PutMapping("/paradas/{id}")
     public ResponseEntity<Void> editarParada(
             @PathVariable Long id,
-            @RequestBody Map<String, Object> datos,
+            @RequestBody Parada datos,
             @RequestParam String userIdAdmin
     ) {
         accionAdminService.editarParada(id, datos, userIdAdmin);
