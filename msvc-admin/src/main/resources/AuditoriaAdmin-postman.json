@@ -1,0 +1,293 @@
+{
+  "info": {
+    "name": "msvc-admin - API Test",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Bloquear Cuenta",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8004/admin/cuentas/123/bloquear?userIdAdmin=admin1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8004",
+          "path": ["admin", "cuentas", "123", "bloquear"],
+          "query": [{ "key": "userIdAdmin", "value": "admin1" }]
+        }
+      }
+    },
+    {
+      "name": "Reactivar Cuenta",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8004/admin/cuentas/123/activar?userIdAdmin=admin1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8004",
+          "path": ["admin", "cuentas", "123", "activar"],
+          "query": [{ "key": "userIdAdmin", "value": "admin1" }]
+        }
+      }
+    },
+    {
+      "name": "Cambiar Estado Scooter",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8004/admin/scooters/456/estado/activo?userIdAdmin=admin1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8004",
+          "path": ["admin", "scooters", "456", "estado", "activo"],
+          "query": [{ "key": "userIdAdmin", "value": "admin1" }]
+        }
+      }
+    },
+    {
+      "name": "Agregar Monopatin",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"marca\": \"Xiaomi\",\n  \"modelo\": \"M365\",\n  \"anio\": 2023\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8004/admin/monopatines?userIdAdmin=admin1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8004",
+          "path": ["admin", "monopatines"],
+          "query": [{ "key": "userIdAdmin", "value": "admin1" }]
+        }
+      }
+    },
+    {
+      "name": "Eliminar Monopatin",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8004/admin/monopatines/456?userIdAdmin=admin1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8004",
+          "path": ["admin", "monopatines", "456"],
+          "query": [{ "key": "userIdAdmin", "value": "admin1" }]
+        }
+      }
+    },
+    {
+      "name": "Crear Parada",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Parada Centro\",\n  \"direccion\": \"Av. Principal 123\",\n  \"ciudad\": \"CiudadX\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8004/admin/paradas?userIdAdmin=admin1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8004",
+          "path": ["admin", "paradas"],
+          "query": [{ "key": "userIdAdmin", "value": "admin1" }]
+        }
+      }
+    },
+    {
+      "name": "Editar Parada",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Parada Centro Editada\",\n  \"direccion\": \"Av. Principal 456\",\n  \"ciudad\": \"CiudadX\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8004/admin/paradas/789?userIdAdmin=admin1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8004",
+          "path": ["admin", "paradas", "789"],
+          "query": [{ "key": "userIdAdmin", "value": "admin1" }]
+        }
+      }
+    },
+    {
+      "name": "Eliminar Parada",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8004/admin/paradas/789?userIdAdmin=admin1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8004",
+          "path": ["admin", "paradas", "789"],
+          "query": [{ "key": "userIdAdmin", "value": "admin1" }]
+        }
+      }
+    },
+    {
+      "name": "Crear Tarifa",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Tarifa Básica\",\n  \"costo\": 100\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8004/admin/tarifas?userIdAdmin=admin1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8004",
+          "path": ["admin", "tarifas"],
+          "query": [{ "key": "userIdAdmin", "value": "admin1" }]
+        }
+      }
+    },
+    {
+      "name": "Modificar Tarifa",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Tarifa Básica Modificada\",\n  \"costo\": 120\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8004/admin/tarifas/101?userIdAdmin=admin1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8004",
+          "path": ["admin", "tarifas", "101"],
+          "query": [{ "key": "userIdAdmin", "value": "admin1" }]
+        }
+      }
+    },
+    {
+      "name": "Crear Tarifa Extra",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Recargo Nocturno\",\n  \"costo\": 30\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8004/admin/tarifas-extra?userIdAdmin=admin1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8004",
+          "path": ["admin", "tarifas-extra"],
+          "query": [{ "key": "userIdAdmin", "value": "admin1" }]
+        }
+      }
+    },
+    {
+      "name": "Modificar Tarifa Extra",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Recargo Nocturno Modificado\",\n  \"costo\": 40\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8004/admin/tarifas-extra/202?userIdAdmin=admin1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8004",
+          "path": ["admin", "tarifas-extra", "202"],
+          "query": [{ "key": "userIdAdmin", "value": "admin1" }]
+        }
+      }
+    },
+    {
+      "name": "Reporte Usuarios Top",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8004/admin/reportes/usuarios-top?fechaDesde=2025-01-01&fechaHasta=2025-06-23&tipoUsuario=premium&userIdAdmin=admin1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8004",
+          "path": ["admin", "reportes", "usuarios-top"],
+          "query": [
+            { "key": "fechaDesde", "value": "2025-01-01" },
+            { "key": "fechaHasta", "value": "2025-06-23" },
+            { "key": "tipoUsuario", "value": "premium" },
+            { "key": "userIdAdmin", "value": "admin1" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Reporte Uso Monopatines",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8004/admin/reportes/uso-monopatines?incluirPausas=true&userIdAdmin=admin1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8004",
+          "path": ["admin", "reportes", "uso-monopatines"],
+          "query": [
+            { "key": "incluirPausas", "value": "true" },
+            { "key": "userIdAdmin", "value": "admin1" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Reporte Monopatines Frecuentes",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8004/admin/reportes/monopatines-frecuentes?anio=2025&minViajes=10&userIdAdmin=admin1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8004",
+          "path": ["admin", "reportes", "monopatines-frecuentes"],
+          "query": [
+            { "key": "anio", "value": "2025" },
+            { "key": "minViajes", "value": "10" },
+            { "key": "userIdAdmin", "value": "admin1" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Reporte Facturación Total",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8004/admin/reportes/facturacion-total?anio=2025&mesDesde=1&mesHasta=6&userIdAdmin=admin1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8004",
+          "path": ["admin", "reportes", "facturacion-total"],
+          "query": [
+            { "key": "anio", "value": "2025" },
+            { "key": "mesDesde", "value": "1" },
+            { "key": "mesHasta", "value": "6" },
+            { "key": "userIdAdmin", "value": "admin1" }
+          ]
+        }
+      }
+    }
+  ]
+}
