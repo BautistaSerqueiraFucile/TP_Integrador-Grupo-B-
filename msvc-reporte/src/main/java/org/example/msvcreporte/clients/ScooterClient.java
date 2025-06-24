@@ -1,5 +1,6 @@
 package org.example.msvcreporte.clients;
 
+import org.example.msvcreporte.models.Monopatin;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -7,13 +8,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 import java.util.Map;
 
-@FeignClient(name = "msv-monopatin", url = "http://localhost:8007")
+@FeignClient(name = "msvc-monopatin", url = "http://localhost:8007")
 public interface ScooterClient {
     @GetMapping("/monopatines")
-    List<Map<String, Object>> obtenerTodosLosScooters();
+    List<Monopatin> obtenerTodosLosScooters();
 
     @GetMapping("/monopatines/{id}")
-    Map<String, Object> obtenerScooterPorId(@PathVariable("id") Long id);
+    Monopatin obtenerScooterPorId(@PathVariable("id") String id);
 }
 /*
 * mono guarda km

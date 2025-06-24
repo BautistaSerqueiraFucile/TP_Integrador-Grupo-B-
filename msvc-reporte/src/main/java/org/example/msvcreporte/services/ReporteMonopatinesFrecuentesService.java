@@ -3,6 +3,7 @@ package org.example.msvcreporte.services;
 import org.example.msvcreporte.clients.ScooterClient;
 import org.example.msvcreporte.clients.ViajeClient;
 import org.example.msvcreporte.dto.ReporteMonopatinFrecuenteDTO;
+import org.example.msvcreporte.models.Monopatin;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,16 +21,16 @@ public class ReporteMonopatinesFrecuentesService {
         this.scooterClient = scooterClient;
         this.viajeClient = viajeClient;
     }
-
+//esto
     public List<ReporteMonopatinFrecuenteDTO> generarReporte(int anio, int minViajes) {
-        List<Map<String, Object>> monopatines = scooterClient.obtenerTodosLosScooters();
+        List<Monopatin> monopatines = scooterClient.obtenerTodosLosScooters();
 
         List<ReporteMonopatinFrecuenteDTO> resultados = new ArrayList<>();
 
-        for (Map<String, Object> monopatin : monopatines) {
-            Long id = Long.valueOf(monopatin.get("id").toString());
+        for (Monopatin mono : monopatines) {
+            String id = mono.getId();
 
-            List<Map<String, Object>> viajes = viajeClient.obtenerViajesPorMonopatinYAño(id, anio);
+            List<Map<String, Object>> viajes = viajeClient.obtenerViajesPorMonopatinYAno(id, anio);
             int cantidad = viajes.size();
 
             if (cantidad >= minViajes) {

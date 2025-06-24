@@ -16,16 +16,16 @@ public interface ViajeClient {
             @RequestParam(value = "fechaDesde", required = false) String fechaDesde,
             @RequestParam(value = "fechaHasta", required = false) String fechaHasta
     );
-
+//esto
     @GetMapping("/viajes/por-monopatin-anio")
-    List<Map<String, Object>> obtenerViajesPorMonopatinYAño(
-            @RequestParam("monopatinId") Long monopatinId,
+    List<Map<String, Object>> obtenerViajesPorMonopatinYAno(
+            @RequestParam("monopatinId") String monopatinId,
             @RequestParam("anio") int anio
     );
 
     @GetMapping("/viajes/por-monopatin")
     List<Map<String, Object>> obtenerViajesPorMonopatin(
-            @RequestParam("monopatinId") Long monopatinId
+            @RequestParam("monopatinId") String monopatinId
     );
 
 }
