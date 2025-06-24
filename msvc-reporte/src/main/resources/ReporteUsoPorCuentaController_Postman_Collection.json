@@ -1,0 +1,48 @@
+{
+  "info": {
+    "name": "ReporteUsoPorCuentaController",
+    "_postman_id": "a9e84e2f-9999-4444-bbbb-cccc12345678",
+    "description": "Colección para probar el endpoint de uso por cuenta del microservicio reporte",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET /reporte/uso-por-cuenta",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8006/reporte/uso-por-cuenta?idCuenta=1&fechaDesde=2025-01-01&fechaHasta=2025-06-24&incluirOtrosUsuarios=true",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8006",
+          "path": [
+            "reporte",
+            "uso-por-cuenta"
+          ],
+          "query": [
+            {
+              "key": "idCuenta",
+              "value": "1"
+            },
+            {
+              "key": "fechaDesde",
+              "value": "2025-01-01"
+            },
+            {
+              "key": "fechaHasta",
+              "value": "2025-06-24"
+            },
+            {
+              "key": "incluirOtrosUsuarios",
+              "value": "true"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

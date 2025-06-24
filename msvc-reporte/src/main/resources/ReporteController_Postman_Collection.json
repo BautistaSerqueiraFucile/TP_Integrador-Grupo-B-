@@ -1,0 +1,27 @@
+{
+  "info": {
+    "name": "ReporteController_Postman_Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Obtener historial de reportes",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8006/reporte/historial",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8006",
+          "path": [
+            "reporte",
+            "historial"
+          ]
+        }
+      }
+    }
+  ]
+}
