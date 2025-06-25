@@ -1,5 +1,7 @@
 package org.example.msvcviaje.repositories;
 
+import feign.Param;
+import org.example.msvcviaje.dtos.MonopatinViajeDTO;
 import org.example.msvcviaje.entities.Viaje;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,10 +26,11 @@ public interface ViajeRepository extends JpaRepository<Viaje, Long> {
             LocalDate fechaHasta
     );
 
-    @Query("SELECT COUNT(v.idMonopatin)" +
+    @Query("SELECT new org.example.msvcviaje.dtos.MonopatinViajeDTO(v.idMonopatin, YEAR(v.fecha), COUNT(v)) " +
             "FROM Viaje v " +
-            "WHERE v.idMonopatin = :id_buscado AND v.fecha BETWEEN :fechaini AND :fechafin")
-    Long getCantidadViajesPorMonopatin(String id_buscado, LocalDate fechaini, LocalDate fechafin);
-
-
+            "WHERE YEAR(v.fecha) = :anio " +
+            "GROUP BY v.idMonopatin, YEAR(v.fecha) " +
+            "HAVING COUNT(v) > :cantidadMinima")
+    List<MonopatinViajeDTO> obtenerMonopatinesConMasDeXViajes(@Param("anio") Integer anio,
+                                                                              @Param("cantidadMinima") Long cantidadMinima);
 }

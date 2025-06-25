@@ -4,6 +4,7 @@ import org.example.msvcviaje.clients.CuentaClient;
 import org.example.msvcviaje.clients.FacturacionClient;
 import org.example.msvcviaje.clients.MonopatinClient;
 import org.example.msvcviaje.clients.ParadaClient;
+import org.example.msvcviaje.dtos.MonopatinViajeDTO;
 import org.example.msvcviaje.model.FacturaRequestModel;
 import org.example.msvcviaje.entities.EstadoViaje;
 import org.example.msvcviaje.entities.Viaje;
@@ -171,8 +172,9 @@ public class ViajeService {
     }
 
     @Transactional
-    public Long getViajesPorMonopatinyFecha(String id_monopatin, LocalDate fechaini, LocalDate fechafin) throws Exception {
-        return repoViaje.getCantidadViajesPorMonopatin(id_monopatin, fechaini, fechafin);
+    public List<MonopatinViajeDTO> getViajesPorMonopatinyFecha(Long minViaje, Integer anio) throws Exception {
+        return repoViaje.obtenerMonopatinesConMasDeXViajes(anio, minViaje);
     }
+
 
 }

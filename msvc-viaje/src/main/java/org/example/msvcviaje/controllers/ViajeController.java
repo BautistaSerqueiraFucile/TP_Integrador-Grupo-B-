@@ -95,17 +95,28 @@ public class ViajeController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
         }
     }
-
     @GetMapping("monopatines")
     public ResponseEntity<?> getMonopatines(
-            @RequestParam String idMonopatin,
-            @RequestParam(required = false) LocalDate fechaDesde,
-            @RequestParam(required = false) LocalDate fechaHasta
+            @RequestParam("minViaje") Long minViaje,
+            @RequestParam("anio") Integer anio
     ) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(viajeService.getViajesPorMonopatinyFecha(idMonopatin, fechaDesde, fechaHasta));
+            return ResponseEntity.status(HttpStatus.OK).body(viajeService.getViajesPorMonopatinyFecha(minViaje,anio));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() + "\"}");
         }
     }
+
+//    @GetMapping("monopatines")
+//    public ResponseEntity<?> getMonopatines(
+//            @RequestParam String idMonopatin,
+//            @RequestParam(required = false) LocalDate fechaDesde,
+//            @RequestParam(required = false) LocalDate fechaHasta
+//    ) {
+//        try {
+//            return ResponseEntity.status(HttpStatus.OK).body(viajeService.getViajesPorMonopatinyFecha(idMonopatin, fechaDesde, fechaHasta));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() + "\"}");
+//        }
+//    }
 }

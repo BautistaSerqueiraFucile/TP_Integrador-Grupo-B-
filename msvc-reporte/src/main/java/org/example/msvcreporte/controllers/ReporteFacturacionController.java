@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("/reporte")
 public class ReporteFacturacionController {
@@ -20,11 +22,11 @@ public class ReporteFacturacionController {
 
     @GetMapping("/facturacion-total")
     public ResponseEntity<ReporteFacturacionPeriodoDTO> facturacionTotal(
-            @RequestParam int anio,
-            @RequestParam int mesDesde,
-            @RequestParam int mesHasta) {
+            @RequestParam Long idUsuario,
+            @RequestParam LocalDate desde,
+            @RequestParam LocalDate hasta) {
 
-        ReporteFacturacionPeriodoDTO dto = servicio.generarReporte(anio, mesDesde, mesHasta);
+        ReporteFacturacionPeriodoDTO dto = servicio.generarReporte( idUsuario,desde, hasta);
         return ResponseEntity.ok(dto);
     }
 }

@@ -1,6 +1,7 @@
 package org.example.msvcreporte.controllers;
 
 import org.example.msvcreporte.dto.ReporteMonopatinFrecuenteDTO;
+import org.example.msvcreporte.models.MonopatinViajeDTO;
 import org.example.msvcreporte.services.ReporteMonopatinesFrecuentesService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,11 +22,11 @@ public class ReporteMonopatinesFrecuentesController {
     }
 
     @GetMapping("/monopatines-mas-usados")
-    public ResponseEntity<List<ReporteMonopatinFrecuenteDTO>> getMonopatinesFrecuentes(
-            @RequestParam("anio") int anio,
-            @RequestParam("minViajes") int minViajes
+    public ResponseEntity<List<MonopatinViajeDTO>> getMonopatinesFrecuentes(
+            @RequestParam("anio") Integer anio,
+            @RequestParam("minViajes") Long minViajes
     ) {
-        List<ReporteMonopatinFrecuenteDTO> lista = servicio.generarReporte(anio, minViajes);
+        List<MonopatinViajeDTO> lista = servicio.generarReporte(anio, minViajes);
         return ResponseEntity.ok(lista);
     }
 

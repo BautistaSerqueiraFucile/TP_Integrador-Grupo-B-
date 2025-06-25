@@ -1,13 +1,16 @@
 package org.example.msvcreporte.clients;
 
+import org.example.msvcreporte.models.MonopatinViajeDTO;
+import org.example.msvcreporte.models.Viaje;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Map;
 
-@FeignClient(name = "viaje", url = "http://localhost:8003")
+@FeignClient(name = "msvc-viaje", url = "http://localhost:8003")
 public interface ViajeClient {
 
     @GetMapping("/viajes/historial")
@@ -23,9 +26,10 @@ public interface ViajeClient {
             @RequestParam("anio") int anio
     );
 
-    @GetMapping("/viajes/por-monopatin")
-    List<Map<String, Object>> obtenerViajesPorMonopatin(
-            @RequestParam("monopatinId") String monopatinId
+    @GetMapping("/viajes/monopatines")
+    List<MonopatinViajeDTO> obtenerMinViajesPorMonopatin(
+            @RequestParam("minViaje") Long minViaje,
+            @RequestParam("anio") Integer anio
     );
 
 }

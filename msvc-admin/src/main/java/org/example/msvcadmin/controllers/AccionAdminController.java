@@ -2,6 +2,7 @@ package org.example.msvcadmin.controllers;
 
 import org.example.msvcadmin.models.Monopatin;
 import org.example.msvcadmin.models.Parada;
+import org.example.msvcadmin.models.Tarifa;
 import org.example.msvcadmin.services.AccionAdminService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -92,41 +93,22 @@ public class AccionAdminController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/tarifas")
-    public ResponseEntity<Void> crearTarifa(
-            @RequestBody Map<String, Object> datos,
-            @RequestParam String userIdAdmin
-    ) {
-        accionAdminService.crearTarifa(datos, userIdAdmin);
-        return ResponseEntity.noContent().build();
-    }
+//    @PostMapping("/tarifas")
+//    public ResponseEntity<Void> crearTarifa(
+//            @RequestBody Map<String, Object> datos,
+//            @RequestParam String userIdAdmin
+//    ) {
+//        accionAdminService.crearTarifa(datos, userIdAdmin);
+//        return ResponseEntity.noContent().build();
+//    }
 
-    @PutMapping("/tarifas/{id}")
-    public ResponseEntity<Void> modificarTarifa(
-            @PathVariable Long id,
-            @RequestBody Map<String, Object> datos,
+    @PutMapping("/tarifa/{tipo}/{valor}")
+    public ResponseEntity<Tarifa> modificarTarifa(
+            @PathVariable String tipo,
+            @PathVariable double valor,
             @RequestParam String userIdAdmin
     ) {
-        accionAdminService.modificarTarifa(id, datos, userIdAdmin);
-        return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping("/tarifas-extra")
-    public ResponseEntity<Void> crearTarifaExtra(
-            @RequestBody Map<String, Object> datos,
-            @RequestParam String userIdAdmin
-    ) {
-        accionAdminService.crearTarifaExtra(datos, userIdAdmin);
-        return ResponseEntity.noContent().build();
-    }
-
-    @PutMapping("/tarifas-extra/{id}")
-    public ResponseEntity<Void> modificarTarifaExtra(
-            @PathVariable Long id,
-            @RequestBody Map<String, Object> datos,
-            @RequestParam String userIdAdmin
-    ) {
-        accionAdminService.modificarTarifaExtra(id, datos, userIdAdmin);
+        accionAdminService.modificarTarifa(tipo, valor, userIdAdmin);
         return ResponseEntity.noContent().build();
     }
 
@@ -171,4 +153,5 @@ public class AccionAdminController {
         Map<String, Object> resultado = accionAdminService.consultarFacturacionTotal(anio, mesDesde, mesHasta, userIdAdmin);
         return ResponseEntity.ok(resultado);
     }
+
 }
