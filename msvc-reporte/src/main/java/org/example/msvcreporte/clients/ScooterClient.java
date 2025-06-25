@@ -1,5 +1,6 @@
 package org.example.msvcreporte.clients;
 
+import org.example.msvcreporte.dto.ReporteUsoMonopatinDTO;
 import org.example.msvcreporte.models.Monopatin;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,9 @@ public interface ScooterClient {
 
     @GetMapping("/monopatines/{id}")
     Monopatin obtenerScooterPorId(@PathVariable("id") String id);
+
+    @GetMapping("/monopatines/estadisticas")
+    List<ReporteUsoMonopatinDTO> obtenerEstadisticas();
 }
 /*
 * mono guarda km

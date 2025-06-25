@@ -1,13 +1,14 @@
-package org.example.msvcreporte.dto;
+package org.example.msvcmonopatin.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ReporteUsoMonopatinDTO {
+public class MonopatinEstadisticasDTO {
     private String idMonopatin;
     private double kilometros;
-    private double tiempoUso;
+    private double tiempoTotal;
     private double tiempoPausa;
+
 }
