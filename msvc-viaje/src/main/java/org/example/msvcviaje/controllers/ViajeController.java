@@ -40,7 +40,7 @@ public class ViajeController {
 
     @GetMapping("historial")
     public ResponseEntity<?> getViajesPorUsuarioYPeriodo(
-            @RequestParam Long idUsuario,
+            @RequestParam(required = false) Long idUsuario,
             @RequestParam(required = false) String fechaDesde,
             @RequestParam(required = false) String fechaHasta
     ) {
@@ -107,16 +107,13 @@ public class ViajeController {
         }
     }
 
-//    @GetMapping("monopatines")
-//    public ResponseEntity<?> getMonopatines(
-//            @RequestParam String idMonopatin,
-//            @RequestParam(required = false) LocalDate fechaDesde,
-//            @RequestParam(required = false) LocalDate fechaHasta
-//    ) {
-//        try {
-//            return ResponseEntity.status(HttpStatus.OK).body(viajeService.getViajesPorMonopatinyFecha(idMonopatin, fechaDesde, fechaHasta));
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() + "\"}");
-//        }
-//    }
+    @GetMapping("usuarios_top")
+    public ResponseEntity<?> getUsuariosTop(){
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(viajeService.getUsuariosTop());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() + "\"}");
+        }
+    }
+
 }

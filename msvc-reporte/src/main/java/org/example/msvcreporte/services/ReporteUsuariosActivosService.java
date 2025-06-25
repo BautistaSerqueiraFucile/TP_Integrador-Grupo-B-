@@ -1,8 +1,11 @@
 package org.example.msvcreporte.services;
 
+import org.example.msvcreporte.clients.CuentaClient;
 import org.example.msvcreporte.clients.UserClient;
 import org.example.msvcreporte.clients.ViajeClient;
 import org.example.msvcreporte.dto.ReporteUsuarioActivoDTO;
+import org.example.msvcreporte.models.Cuenta;
+import org.example.msvcreporte.models.Viaje;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -16,43 +19,41 @@ public class ReporteUsuariosActivosService {
 
     private final UserClient userClient;
     private final ViajeClient viajeClient;
+    private final CuentaClient cuentaClient;
 
-    public ReporteUsuariosActivosService(UserClient userClient, ViajeClient viajeClient) {
+    public ReporteUsuariosActivosService(UserClient userClient, ViajeClient viajeClient, CuentaClient cuentaClient) {
         this.userClient = userClient;
         this.viajeClient = viajeClient;
+        this.cuentaClient = cuentaClient;
     }
 
-    public List<ReporteUsuarioActivoDTO> generarReporte(LocalDate fechaDesde, LocalDate fechaHasta, String tipoUsuario) {
-        List<Map<String, Object>> usuarios = userClient.obtenerTodosLosUsuarios();
+    public List<ReporteUsuarioActivoDTO> obtenerUsuariosQueMasViajan(String tipoUsuario, LocalDate inicio, LocalDate fin) {
 
-        List<ReporteUsuarioActivoDTO> resultado = new ArrayList<>();
+        // Traer los usuarios del tipo solicitado
+        List<Cuenta> usuarios = cuentaClient.getUsuariosPorTipo(tipoUsuario);
 
-        for (Map<String, Object> user : usuarios) {
-            Long idUsuario = Long.valueOf(user.get("id").toString());
-            String tipo = user.get("tipo").toString();
+        // Transformar en modelos con contador inicial
+        List<ReporteUsuarioActivoDTO> modelos = usuarios.stream()
+                .map(u -> new ReporteUsuarioActivoDTO(u.getId(), u.getTipoCuenta(), 0))
+                .toList();
 
-            if (!tipoUsuario.equalsIgnoreCase("todos") && !tipo.equalsIgnoreCase(tipoUsuario)) continue;
+        // Traer los viajes en ese período
+        List<Viaje> viajes = viajeClient.obtenerHistorialPorUsuarioYPeriodo(null, inicio.toString(), fin.toString());
 
-            String nombre = user.get("nombre").toString();
-
-            List<Map<String, Object>> viajes = viajeClient.obtenerHistorialPorUsuarioYPeriodo(
-                    idUsuario,
-                    fechaDesde.toString(),
-                    fechaHasta.toString()
-            );
-
-            if (viajes.isEmpty()) continue;
-
-            int cantidad = viajes.size();
-            double km = viajes.stream()
-                    .mapToDouble(v -> Double.parseDouble(v.get("kmRecorridos").toString()))
-                    .sum();
-
-            resultado.add(new ReporteUsuarioActivoDTO(idUsuario, nombre, cantidad, km));
+        // Para cada viaje, si el usuario está en la lista, le sumamos uno
+        for (Viaje viaje : viajes) {
+            for (ReporteUsuarioActivoDTO modelo : modelos) {
+                if (modelo.getIdUsuario().equals(viaje.getIdUsuario())) {
+                    modelo.setCantidadViajes(modelo.getCantidadViajes() + 1);
+                    break;
+                }
+            }
         }
 
-        resultado.sort(Comparator.comparing(ReporteUsuarioActivoDTO::getCantidadViajes).reversed());
-
-        return resultado;
+        // Filtramos los que al menos viajaron una vez y ordenamos
+        return modelos.stream()
+                .filter(u -> u.getCantidadViajes() > 0)
+                .sorted(Comparator.comparingInt(ReporteUsuarioActivoDTO::getCantidadViajes).reversed())
+                .toList();
     }
 }

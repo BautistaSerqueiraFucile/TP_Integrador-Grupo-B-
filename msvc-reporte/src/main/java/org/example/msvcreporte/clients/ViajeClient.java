@@ -14,8 +14,8 @@ import java.util.Map;
 public interface ViajeClient {
 
     @GetMapping("/viajes/historial")
-    List<Map<String, Object>> obtenerHistorialPorUsuarioYPeriodo(
-            @RequestParam("idUsuario") Long usuarioId,
+    List<Viaje> obtenerHistorialPorUsuarioYPeriodo(
+            @RequestParam(value = "idUsuario", required = false) Long usuarioId,
             @RequestParam(value = "fechaDesde", required = false) String fechaDesde,
             @RequestParam(value = "fechaHasta", required = false) String fechaHasta
     );

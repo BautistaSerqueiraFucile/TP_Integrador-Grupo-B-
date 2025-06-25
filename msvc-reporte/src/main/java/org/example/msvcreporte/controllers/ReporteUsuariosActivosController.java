@@ -28,7 +28,7 @@ public class ReporteUsuariosActivosController {
             @RequestParam("fechaHasta") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaHasta,
             @RequestParam("tipoUsuario") String tipoUsuario
     ) {
-        List<ReporteUsuarioActivoDTO> resultado = servicio.generarReporte(fechaDesde, fechaHasta, tipoUsuario);
+        List<ReporteUsuarioActivoDTO> resultado = servicio.obtenerUsuariosQueMasViajan(tipoUsuario, fechaDesde, fechaHasta);
         return ResponseEntity.ok(resultado);
     }
 }

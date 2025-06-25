@@ -8,6 +8,6 @@ import lombok.Data;
 public class ReporteUsoMonopatinDTO {
     private String idMonopatin;
     private double kilometros;
-    private double tiempoUso;
+    private double tiempoTotal;
     private double tiempoPausa;
 }

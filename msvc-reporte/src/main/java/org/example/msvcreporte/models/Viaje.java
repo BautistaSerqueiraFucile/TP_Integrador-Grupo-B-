@@ -3,10 +3,14 @@ package org.example.msvcreporte.models;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+@Data
+@AllArgsConstructor
 public class Viaje {
     private Long idViaje;
 

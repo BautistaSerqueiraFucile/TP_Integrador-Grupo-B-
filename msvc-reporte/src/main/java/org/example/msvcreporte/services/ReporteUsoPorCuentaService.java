@@ -3,6 +3,7 @@ package org.example.msvcreporte.services;
 import org.example.msvcreporte.clients.CuentaClient;
 import org.example.msvcreporte.clients.ViajeClient;
 import org.example.msvcreporte.dto.ReporteUsoPorCuentaDTO;
+import org.example.msvcreporte.models.Viaje;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -21,36 +22,7 @@ public class ReporteUsoPorCuentaService {
         this.viajeClient = viajeClient;
     }
 
-    public List<ReporteUsoPorCuentaDTO> generarReporte(Long idCuenta, LocalDate desde, LocalDate hasta, boolean incluirOtros) {
-        List<Long> usuarios = cuentaClient.obtenerUsuariosDeCuenta(idCuenta);
-
-        List<ReporteUsoPorCuentaDTO> resultado = new ArrayList<>();
-
-        for (Long idUsuario : usuarios) {
-
-            List<Map<String, Object>> viajes = viajeClient.obtenerHistorialPorUsuarioYPeriodo(
-                    idUsuario,
-                    desde.toString(),
-                    hasta.toString()
-            );
-
-            if (!incluirOtros && !idUsuario.equals(idCuenta)) {
-                continue; // filtra si solo querés ver al usuario dueño
-            }
-
-            double km = viajes.stream()
-                    .mapToDouble(v -> Double.parseDouble(v.get("kmRecorridos").toString()))
-                    .sum();
-
-            long tiempo = viajes.stream()
-                    .mapToLong(v -> Long.parseLong(v.get("duracionTotal").toString()))
-                    .sum();
-
-            int cantidad = viajes.size();
-
-            resultado.add(new ReporteUsoPorCuentaDTO(idUsuario, km, tiempo, cantidad));
-        }
-
-        return resultado;
+    public List<Viaje> generarReporte(Long idCuenta, LocalDate desde, LocalDate hasta) {
+        return viajeClient.obtenerHistorialPorUsuarioYPeriodo(idCuenta, desde.toString(), hasta.toString());
     }
 }

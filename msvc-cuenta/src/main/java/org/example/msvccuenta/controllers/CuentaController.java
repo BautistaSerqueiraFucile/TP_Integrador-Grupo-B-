@@ -181,4 +181,14 @@ public class CuentaController {
         });
         return ResponseEntity.badRequest().body(errores);
     }
+
+    @GetMapping("/tipo/{tipo}")
+    public ResponseEntity<?> obtenerPorTipo(@PathVariable String tipo) {
+        try {
+            List<?> cuentas = cuentaService.obtenerPorTipo(tipo.toUpperCase());
+            return ResponseEntity.ok(cuentas);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
+        }
+    }
 }

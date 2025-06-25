@@ -137,4 +137,8 @@ public class CuentaService {
     public List<ViajeDto> historialViajes(Long userId) {
         return viajeFeignClient.getViajesPorUsuarioYPeriodo(userId);
     }
+
+    public List<Cuenta> obtenerPorTipo(String tipo) {
+        return cuentaRepository.findAllByTipoCuenta(TipoCuenta.valueOf(tipo));
+    }
 }

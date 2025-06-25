@@ -140,7 +140,12 @@ public class ViajeService {
             LocalDate desde = (fechaDesde != null) ? LocalDate.parse(fechaDesde) : LocalDate.of(1900, 1, 1);
             LocalDate hasta = (fechaHasta != null) ? LocalDate.parse(fechaHasta) : LocalDate.of(3000, 1, 1);
 
-            return repoViaje.findByIdUsuarioAndFechaBetweenOrderByFechaAscHoraInicioAsc(idUsuario, desde, hasta);
+            if (idUsuario != null) {
+                return repoViaje.findByIdUsuarioAndFechaBetweenOrderByFechaAscHoraInicioAsc(idUsuario, desde, hasta);
+            } else {
+                return repoViaje.findByFechaBetweenOrderByFechaAscHoraInicioAsc(desde, hasta);
+            }
+
         } catch (DateTimeParseException e) {
             throw new Exception("Formato de fecha inválido. Usar yyyy-MM-dd.");
         }
@@ -174,6 +179,11 @@ public class ViajeService {
     @Transactional
     public List<MonopatinViajeDTO> getViajesPorMonopatinyFecha(Long minViaje, Integer anio) throws Exception {
         return repoViaje.obtenerMonopatinesConMasDeXViajes(anio, minViaje);
+    }
+
+    @Transactional
+    public List<Viaje> getUsuariosTop() throws Exception {
+        return repoViaje.findViajesDeTop3UsuariosConMasViajes();
     }
 
 
