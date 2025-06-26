@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "msvc-parada", url = "http://localhost:8004/paradas")
+@FeignClient(name = "msvc-parada", url = "http://localhost:8008/paradas")
 public interface ParadaFeignClient {
     @GetMapping("/{id}")
     ParadaDto getParadaById(@PathVariable("id") Long id);

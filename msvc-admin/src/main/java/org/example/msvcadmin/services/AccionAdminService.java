@@ -3,10 +3,10 @@ package org.example.msvcadmin.services;
 import org.example.msvcadmin.clients.*;
 import org.example.msvcadmin.entities.Admin;
 import org.example.msvcadmin.entities.AuditoriaAdmin;
-import org.example.msvcadmin.models.Monopatin;
-import org.example.msvcadmin.models.Parada;
+import org.example.msvcadmin.models.*;
 import org.example.msvcadmin.repositories.AdminRepository;
 import org.example.msvcadmin.repositories.AuditoriaAdminRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -131,8 +131,8 @@ public class AccionAdminService {
     agregar a partir de tal fecha cambiar tarifa
      */
 
-    public List<Map<String, Object>> consultarUsuariosTop(String desde, String hasta, String tipoUsuario, String userIdAdmin) {
-        List<Map<String, Object>> resultado = reporteClient.getUsuariosTop(desde, hasta, tipoUsuario);
+    public ResponseEntity<List<ReporteUsuarioActivoDTO>> consultarUsuariosTop(String desde, String hasta, String tipoUsuario, String userIdAdmin) {
+        ResponseEntity<List<ReporteUsuarioActivoDTO>> resultado = reporteClient.getUsuariosTop(desde, hasta, tipoUsuario);
 
         registrarAuditoria("consultar_reporte", "-", userIdAdmin,
                 "Reporte de usuarios top desde " + desde + " hasta " + hasta + " (tipo: " + tipoUsuario + ")");
@@ -140,17 +140,17 @@ public class AccionAdminService {
         return resultado;
     }
 
-    public List<Map<String, Object>> consultarUsoMonopatines(boolean incluirPausas, String userIdAdmin) {
-        List<Map<String, Object>> resultado = reporteClient.getReporteUsoMonopatines(incluirPausas);
+    public ResponseEntity<List<ReporteUsoMonopatinDTO>> consultarUsoMonopatines( String userIdAdmin) {
+        ResponseEntity<List<ReporteUsoMonopatinDTO>> resultado = reporteClient.getReporteUsoMonopatines();
 
         registrarAuditoria("consultar_reporte", "-", userIdAdmin,
-                "Consulta de reporte de uso de monopatines (incluirPausas=" + incluirPausas + ")");
+                "Consulta de reporte de uso de monopatines (incluirPausas=" + ")");
 
         return resultado;
     }
 
-    public List<Map<String, Object>> consultarMonopatinesFrecuentes(int anio, int minViajes, String userIdAdmin) {
-        List<Map<String, Object>> resultado = reporteClient.getMonopatinesFrecuentes(anio, minViajes);
+    public ResponseEntity<List<MonopatinViajeDTO>> consultarMonopatinesFrecuentes(int anio, Long minViajes, String userIdAdmin) {
+        ResponseEntity<List<MonopatinViajeDTO>> resultado = reporteClient.getMonopatinesFrecuentes(anio, minViajes);
 
         registrarAuditoria("consultar_reporte", "-", userIdAdmin,
                 "Consulta de monopatines frecuentes (año=" + anio + ", minViajes=" + minViajes + ")");

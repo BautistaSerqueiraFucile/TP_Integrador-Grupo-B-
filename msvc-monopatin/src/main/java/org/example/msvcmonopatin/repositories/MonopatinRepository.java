@@ -22,7 +22,8 @@ public interface MonopatinRepository extends MongoRepository<Monopatin, String> 
                     "idMonopatin: '$_id', " +
                     "kilometros: '$kilometrosActuales', " +
                     "tiempoTotal: '$tiempoDeUso', " +
-                    "tiempoPausa: '$tiempoDePausa' } }"
+                    "tiempoPausa: '$tiempoDePausa' } }",
+            "{ $sort: { kilometros: -1 } }"
     })
     List<MonopatinEstadisticasDTO> obtnerDatosEstadisticos();
     // List<Monopatin> findByDisponible(boolean disponible);

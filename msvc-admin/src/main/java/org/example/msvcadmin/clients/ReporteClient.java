@@ -1,6 +1,10 @@
 package org.example.msvcadmin.clients;
 
+import org.example.msvcadmin.models.MonopatinViajeDTO;
+import org.example.msvcadmin.models.ReporteUsoMonopatinDTO;
+import org.example.msvcadmin.models.ReporteUsuarioActivoDTO;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -11,17 +15,12 @@ import java.util.Map;
  * Cliente Feign que se comunica con el microservicio de reportes (puerto 8006).
  * Permite obtener diferentes tipos de reportes relacionados al uso de monopatines, usuarios y facturación.
  */
-@FeignClient(name = "reporte", url = "http://localhost:8006")
+@FeignClient(name = "msvc-reporte", url = "http://localhost:8006")
 public interface ReporteClient {
 
-    /**
-     * Obtiene un reporte de uso de monopatines.
-     *
-     * @param incluirPausas Indica si el reporte debe incluir también los tiempos de pausa en los viajes.
-     * @return Lista de mapas con datos estadísticos por monopatín.
-     */
+
     @GetMapping("/reporte/uso-monopatines")
-    List<Map<String, Object>> getReporteUsoMonopatines(@RequestParam("incluirPausas") boolean incluirPausas);
+    ResponseEntity<List<ReporteUsoMonopatinDTO>> getReporteUsoMonopatines();
 
     /**
      * Obtiene los monopatines más usados durante un año determinado.
@@ -31,7 +30,7 @@ public interface ReporteClient {
      * @return Lista de monopatines con su cantidad de usos.
      */
     @GetMapping("/reporte/monopatines-mas-usados")
-    List<Map<String, Object>> getMonopatinesFrecuentes(@RequestParam("anio") int anio, @RequestParam("minViajes") int minViajes);
+    ResponseEntity<List<MonopatinViajeDTO>> getMonopatinesFrecuentes(@RequestParam("anio") int anio, @RequestParam("minViajes") Long minViajes);
 
     /**
      * Obtiene el total de facturación entre dos meses de un año dado.
@@ -55,7 +54,7 @@ public interface ReporteClient {
      * @return Lista de usuarios top con sus estadísticas.
      */
     @GetMapping("/reporte/usuarios-top")
-    List<Map<String, Object>> getUsuariosTop(@RequestParam("fechaDesde") String desde,
-                                             @RequestParam("fechaHasta") String hasta,
-                                             @RequestParam("tipoUsuario") String tipo);
+    ResponseEntity<List<ReporteUsuarioActivoDTO>> getUsuariosTop(@RequestParam("fechaDesde") String desde,
+                                                                 @RequestParam("fechaHasta") String hasta,
+                                                                 @RequestParam("tipoUsuario") String tipo);
 }

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "msvc-viaje", url = "http://localhost:8004/viajes")
+@FeignClient(name = "msvc-viaje", url = "http://localhost:8003/viajes")
 public interface ViajeFeignClient {
     @GetMapping("/historial")
     List<ViajeDto> getViajesPorUsuarioYPeriodo(

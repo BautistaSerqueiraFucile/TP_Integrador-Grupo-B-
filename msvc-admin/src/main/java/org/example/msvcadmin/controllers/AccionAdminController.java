@@ -1,8 +1,6 @@
 package org.example.msvcadmin.controllers;
 
-import org.example.msvcadmin.models.Monopatin;
-import org.example.msvcadmin.models.Parada;
-import org.example.msvcadmin.models.Tarifa;
+import org.example.msvcadmin.models.*;
 import org.example.msvcadmin.services.AccionAdminService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -114,33 +112,32 @@ public class AccionAdminController {
 
 
     @GetMapping("/reportes/usuarios-top")
-    public ResponseEntity<List<Map<String, Object>>> usuariosTop(
+    public ResponseEntity<List<ReporteUsuarioActivoDTO>> usuariosTop(
             @RequestParam String fechaDesde,
             @RequestParam String fechaHasta,
             @RequestParam String tipoUsuario,
             @RequestParam String userIdAdmin
     ) {
-        List<Map<String, Object>> resultado = accionAdminService.consultarUsuariosTop(fechaDesde, fechaHasta, tipoUsuario, userIdAdmin);
-        return ResponseEntity.ok(resultado);
+        ResponseEntity<List<ReporteUsuarioActivoDTO>> resultado = accionAdminService.consultarUsuariosTop(fechaDesde, fechaHasta, tipoUsuario, userIdAdmin);
+        return ResponseEntity.ok(resultado.getBody());
     }
 
     @GetMapping("/reportes/uso-monopatines")
-    public ResponseEntity<List<Map<String, Object>>> usoMonopatines(
-            @RequestParam boolean incluirPausas,
+    public ResponseEntity<List<ReporteUsoMonopatinDTO>> usoMonopatines(
             @RequestParam String userIdAdmin
     ) {
-        List<Map<String, Object>> resultado = accionAdminService.consultarUsoMonopatines(incluirPausas, userIdAdmin);
-        return ResponseEntity.ok(resultado);
+        ResponseEntity<List<ReporteUsoMonopatinDTO>> resultado = accionAdminService.consultarUsoMonopatines( userIdAdmin);
+        return ResponseEntity.ok(resultado.getBody());
     }
 
     @GetMapping("/reportes/monopatines-frecuentes")
-    public ResponseEntity<List<Map<String, Object>>> monopatinesFrecuentes(
+    public ResponseEntity<List<MonopatinViajeDTO>> monopatinesFrecuentes(
             @RequestParam int anio,
-            @RequestParam int minViajes,
+            @RequestParam Long minViajes,
             @RequestParam String userIdAdmin
     ) {
-        List<Map<String, Object>> resultado = accionAdminService.consultarMonopatinesFrecuentes(anio, minViajes, userIdAdmin);
-        return ResponseEntity.ok(resultado);
+        ResponseEntity<List<MonopatinViajeDTO>> resultado = accionAdminService.consultarMonopatinesFrecuentes(anio, minViajes, userIdAdmin);
+        return ResponseEntity.ok(resultado.getBody());
     }
 
     @GetMapping("/reportes/facturacion-total")

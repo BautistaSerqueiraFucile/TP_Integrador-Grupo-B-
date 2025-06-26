@@ -30,7 +30,7 @@ public interface ViajeRepository extends JpaRepository<Viaje, Long> {
             "FROM Viaje v " +
             "WHERE YEAR(v.fecha) = :anio " +
             "GROUP BY v.idMonopatin, YEAR(v.fecha) " +
-            "HAVING COUNT(v) > :cantidadMinima")
+            "HAVING COUNT(v) >= :cantidadMinima")
     List<MonopatinViajeDTO> obtenerMonopatinesConMasDeXViajes(@Param("anio") Integer anio,
                                                                               @Param("cantidadMinima") Long cantidadMinima);
 
