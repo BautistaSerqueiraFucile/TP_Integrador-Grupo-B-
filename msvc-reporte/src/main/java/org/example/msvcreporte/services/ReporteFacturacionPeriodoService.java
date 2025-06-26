@@ -21,18 +21,17 @@ public class ReporteFacturacionPeriodoService {
         this.facturacionClient = facturacionClient;
     }
 
-    public ReporteFacturacionPeriodoDTO generarReporte(Long idUsuario, LocalDate fechaDesde, LocalDate fechaHasta) {
+    public double generarReporte(LocalDate fechaDesde, LocalDate fechaHasta) {
 
 
         // Simulación de respuesta: suponemos que devuelve un número
-        ResponseEntity<List<Factura>> facturas = facturacionClient.obtenerTotalFacturado(idUsuario, fechaDesde, fechaHasta);
+        ResponseEntity<List<Factura>> facturas = facturacionClient.obtenerTotalFacturado(fechaDesde, fechaHasta);
         double total = 0;
+
         for(Factura factura : facturas.getBody()){
             total +=factura.getPrecioViaje();
         }
-        if(idUsuario==null){
-            idUsuario=-1L;
-        }
-        return new ReporteFacturacionPeriodoDTO(idUsuario, fechaDesde, fechaHasta, total);
+
+        return total;
     }
 }

@@ -1,5 +1,6 @@
-package org.example.msvcadmin.models;
+package org.example.msvcfacturacion.dtos;
 
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -7,7 +8,7 @@ import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
-public class Tarifa {
+public class TarifaRequestDTO {
     private double tarifaBasica;
 
     private double tarifaPremium;
@@ -17,4 +18,5 @@ public class Tarifa {
     private LocalDate fechaAumento;
 
     private double porcentajeAumento;
+
 }

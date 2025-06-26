@@ -6,9 +6,11 @@ import org.example.msvcadmin.entities.AuditoriaAdmin;
 import org.example.msvcadmin.models.*;
 import org.example.msvcadmin.repositories.AdminRepository;
 import org.example.msvcadmin.repositories.AuditoriaAdminRepository;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -120,9 +122,9 @@ public class AccionAdminService {
 
 
 
-    public void modificarTarifa(String tipo,Double valor, String userIdAdmin) {
-        facturacionClient.modificarTarifa(tipo, valor);
-        registrarAuditoria("modificar_tarifa", tipo, userIdAdmin, "Tarifa modificada: " + valor.toString());
+    public void modificarTarifa(Tarifa tarifa, String userIdAdmin) {
+        facturacionClient.modificarTarifa(tarifa);
+        registrarAuditoria("modificar_tarifa", "tarifa", userIdAdmin, "Tarifa modificada " + " ");
     }
 
 
@@ -158,11 +160,11 @@ public class AccionAdminService {
         return resultado;
     }
 
-    public Map<String, Object> consultarFacturacionTotal(int anio, int mesDesde, int mesHasta, String userIdAdmin) {
-        Map<String, Object> resultado = reporteClient.getFacturacionTotal(anio, mesDesde, mesHasta);
+    public double consultarFacturacionTotal(LocalDate fechaDesde, LocalDate fechaHasta, String userIdAdmin) {
+        double resultado = reporteClient.getFacturacionTotal(fechaDesde, fechaHasta);
 
         registrarAuditoria("consultar_reporte", "-", userIdAdmin,
-                "Consulta de facturación total (año=" + anio + ", desde=" + mesDesde + ", hasta=" + mesHasta + ")");
+                "Consulta de facturación total (año=" + LocalDate.now().getYear() + ", desde=" + fechaDesde + ", hasta=" + fechaHasta + ")");
 
         return resultado;
     }

@@ -14,9 +14,7 @@ public interface FacturacionClient {
 
     @GetMapping("/facturacion/historial")
     ResponseEntity<List<Factura>> obtenerTotalFacturado(
-            @RequestParam(value = "idUsuario",required = false) long idUsuario,
-            @RequestParam("fechaDesde") LocalDate fechaDesde,
-            @RequestParam("fechaHasta") LocalDate fechaHasta
-
+            @RequestParam LocalDate fechaDesde,
+            @RequestParam LocalDate fechaHasta
     );
 }

@@ -1,5 +1,7 @@
 package org.example.msvcfacturacion.controllers;
 
+import org.example.msvcfacturacion.dtos.TarifaRequestDTO;
+import org.example.msvcfacturacion.entities.Tarifa;
 import org.example.msvcfacturacion.services.TarifaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,10 +24,10 @@ public class TarifaController {
         }
     }
 
-    @PutMapping("tarifa/{tipo}/{valor}")
-    public ResponseEntity<?> updateBasica(@PathVariable("tipo") String tipo ,@PathVariable("valor") double valor) {
+    @PutMapping("tarifa")
+    public ResponseEntity<?> updateBasica(@RequestBody TarifaRequestDTO tarifaDTO) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(tarifaService.updateTarifa(tipo,valor));
+            return ResponseEntity.status(HttpStatus.OK).body(tarifaService.update(new Tarifa(tarifaDTO)));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Por favor intente más tarde.\"}");
         }

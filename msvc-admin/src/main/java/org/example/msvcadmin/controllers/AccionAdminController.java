@@ -5,6 +5,7 @@ import org.example.msvcadmin.services.AccionAdminService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -100,13 +101,9 @@ public class AccionAdminController {
 //        return ResponseEntity.noContent().build();
 //    }
 
-    @PutMapping("/tarifa/{tipo}/{valor}")
-    public ResponseEntity<Tarifa> modificarTarifa(
-            @PathVariable String tipo,
-            @PathVariable double valor,
-            @RequestParam String userIdAdmin
-    ) {
-        accionAdminService.modificarTarifa(tipo, valor, userIdAdmin);
+    @PutMapping("/tarifa/{userAdmin}")
+    public ResponseEntity<Tarifa> modificarTarifa(@RequestBody Tarifa tarifa, @PathVariable String userAdmin) {
+        accionAdminService.modificarTarifa(tarifa, userAdmin);
         return ResponseEntity.noContent().build();
     }
 
@@ -141,14 +138,13 @@ public class AccionAdminController {
     }
 
     @GetMapping("/reportes/facturacion-total")
-    public ResponseEntity<Map<String, Object>> facturacionTotal(
-            @RequestParam int anio,
-            @RequestParam int mesDesde,
-            @RequestParam int mesHasta,
+    public double facturacionTotal(
+            @RequestParam LocalDate fechaDesde,
+            @RequestParam LocalDate fechaHasta,
             @RequestParam String userIdAdmin
     ) {
-        Map<String, Object> resultado = accionAdminService.consultarFacturacionTotal(anio, mesDesde, mesHasta, userIdAdmin);
-        return ResponseEntity.ok(resultado);
+
+        return accionAdminService.consultarFacturacionTotal(fechaDesde, fechaHasta, userIdAdmin);
     }
 
 }

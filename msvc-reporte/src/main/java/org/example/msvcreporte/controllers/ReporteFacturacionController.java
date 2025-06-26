@@ -21,12 +21,7 @@ public class ReporteFacturacionController {
     }
 
     @GetMapping("/facturacion-total")
-    public ResponseEntity<ReporteFacturacionPeriodoDTO> facturacionTotal(
-            @RequestParam Long idUsuario,
-            @RequestParam LocalDate desde,
-            @RequestParam LocalDate hasta) {
-
-        ReporteFacturacionPeriodoDTO dto = servicio.generarReporte( idUsuario,desde, hasta);
-        return ResponseEntity.ok(dto);
+    public double facturacionTotal(@RequestParam LocalDate fechaDesde, @RequestParam LocalDate fechaHasta) {
+        return servicio.generarReporte(fechaDesde, fechaHasta);
     }
 }

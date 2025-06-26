@@ -1,5 +1,6 @@
 package org.example.msvcadmin.clients;
 
+import org.example.msvcadmin.models.Factura;
 import org.example.msvcadmin.models.MonopatinViajeDTO;
 import org.example.msvcadmin.models.ReporteUsoMonopatinDTO;
 import org.example.msvcadmin.models.ReporteUsuarioActivoDTO;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -32,18 +34,13 @@ public interface ReporteClient {
     @GetMapping("/reporte/monopatines-mas-usados")
     ResponseEntity<List<MonopatinViajeDTO>> getMonopatinesFrecuentes(@RequestParam("anio") int anio, @RequestParam("minViajes") Long minViajes);
 
-    /**
-     * Obtiene el total de facturación entre dos meses de un año dado.
-     *
-     * @param anio Año a consultar.
-     * @param desde Mes de inicio (inclusive).
-     * @param hasta Mes de fin (inclusive).
-     * @return Mapa con el total facturado y datos relacionados.
-     */
-    @GetMapping("/reporte/facturacion-total")
-    Map<String, Object> getFacturacionTotal(@RequestParam("anio") int anio,
-                                            @RequestParam("mesDesde") int desde,
-                                            @RequestParam("mesHasta") int hasta);
+
+    @GetMapping("reporte/facturacion-total")
+    double getFacturacionTotal(
+            @RequestParam("fechaDesde") LocalDate fechaDesde,
+            @RequestParam("fechaHasta") LocalDate fechaHasta
+    );
+
 
     /**
      * Obtiene los usuarios más activos o destacados en un rango de fechas.
