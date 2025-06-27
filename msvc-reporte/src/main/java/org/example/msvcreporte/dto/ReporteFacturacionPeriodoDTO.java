@@ -1,17 +1,20 @@
 package org.example.msvcreporte.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+import java.time.LocalDate;
+@Data
+@AllArgsConstructor
 public class ReporteFacturacionPeriodoDTO {
-    private Integer anio;
-    private Integer mesDesde;
-    private Integer mesHasta;
+    private Long idUsuario;
+    private LocalDate desde;
+    private LocalDate hasta;
     private Double totalFacturado;
 
-    public ReporteFacturacionPeriodoDTO() {}
-
-    public ReporteFacturacionPeriodoDTO(Integer anio, Integer mesDesde, Integer mesHasta, Double totalFacturado) {
-        this.anio = anio;
-        this.mesDesde = mesDesde;
-        this.mesHasta = mesHasta;
+    public ReporteFacturacionPeriodoDTO(LocalDate desde, LocalDate hasta, Double totalFacturado) {
+        this.desde = desde;
+        this.hasta = hasta;
         this.totalFacturado = totalFacturado;
     }
 }

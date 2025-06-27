@@ -1,0 +1,36 @@
+{
+  "info": {
+    "name": "ReporteUsoMonopatinController",
+    "_postman_id": "c6c3b5e7-1111-4444-bbbb-aaaa12345678",
+    "description": "Colección para probar el endpoint de uso de monopatines del microservicio reporte",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET /reporte/uso-monopatines",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8006/reporte/uso-monopatines?incluirPausas=true",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8006",
+          "path": [
+            "reporte",
+            "uso-monopatines"
+          ],
+          "query": [
+            {
+              "key": "incluirPausas",
+              "value": "true"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

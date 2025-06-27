@@ -1,0 +1,29 @@
+{
+  "info": {
+    "name": "ReporteFacturacionController",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "reporte-facturacion-collection"
+  },
+  "item": [
+    {
+      "name": "GET /reporte/facturacion-total",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8006/reporte/facturacion-total?anio=2024&mesDesde=1&mesHasta=6",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8006",
+          "path": ["reporte", "facturacion-total"],
+          "query": [
+            { "key": "anio", "value": "2024" },
+            { "key": "mesDesde", "value": "1" },
+            { "key": "mesHasta", "value": "6" }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

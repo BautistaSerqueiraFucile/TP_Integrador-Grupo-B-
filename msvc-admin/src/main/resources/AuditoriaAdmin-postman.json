@@ -1,0 +1,97 @@
+{
+    "info": {
+        "name": "AuditoriaAdminController Postman Collection",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Listar todas las auditor\u00edas",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8004/admin/auditoria",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8004",
+                    "path": [
+                        "admin",
+                        "auditoria"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Filtrar auditor\u00edas por tipoAccion",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8004/admin/auditoria?tipoAccion=bloquear_cuenta",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8004",
+                    "path": [
+                        "admin",
+                        "auditoria"
+                    ],
+                    "query": [
+                        {
+                            "key": "tipoAccion",
+                            "value": "bloquear_cuenta"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Filtrar auditor\u00edas por fechaDesde",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8004/admin/auditoria?fechaDesde=2025-06-01T00:00:00",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8004",
+                    "path": [
+                        "admin",
+                        "auditoria"
+                    ],
+                    "query": [
+                        {
+                            "key": "fechaDesde",
+                            "value": "2025-06-01T00:00:00"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Obtener auditor\u00eda por ID",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8004/admin/auditoria/{{auditoriaId}}",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "8004",
+                    "path": [
+                        "admin",
+                        "auditoria",
+                        "{{auditoriaId}}"
+                    ]
+                }
+            }
+        }
+    ]
+}

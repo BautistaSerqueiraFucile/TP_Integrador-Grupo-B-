@@ -1,0 +1,44 @@
+{
+  "info": {
+    "name": "ReporteUsuariosActivosController",
+    "_postman_id": "f7b3c11a-2222-4c5a-aeee-abcdef123456",
+    "description": "Colección para probar el endpoint usuarios-top del microservicio reporte",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET /reporte/usuarios-top",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8006/reporte/usuarios-top?fechaDesde=2025-01-01&fechaHasta=2025-06-24&tipoUsuario=premium",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8006",
+          "path": [
+            "reporte",
+            "usuarios-top"
+          ],
+          "query": [
+            {
+              "key": "fechaDesde",
+              "value": "2025-01-01"
+            },
+            {
+              "key": "fechaHasta",
+              "value": "2025-06-24"
+            },
+            {
+              "key": "tipoUsuario",
+              "value": "premium"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

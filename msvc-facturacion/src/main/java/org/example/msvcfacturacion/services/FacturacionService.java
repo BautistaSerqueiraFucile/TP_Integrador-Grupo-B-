@@ -8,6 +8,7 @@ import org.example.msvcfacturacion.models.Cuenta;
 import org.example.msvcfacturacion.repositories.FacturacionRepository;
 import org.example.msvcfacturacion.repositories.TarifaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,8 +51,8 @@ public class FacturacionService {
     }
 
     @Transactional
-    public List<Factura> findByUserAndDate(Long id, LocalDate fechaIni, LocalDate fechaFin){
-       return repoFacturacion.findAllByIdUsuarioAndFechaBetweenOrderByFecha(id, fechaIni, fechaFin);
+    public List<Factura> findDate(LocalDate fechaIni, LocalDate fechaFin) {
+        return repoFacturacion.findByFechaBetween(fechaIni, fechaFin);
     }
 
     @Transactional
@@ -61,30 +62,40 @@ public class FacturacionService {
         cuentaClient.actualizarCuenta(cuenta.getId(), cuenta);
     }
 
-    private String getTipoCuenta(Long id){
+    private String getTipoCuenta(Long id) {
         Cuenta cuenta = cuentaClient.obtenerCuentaPorId(id);
         return cuenta.getTipoCuenta();
     }
 
-    private double calcularCostoTotal(double tiempoTotal, double tiempoPausa, double tipoTarifa, double tarifaPausa){
+    private double calcularCostoTotal(double tiempoTotal, double tiempoPausa, double tipoTarifa, double tarifaPausa) {
         double costoViaje = tiempoTotal * tipoTarifa;
-        if (tiempoPausa > 15.0){
-            costoViaje += ((tiempoTotal/2) * tarifaPausa);
-        } return costoViaje;
+        if (tiempoPausa > 15.0) {
+            costoViaje += ((tiempoTotal / 2) * tarifaPausa);
+        }
+        return costoViaje;
     }
 
-    private void setPreciosTarifas(Factura factura){
+    private void setPreciosTarifas(Factura factura) {
         Optional<Tarifa> opt = repoTarifa.findById(1L);
         Tarifa tarifa = opt.get();
+
+        double porcentajeAumento = tarifa.getPorcentajeAumento();
+        double extra = 0;
+        LocalDate fechaAumento = tarifa.getFechaAumento();
+
+        if (fechaAumento.isBefore(factura.getFecha())) {
+            extra = porcentajeAumento;
+        }
+
         factura.setTarifaPausa(tarifa.getTarifaPausa());
-        switch (getTipoCuenta(factura.getIdUsuario()).toUpperCase()){
+        switch (getTipoCuenta(factura.getIdUsuario()).toUpperCase()) {
             case "BASICA":
                 factura.setTipoCuenta("BASICA");
-                factura.setCostoTarifa(tarifa.getTarifaBasica());
+                factura.setCostoTarifa(tarifa.getTarifaBasica() + tarifa.getTarifaBasica() * extra);
                 break;
             case "PREMIUM":
                 factura.setTipoCuenta("PREMIUM");
-                factura.setCostoTarifa(tarifa.getTarifaPremium());
+                factura.setCostoTarifa(tarifa.getTarifaPremium() + tarifa.getTarifaBasica() * extra);
                 break;
         }
     }

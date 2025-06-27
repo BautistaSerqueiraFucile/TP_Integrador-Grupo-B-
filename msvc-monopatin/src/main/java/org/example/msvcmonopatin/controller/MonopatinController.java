@@ -1,6 +1,7 @@
 package org.example.msvcmonopatin.controller;
 
 import org.example.msvcmonopatin.DTO.EstadoDTO;
+import org.example.msvcmonopatin.DTO.MonopatinEstadisticasDTO;
 import org.example.msvcmonopatin.entities.Monopatin;
 import org.example.msvcmonopatin.entities.Ubicacion;
 import org.example.msvcmonopatin.repositories.MonopatinRepository;
@@ -97,5 +98,15 @@ public class MonopatinController {
     public ResponseEntity<Monopatin> actualizarTiempos(@PathVariable("id") String id, @RequestParam String paradaActual) {
         return monopatinService.actualizarParada(id,paradaActual);
 
+    }
+
+    @PutMapping("/{id}/reset-km")
+    void resetearKilometraje(@PathVariable("id") String id){
+        monopatinService.resetearKilometraje(id);
+    }
+
+    @GetMapping("/estadisticas")
+    ResponseEntity<List<MonopatinEstadisticasDTO>> obtnerDatosEstadisticos(){
+        return ResponseEntity.ok(monopatinService.obtnerDatosEstadisticos());
     }
 }

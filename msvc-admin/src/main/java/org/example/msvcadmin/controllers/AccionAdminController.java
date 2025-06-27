@@ -1,9 +1,11 @@
 package org.example.msvcadmin.controllers;
 
+import org.example.msvcadmin.models.*;
 import org.example.msvcadmin.services.AccionAdminService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +36,7 @@ public class AccionAdminController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/scooters/{scooterId}/estado/{estado}")
+    @PutMapping("/monopatines/{scooterId}/estado/{estado}")
     public ResponseEntity<Void> cambiarEstadoScooter(
             @PathVariable Long scooterId,
             @PathVariable String estado,
@@ -46,7 +48,7 @@ public class AccionAdminController {
 
     @PostMapping("/monopatines")
     public ResponseEntity<Void> agregarMonopatin(
-            @RequestBody Map<String, Object> datos,
+            @RequestBody Monopatin datos,
             @RequestParam String userIdAdmin
     ) {
         accionAdminService.agregarMonopatin(datos, userIdAdmin);
@@ -64,7 +66,7 @@ public class AccionAdminController {
 
     @PostMapping("/paradas")
     public ResponseEntity<Void> crearParada(
-            @RequestBody Map<String, Object> datos,
+            @RequestBody Parada datos,
             @RequestParam String userIdAdmin
     ) {
         accionAdminService.crearParada(datos, userIdAdmin);
@@ -74,7 +76,7 @@ public class AccionAdminController {
     @PutMapping("/paradas/{id}")
     public ResponseEntity<Void> editarParada(
             @PathVariable Long id,
-            @RequestBody Map<String, Object> datos,
+            @RequestBody Parada datos,
             @RequestParam String userIdAdmin
     ) {
         accionAdminService.editarParada(id, datos, userIdAdmin);
@@ -90,83 +92,59 @@ public class AccionAdminController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/tarifas")
-    public ResponseEntity<Void> crearTarifa(
-            @RequestBody Map<String, Object> datos,
-            @RequestParam String userIdAdmin
-    ) {
-        accionAdminService.crearTarifa(datos, userIdAdmin);
-        return ResponseEntity.noContent().build();
-    }
+//    @PostMapping("/tarifas")
+//    public ResponseEntity<Void> crearTarifa(
+//            @RequestBody Map<String, Object> datos,
+//            @RequestParam String userIdAdmin
+//    ) {
+//        accionAdminService.crearTarifa(datos, userIdAdmin);
+//        return ResponseEntity.noContent().build();
+//    }
 
-    @PutMapping("/tarifas/{id}")
-    public ResponseEntity<Void> modificarTarifa(
-            @PathVariable Long id,
-            @RequestBody Map<String, Object> datos,
-            @RequestParam String userIdAdmin
-    ) {
-        accionAdminService.modificarTarifa(id, datos, userIdAdmin);
-        return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping("/tarifas-extra")
-    public ResponseEntity<Void> crearTarifaExtra(
-            @RequestBody Map<String, Object> datos,
-            @RequestParam String userIdAdmin
-    ) {
-        accionAdminService.crearTarifaExtra(datos, userIdAdmin);
-        return ResponseEntity.noContent().build();
-    }
-
-    @PutMapping("/tarifas-extra/{id}")
-    public ResponseEntity<Void> modificarTarifaExtra(
-            @PathVariable Long id,
-            @RequestBody Map<String, Object> datos,
-            @RequestParam String userIdAdmin
-    ) {
-        accionAdminService.modificarTarifaExtra(id, datos, userIdAdmin);
+    @PutMapping("/tarifa/{userAdmin}")
+    public ResponseEntity<Tarifa> modificarTarifa(@RequestBody Tarifa tarifa, @PathVariable String userAdmin) {
+        accionAdminService.modificarTarifa(tarifa, userAdmin);
         return ResponseEntity.noContent().build();
     }
 
 
     @GetMapping("/reportes/usuarios-top")
-    public ResponseEntity<List<Map<String, Object>>> usuariosTop(
+    public ResponseEntity<List<ReporteUsuarioActivoDTO>> usuariosTop(
             @RequestParam String fechaDesde,
             @RequestParam String fechaHasta,
             @RequestParam String tipoUsuario,
             @RequestParam String userIdAdmin
     ) {
-        List<Map<String, Object>> resultado = accionAdminService.consultarUsuariosTop(fechaDesde, fechaHasta, tipoUsuario, userIdAdmin);
-        return ResponseEntity.ok(resultado);
+        ResponseEntity<List<ReporteUsuarioActivoDTO>> resultado = accionAdminService.consultarUsuariosTop(fechaDesde, fechaHasta, tipoUsuario, userIdAdmin);
+        return ResponseEntity.ok(resultado.getBody());
     }
 
     @GetMapping("/reportes/uso-monopatines")
-    public ResponseEntity<List<Map<String, Object>>> usoMonopatines(
-            @RequestParam boolean incluirPausas,
+    public ResponseEntity<List<ReporteUsoMonopatinDTO>> usoMonopatines(
             @RequestParam String userIdAdmin
     ) {
-        List<Map<String, Object>> resultado = accionAdminService.consultarUsoMonopatines(incluirPausas, userIdAdmin);
-        return ResponseEntity.ok(resultado);
+        ResponseEntity<List<ReporteUsoMonopatinDTO>> resultado = accionAdminService.consultarUsoMonopatines( userIdAdmin);
+        return ResponseEntity.ok(resultado.getBody());
     }
 
     @GetMapping("/reportes/monopatines-frecuentes")
-    public ResponseEntity<List<Map<String, Object>>> monopatinesFrecuentes(
+    public ResponseEntity<List<MonopatinViajeDTO>> monopatinesFrecuentes(
             @RequestParam int anio,
-            @RequestParam int minViajes,
+            @RequestParam Long minViajes,
             @RequestParam String userIdAdmin
     ) {
-        List<Map<String, Object>> resultado = accionAdminService.consultarMonopatinesFrecuentes(anio, minViajes, userIdAdmin);
-        return ResponseEntity.ok(resultado);
+        ResponseEntity<List<MonopatinViajeDTO>> resultado = accionAdminService.consultarMonopatinesFrecuentes(anio, minViajes, userIdAdmin);
+        return ResponseEntity.ok(resultado.getBody());
     }
 
     @GetMapping("/reportes/facturacion-total")
-    public ResponseEntity<Map<String, Object>> facturacionTotal(
-            @RequestParam int anio,
-            @RequestParam int mesDesde,
-            @RequestParam int mesHasta,
+    public double facturacionTotal(
+            @RequestParam LocalDate fechaDesde,
+            @RequestParam LocalDate fechaHasta,
             @RequestParam String userIdAdmin
     ) {
-        Map<String, Object> resultado = accionAdminService.consultarFacturacionTotal(anio, mesDesde, mesHasta, userIdAdmin);
-        return ResponseEntity.ok(resultado);
+
+        return accionAdminService.consultarFacturacionTotal(fechaDesde, fechaHasta, userIdAdmin);
     }
+
 }

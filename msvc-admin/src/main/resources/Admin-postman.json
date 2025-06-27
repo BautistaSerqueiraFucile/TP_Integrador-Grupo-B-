@@ -1,0 +1,85 @@
+{
+    "info": {
+        "name": "AdminController",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Asignar rol de administrador",
+            "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8004/admin/usuarios/{userId}",
+                    "host": [
+                        "http://localhost:8004"
+                    ],
+                    "path": [
+                        "admin",
+                        "usuarios",
+                        "{userId}"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Quitar rol de administrador",
+            "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8004/admin/usuarios/{userId}",
+                    "host": [
+                        "http://localhost:8004"
+                    ],
+                    "path": [
+                        "admin",
+                        "usuarios",
+                        "{userId}"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Obtener admin por userId",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8004/admin/usuarios/{userId}",
+                    "host": [
+                        "http://localhost:8004"
+                    ],
+                    "path": [
+                        "admin",
+                        "usuarios",
+                        "{userId}"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Listar admins (con o sin filtro de activo)",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8004/admin/usuarios?activo=true",
+                    "host": [
+                        "http://localhost:8004"
+                    ],
+                    "path": [
+                        "admin",
+                        "usuarios"
+                    ],
+                    "query": [
+                        {
+                            "key": "activo",
+                            "value": "true"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

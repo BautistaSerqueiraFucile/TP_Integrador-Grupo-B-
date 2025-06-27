@@ -138,20 +138,7 @@ public class CuentaService {
         return viajeFeignClient.getViajesPorUsuarioYPeriodo(userId);
     }
 
-    public ParadaDto paradaMasCercana(Long idCuenta) {
-        List<ParadaDto> paradas = paradaFeignClient.listarParadas();
-        if (paradas == null || paradas.isEmpty()) {
-            throw new IllegalStateException("No se encontraron paradas disponibles.");
-        }
-
-        ParadaDto paradaMasCercana = paradas.stream()
-                .min((p1, p2) -> Double.compare(
-                        calcularDistanciaAParada(idCuenta, p1.getId()),
-                        calcularDistanciaAParada(idCuenta, p2.getId())
-                ))
-                .orElseThrow(() -> new IllegalStateException("No se encontraron paradas disponibles."));
-
-        return paradaMasCercana;
+    public List<Cuenta> obtenerPorTipo(String tipo) {
+        return cuentaRepository.findAllByTipoCuenta(TipoCuenta.valueOf(tipo));
     }
-
 }

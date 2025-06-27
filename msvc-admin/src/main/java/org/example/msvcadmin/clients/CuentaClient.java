@@ -9,7 +9,7 @@ import java.util.Map;
  * Cliente Feign que se comunica con el microservicio de cuentas (puerto 8001).
  * Define los endpoints que el microservicio de administración puede consumir para gestionar cuentas de usuario.
  */
-@FeignClient(name = "cuenta", url = "http://localhost:8001")
+@FeignClient(name = "msvc-cuenta", url = "http://localhost:8001")
 public interface CuentaClient {
 
     /**
@@ -18,7 +18,7 @@ public interface CuentaClient {
      *
      * @param id ID de la cuenta a anular.
      */
-    @PatchMapping("/cuentas/anular/{id}")
+    @PutMapping("/cuentas/anular/{id}")
     void anularCuenta(@PathVariable("id") Long id);
 
     /**
@@ -26,7 +26,7 @@ public interface CuentaClient {
      *
      * @param id ID de la cuenta a reactivar.
      */
-    @PatchMapping("/cuentas/activar/{id}")
+    @PutMapping("/cuentas/activar/{id}")
     void activarCuenta(@PathVariable("id") Long id);
 
     /**
