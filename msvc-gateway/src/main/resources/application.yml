@@ -1,0 +1,52 @@
+server:
+  port: 8000
+
+spring:
+  main:
+    web-application-type: reactive
+  application:
+     name: msvc-gateway
+  cloud:
+    config:
+        enabled: false
+    gateway:
+      routes:
+        - id: admin
+          uri: http://localhost:8004
+          predicates:
+            - Path=/admin, /admin/**
+
+        - id: cuenta
+          uri: http://localhost:8001
+          predicates:
+            - Path=/cuentas, /cuentas/**
+
+        - id: facturacion
+          uri: http://localhost:8005
+          predicates:
+            - Path=/facturacion, /facturacion/**
+
+        - id: monopatin
+          uri: http://localhost:8007
+          predicates:
+            - Path=/monopatines, /monopatines/**
+
+        - id: parada
+          uri: http://localhost:8008
+          predicates:
+            - Path=/paradas, /paradas/**
+
+        - id: reporte
+          uri: http://localhost:8006
+          predicates:
+            - Path=/reporte, /reporte/**
+
+        - id: usuario
+          uri: http://localhost:8002
+          predicates:
+            - Path=/usuarios, /usuarios/**
+
+        - id: viaje
+          uri: http://localhost:8003
+          predicates:
+            - Path=/viajes, /viajes/**
