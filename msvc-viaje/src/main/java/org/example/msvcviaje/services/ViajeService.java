@@ -181,10 +181,5 @@ public class ViajeService {
         return repoViaje.obtenerMonopatinesConMasDeXViajes(anio, minViaje);
     }
 
-    @Transactional
-    public List<Viaje> getUsuariosTop() throws Exception {
-        return repoViaje.findViajesDeTop3UsuariosConMasViajes();
-    }
-
 
 }
