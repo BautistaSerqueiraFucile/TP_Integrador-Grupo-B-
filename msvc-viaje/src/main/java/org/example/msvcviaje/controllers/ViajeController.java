@@ -107,13 +107,5 @@ public class ViajeController {
         }
     }
 
-    @GetMapping("usuarios_top")
-    public ResponseEntity<?> getUsuariosTop(){
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(viajeService.getUsuariosTop());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() + "\"}");
-        }
-    }
 
 }

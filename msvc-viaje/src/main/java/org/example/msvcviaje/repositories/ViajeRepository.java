@@ -34,19 +34,6 @@ public interface ViajeRepository extends JpaRepository<Viaje, Long> {
     List<MonopatinViajeDTO> obtenerMonopatinesConMasDeXViajes(@Param("anio") Integer anio,
                                                                               @Param("cantidadMinima") Long cantidadMinima);
 
-    @Query(value = """
-                SELECT *
-                FROM viaje
-                WHERE id_usuario IN (
-                    SELECT id_usuario
-                    FROM viaje
-                    GROUP BY id_usuario
-                    ORDER BY COUNT(*) DESC
-                    LIMIT 3
-                )
-            """, nativeQuery = true)
-    List<Viaje> findViajesDeTop3UsuariosConMasViajes();
-
 
     List<Viaje> findByFechaBetweenOrderByFechaAscHoraInicioAsc(
             LocalDate desde,
