@@ -21,9 +21,9 @@ public class ReporteUsoMonopatinController {
     }
 
     @GetMapping("/uso-monopatines")
-    public ResponseEntity<List<ReporteUsoMonopatinDTO>> getUsoMonopatines(
-            @RequestParam(defaultValue = "true") boolean incluirPausas) {
-        List<ReporteUsoMonopatinDTO> resultado = reporteService.generarReporte(incluirPausas);
+    public ResponseEntity<List<ReporteUsoMonopatinDTO>> getUsoMonopatines()
+            {
+        List<ReporteUsoMonopatinDTO> resultado = reporteService.generarReporte();
         return ResponseEntity.ok(resultado);
     }
 }

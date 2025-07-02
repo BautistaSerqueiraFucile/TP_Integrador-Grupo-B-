@@ -38,12 +38,11 @@ public class FacturacionController {
 
     @GetMapping("historial")
     public ResponseEntity<?> getHistorial(
-            @RequestParam (required = false) Long idUsuario,
             @RequestParam LocalDate fechaDesde,
             @RequestParam LocalDate fechaHasta
     ) {
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(facturacionService.findByUserAndDate(idUsuario, fechaDesde, fechaHasta));
+            return ResponseEntity.status(HttpStatus.OK).body(facturacionService.findDate(fechaDesde, fechaHasta));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Por favor intente más tarde.\"}");
         }

@@ -17,6 +17,7 @@
         <module>msvc-facturacion</module>
         <module>msvc-admin</module>
         <module>msvc-reporte</module>
+        <module>msvc-gateway</module>
     </modules>
 
     <groupId>org.example</groupId>

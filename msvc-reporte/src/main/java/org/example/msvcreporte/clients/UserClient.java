@@ -14,5 +14,5 @@ public interface UserClient {
     Map<String, Object> obtenerUsuario(@PathVariable("id") Long idUsuario);
 
     @GetMapping("/usuarios")
-    List<Map<String, Object>> obtenerTodosLosUsuarios();
+    List<Map<String, Object>> obtenerTodosLosUsuarios(@PathVariable("tipo") String tipo);
 }

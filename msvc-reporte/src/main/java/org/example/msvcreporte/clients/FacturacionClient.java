@@ -1,19 +1,20 @@
 package org.example.msvcreporte.clients;
 
+import org.example.msvcreporte.models.Factura;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
-@FeignClient(name = "facturacion", url = "http://localhost:8005")
+@FeignClient(name = "msvc-facturacion", url = "http://localhost:8005")
 public interface FacturacionClient {
 
     @GetMapping("/facturacion/historial")
-    List<Map<String, Object>> obtenerFacturas(
-            @RequestParam("fechaDesde") String fechaDesde,
-            @RequestParam("fechaHasta") String fechaHasta,
-            @RequestParam(value = "idUsuario", required = false) Long idUsuario
+    ResponseEntity<List<Factura>> obtenerTotalFacturado(
+            @RequestParam LocalDate fechaDesde,
+            @RequestParam LocalDate fechaHasta
     );
 }

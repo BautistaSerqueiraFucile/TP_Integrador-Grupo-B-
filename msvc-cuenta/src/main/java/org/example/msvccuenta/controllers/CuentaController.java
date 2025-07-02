@@ -3,6 +3,7 @@ package org.example.msvccuenta.controllers;
 import jakarta.validation.Valid;
 import org.example.msvccuenta.entities.Cuenta;
 import org.example.msvccuenta.entities.TipoCuenta;
+import org.example.msvccuenta.entities.dto.ParadaDto;
 import org.example.msvccuenta.exceptions.CuentaNoEncontradaException;
 import org.example.msvccuenta.services.CuentaService;
 import org.springframework.http.HttpStatus;
@@ -180,5 +181,25 @@ public class CuentaController {
             errores.put(err.getField(), "El campo " + err.getField() + " " + err.getDefaultMessage());
         });
         return ResponseEntity.badRequest().body(errores);
+    }
+
+    @GetMapping("/tipo/{tipo}")
+    public ResponseEntity<?> obtenerPorTipo(@PathVariable String tipo) {
+        try {
+            List<?> cuentas = cuentaService.obtenerPorTipo(tipo.toUpperCase());
+            return ResponseEntity.ok(cuentas);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
+        }
+    }
+
+    @GetMapping("/{idCuenta}/parada-cercana")
+    public ResponseEntity<?> obtenerParadaCercana(@PathVariable Long idCuenta) {
+        try {
+            ParadaDto paradaMasCercana = cuentaService.paradaMasCercana(idCuenta);
+            return ResponseEntity.ok(paradaMasCercana);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
+        }
     }
 }

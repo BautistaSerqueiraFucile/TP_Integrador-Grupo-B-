@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.msvcfacturacion.dtos.TarifaRequestDTO;
+
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -19,10 +22,16 @@ public class Tarifa {
     private double tarifaPremium;
     @Column(name = "tarifa_pausa")
     private double tarifaPausa;
+    @Column(name = "fecha_aumento")
+    private LocalDate fechaAumento;
+    @Column(name = "porcentaje_aumento")
+    private double porcentajeAumento;
 
-    public Tarifa(double basico, double premium, double pausa){
-        this.tarifaBasica = basico;
-        this.tarifaPremium = premium;
-        this.tarifaPausa = pausa;
+    public Tarifa(TarifaRequestDTO tarifaRequestDTO) {
+        this.tarifaBasica = tarifaRequestDTO.getTarifaBasica();
+        this.tarifaPremium = tarifaRequestDTO.getTarifaPremium();
+        this.tarifaPausa = tarifaRequestDTO.getTarifaPausa();
+        this.fechaAumento = tarifaRequestDTO.getFechaAumento();
+        this.porcentajeAumento = tarifaRequestDTO.getPorcentajeAumento();
     }
 }

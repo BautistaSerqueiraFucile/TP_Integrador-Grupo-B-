@@ -1,6 +1,7 @@
 package org.example.msvcreporte.controllers;
 
 import org.example.msvcreporte.dto.ReporteUsoPorCuentaDTO;
+import org.example.msvcreporte.models.Viaje;
 import org.example.msvcreporte.services.ReporteUsoPorCuentaService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -23,15 +24,11 @@ public class ReporteUsoPorCuentaController {
     }
 
     @GetMapping("/uso-por-cuenta")
-    public ResponseEntity<List<ReporteUsoPorCuentaDTO>> getUsoPorCuenta(
+    public ResponseEntity<List<Viaje>> getUsoPorCuenta(
             @RequestParam("idCuenta") Long idCuenta,
             @RequestParam("fechaDesde") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaDesde,
-            @RequestParam("fechaHasta") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaHasta,
-            @RequestParam("incluirOtrosUsuarios") boolean incluirOtrosUsuarios
+            @RequestParam("fechaHasta") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaHasta
     ) {
-        List<ReporteUsoPorCuentaDTO> resultado = reporteUsoPorCuentaService.generarReporte(
-                idCuenta, fechaDesde, fechaHasta, incluirOtrosUsuarios
-        );
-        return ResponseEntity.ok(resultado);
+        return ResponseEntity.ok(reporteUsoPorCuentaService.generarReporte(idCuenta, fechaDesde, fechaHasta));
     }
 }

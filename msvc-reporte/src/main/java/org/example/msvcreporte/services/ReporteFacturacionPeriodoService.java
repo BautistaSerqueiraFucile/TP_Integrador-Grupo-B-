@@ -2,9 +2,13 @@ package org.example.msvcreporte.services;
 
 import org.example.msvcreporte.clients.FacturacionClient;
 import org.example.msvcreporte.dto.ReporteFacturacionPeriodoDTO;
+import org.example.msvcreporte.models.Factura;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,23 +21,17 @@ public class ReporteFacturacionPeriodoService {
         this.facturacionClient = facturacionClient;
     }
 
-    public ReporteFacturacionPeriodoDTO generarReporte(int anio, int mesDesde, int mesHasta) {
-        // Crear fechas
-        LocalDate fechaDesde = LocalDate.of(anio, mesDesde, 1);
-        LocalDate fechaHasta = LocalDate.of(anio, mesHasta, LocalDate.of(anio, mesHasta, 1).lengthOfMonth());
+    public double generarReporte(LocalDate fechaDesde, LocalDate fechaHasta) {
 
-        // Llamar al microservicio de facturación
-        List<Map<String, Object>> facturas = facturacionClient.obtenerFacturas(
-                fechaDesde.toString(),
-                fechaHasta.toString(),
-                null // sin filtrar por usuario
-        );
 
-        // Sumar los montos
-        double total = facturas.stream()
-                .mapToDouble(f -> Double.parseDouble(f.get("monto").toString()))
-                .sum();
+        // Simulación de respuesta: suponemos que devuelve un número
+        ResponseEntity<List<Factura>> facturas = facturacionClient.obtenerTotalFacturado(fechaDesde, fechaHasta);
+        double total = 0;
 
-        return new ReporteFacturacionPeriodoDTO(anio, mesDesde, mesHasta, total);
+        for(Factura factura : facturas.getBody()){
+            total +=factura.getPrecioViaje();
+        }
+
+        return total;
     }
 }

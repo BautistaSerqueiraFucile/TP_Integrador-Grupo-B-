@@ -3,12 +3,14 @@ package org.example.msvcadmin.services;
 import org.example.msvcadmin.clients.*;
 import org.example.msvcadmin.entities.Admin;
 import org.example.msvcadmin.entities.AuditoriaAdmin;
-import org.example.msvcadmin.models.Monopatin;
-import org.example.msvcadmin.models.Parada;
+import org.example.msvcadmin.models.*;
 import org.example.msvcadmin.repositories.AdminRepository;
 import org.example.msvcadmin.repositories.AuditoriaAdminRepository;
+import org.springframework.cglib.core.Local;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -118,32 +120,21 @@ public class AccionAdminService {
         registrarAuditoria("eliminar_parada", paradaId.toString(), userIdAdmin, "Parada eliminada");
     }
 
-    public void crearTarifa(Map<String, Object> datos, String userIdAdmin) {
-        facturacionClient.crearTarifa(datos);
-        registrarAuditoria("crear_tarifa", null, userIdAdmin, "Tarifa creada: " + datos.toString());
+
+
+    public void modificarTarifa(Tarifa tarifa, String userIdAdmin) {
+        facturacionClient.modificarTarifa(tarifa);
+        registrarAuditoria("modificar_tarifa", "tarifa", userIdAdmin, "Tarifa modificada " + " ");
     }
 
-    public void modificarTarifa(Long tarifaId, Map<String, Object> datos, String userIdAdmin) {
-        facturacionClient.modificarTarifa(tarifaId, datos);
-        registrarAuditoria("modificar_tarifa", tarifaId.toString(), userIdAdmin, "Tarifa modificada: " + datos.toString());
-    }
 
-    public void crearTarifaExtra(Map<String, Object> datos, String userIdAdmin) {
-        facturacionClient.crearTarifaExtra(datos);
-        registrarAuditoria("crear_tarifa_extra", null, userIdAdmin, "Tarifa extra creada: " + datos.toString());
-    }
-
-    public void modificarTarifaExtra(Long tarifaExtraId, Map<String, Object> datos, String userIdAdmin) {
-        facturacionClient.modificarTarifaExtra(tarifaExtraId, datos);
-        registrarAuditoria("modificar_tarifa_extra", tarifaExtraId.toString(), userIdAdmin, "Tarifa extra modificada: " + datos.toString());
-    }
 
     /*
     agregar a partir de tal fecha cambiar tarifa
      */
 
-    public List<Map<String, Object>> consultarUsuariosTop(String desde, String hasta, String tipoUsuario, String userIdAdmin) {
-        List<Map<String, Object>> resultado = reporteClient.getUsuariosTop(desde, hasta, tipoUsuario);
+    public ResponseEntity<List<ReporteUsuarioActivoDTO>> consultarUsuariosTop(String desde, String hasta, String tipoUsuario, String userIdAdmin) {
+        ResponseEntity<List<ReporteUsuarioActivoDTO>> resultado = reporteClient.getUsuariosTop(desde, hasta, tipoUsuario);
 
         registrarAuditoria("consultar_reporte", "-", userIdAdmin,
                 "Reporte de usuarios top desde " + desde + " hasta " + hasta + " (tipo: " + tipoUsuario + ")");
@@ -151,17 +142,17 @@ public class AccionAdminService {
         return resultado;
     }
 
-    public List<Map<String, Object>> consultarUsoMonopatines(boolean incluirPausas, String userIdAdmin) {
-        List<Map<String, Object>> resultado = reporteClient.getReporteUsoMonopatines(incluirPausas);
+    public ResponseEntity<List<ReporteUsoMonopatinDTO>> consultarUsoMonopatines( String userIdAdmin) {
+        ResponseEntity<List<ReporteUsoMonopatinDTO>> resultado = reporteClient.getReporteUsoMonopatines();
 
         registrarAuditoria("consultar_reporte", "-", userIdAdmin,
-                "Consulta de reporte de uso de monopatines (incluirPausas=" + incluirPausas + ")");
+                "Consulta de reporte de uso de monopatines (incluirPausas=" + ")");
 
         return resultado;
     }
 
-    public List<Map<String, Object>> consultarMonopatinesFrecuentes(int anio, int minViajes, String userIdAdmin) {
-        List<Map<String, Object>> resultado = reporteClient.getMonopatinesFrecuentes(anio, minViajes);
+    public ResponseEntity<List<MonopatinViajeDTO>> consultarMonopatinesFrecuentes(int anio, Long minViajes, String userIdAdmin) {
+        ResponseEntity<List<MonopatinViajeDTO>> resultado = reporteClient.getMonopatinesFrecuentes(anio, minViajes);
 
         registrarAuditoria("consultar_reporte", "-", userIdAdmin,
                 "Consulta de monopatines frecuentes (año=" + anio + ", minViajes=" + minViajes + ")");
@@ -169,11 +160,11 @@ public class AccionAdminService {
         return resultado;
     }
 
-    public Map<String, Object> consultarFacturacionTotal(int anio, int mesDesde, int mesHasta, String userIdAdmin) {
-        Map<String, Object> resultado = reporteClient.getFacturacionTotal(anio, mesDesde, mesHasta);
+    public double consultarFacturacionTotal(LocalDate fechaDesde, LocalDate fechaHasta, String userIdAdmin) {
+        double resultado = reporteClient.getFacturacionTotal(fechaDesde, fechaHasta);
 
         registrarAuditoria("consultar_reporte", "-", userIdAdmin,
-                "Consulta de facturación total (año=" + anio + ", desde=" + mesDesde + ", hasta=" + mesHasta + ")");
+                "Consulta de facturación total (año=" + LocalDate.now().getYear() + ", desde=" + fechaDesde + ", hasta=" + fechaHasta + ")");
 
         return resultado;
     }

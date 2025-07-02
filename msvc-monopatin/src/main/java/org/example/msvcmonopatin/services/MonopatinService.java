@@ -1,6 +1,7 @@
 package org.example.msvcmonopatin.services;
 
 import org.example.msvcmonopatin.DTO.EstadoDTO;
+import org.example.msvcmonopatin.DTO.MonopatinEstadisticasDTO;
 import org.example.msvcmonopatin.entities.Monopatin;
 import org.example.msvcmonopatin.entities.Ubicacion;
 import org.example.msvcmonopatin.repositories.MonopatinRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -155,6 +157,10 @@ public class MonopatinService {
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Monopatin no encontrado");
         }
+    }
+
+    public List<MonopatinEstadisticasDTO> obtnerDatosEstadisticos() {
+        return monopatinRepository.obtnerDatosEstadisticos();
     }
 }
 

@@ -1,4 +1,5 @@
-INSERT INTO tarifa (tarifa_basica, tarifa_pausa, tarifa_premium) VALUES (20, 2, 10);
+INSERT INTO tarifa (tarifa_basica, tarifa_pausa, tarifa_premium, fecha_aumento, porcentaje_aumento)
+VALUES (20, 2, 10, '2024-10-01', 0.2);
 
 INSERT INTO facturacion (id_usuario, id_viaje, tipo_cuenta, costo_tarifa, tarifa_pausa, precio_viaje, fecha)
 VALUES

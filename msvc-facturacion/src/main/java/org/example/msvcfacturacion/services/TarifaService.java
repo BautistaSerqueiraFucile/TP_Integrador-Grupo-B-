@@ -23,20 +23,14 @@ public class TarifaService {
     }
 
     @Transactional
-    public Tarifa updateTarifa(String tipoTarifa, double nuevoValor) {
-        Tarifa tarifa = findAll();
-        switch (tipoTarifa.toUpperCase()) {
-            case "BASICA":
-                tarifa.setTarifaBasica(nuevoValor);
-                break;
-            case "PREMIUM":
-                tarifa.setTarifaPremium(nuevoValor);
-                break;
-            case "PAUSA":
-                tarifa.setTarifaPausa(nuevoValor);
-                break;
-        }
-        return save(tarifa);
+    public Tarifa update(Tarifa nueva) {
+        Tarifa fija = findAll();
+        fija.setTarifaBasica(nueva.getTarifaBasica());
+        fija.setTarifaPremium(nueva.getTarifaPremium());
+        fija.setTarifaPausa(nueva.getTarifaPausa());
+        fija.setFechaAumento(nueva.getFechaAumento());
+        fija.setPorcentajeAumento(nueva.getPorcentajeAumento());
+        return tarifaRepository.save(fija);
     }
 
 

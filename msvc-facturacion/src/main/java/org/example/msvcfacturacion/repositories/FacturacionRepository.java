@@ -11,8 +11,8 @@ import java.util.List;
 @Repository
 public interface FacturacionRepository extends JpaRepository<Factura, Long> {
 
-    List<Factura> findAllByIdUsuarioAndFechaBetweenOrderByFecha(
-            Long idUsuario,
-            LocalDate fechaInicial,
-            LocalDate fechaFinal);
+    List<Factura> findByFechaBetween(
+            LocalDate fechaAfter,
+            LocalDate fechaBefore
+    );
 }
