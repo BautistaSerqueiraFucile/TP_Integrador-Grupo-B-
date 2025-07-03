@@ -11,7 +11,6 @@ public class ReporteUsuarioActivoDTO {
     private Integer cantidadViajes;
 
     public ReporteUsuarioActivoDTO() {}
-
-
-
 }
+
+
