@@ -1,0 +1,50 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "obtenerHistorialViajes",
+      "description": "Obtiene el historial de viajes de un usuario en un rango de fechas",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "idUsuario": {
+            "type": "integer",
+            "description": "ID del usuario"
+          },
+          "fechaDesde": {
+            "type": "string",
+            "format": "date",
+            "description": "Fecha de inicio del período"
+          },
+          "fechaHasta": {
+            "type": "string",
+            "format": "date",
+            "description": "Fecha de fin del período"
+          }
+        },
+        "required": ["idUsuario", "fechaDesde", "fechaHasta"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "calcularDistanciaParadas",
+      "description": "Calcula la distancia entre dos paradas por sus IDs",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "parada1Id": {
+            "type": "integer",
+            "description": "ID de la primera parada"
+          },
+          "parada2Id": {
+            "type": "integer",
+            "description": "ID de la segunda parada"
+          }
+        },
+        "required": ["parada1Id", "parada2Id"]
+      }
+    }
+  }
+]
