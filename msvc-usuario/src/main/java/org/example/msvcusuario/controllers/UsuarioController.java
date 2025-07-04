@@ -22,16 +22,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controlador para gestionar las operaciones CRUD y de negocio sobre los Usuarios.
+ * Expone los endpoints de la API REST para interactuar con la entidad Usuario.
+ */
 @Tag(name = "Usuarios", description = "Operaciones relacionadas con los usuarios")
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
     private final UsuarioService usuarioService;
 
+    /**
+     * Constructor para la inyección de dependencias del servicio de usuarios.
+     *
+     * @param usuarioService El servicio que contiene la lógica de negocio para los usuarios.
+     */
     public UsuarioController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
 
+    /**
+     * Obtiene una lista de todos los usuarios existentes.
+     *
+     * @return Una lista de objetos Usuario.
+     */
     @Operation(summary = "Obtener todos los usuarios")
     @ApiResponse(responseCode = "200", description = "Lista de usuarios obtenida exitosamente",
             content = @Content(schema = @Schema(implementation = Usuario.class)))
@@ -40,6 +54,12 @@ public class UsuarioController {
         return usuarioService.listar();
     }
 
+    /**
+     * Busca y devuelve un usuario por su ID.
+     *
+     * @param id El ID del usuario a buscar (como String para manejar errores de formato).
+     * @return Un ResponseEntity con el Usuario si se encuentra (200 OK), o un error (400 o 404).
+     */
     @Operation(summary = "Obtener un usuario por ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Usuario encontrado",
@@ -62,6 +82,13 @@ public class UsuarioController {
         }
     }
 
+    /**
+     * Crea un nuevo usuario con los datos proporcionados.
+     *
+     * @param usuario El objeto Usuario a crear, validado por anotaciones de Jakarta Validation.
+     * @param result  El resultado de la validación del objeto Usuario.
+     * @return Un ResponseEntity con el Usuario creado (201 Created) o un error (400 Bad Request).
+     */
     @Operation(summary = "Crear un nuevo usuario")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Usuario creado exitosamente",
@@ -97,6 +124,14 @@ public class UsuarioController {
         }
     }
 
+    /**
+     * Actualiza un usuario existente con los datos proporcionados.
+     *
+     * @param usuario El objeto Usuario con los nuevos datos, validado por anotaciones de Jakarta Validation.
+     * @param result  El resultado de la validación del objeto Usuario.
+     * @param id      El ID del usuario a actualizar (como String para manejar errores de formato).
+     * @return Un ResponseEntity con el Usuario actualizado (200 OK) o un error (400 o 404).
+     */
     @Operation(summary = "Actualizar un usuario existente")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Usuario actualizado exitosamente",
@@ -125,6 +160,12 @@ public class UsuarioController {
         }
     }
 
+    /**
+     * Elimina un usuario por su ID.
+     *
+     * @param id El ID del usuario a eliminar .
+     * @return Un ResponseEntity con estado 204 No Content si se elimina exitosamente, o un error (400 o 404).
+     */
     @Operation(summary = "Eliminar un usuario")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Usuario eliminado exitosamente"),
@@ -146,6 +187,12 @@ public class UsuarioController {
         }
     }
 
+    /**
+     * Asigna el rol de administrador a un usuario.
+     *
+     * @param id El ID del usuario al que se le asignará el rol de administrador.
+     * @return Un ResponseEntity con el Usuario actualizado (200 OK) o un error (400 o 404).
+     */
     @Operation(summary = "Asignar rol de administrador a un usuario")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Rol de administrador asignado exitosamente",
@@ -168,6 +215,12 @@ public class UsuarioController {
         }
     }
 
+    /**
+     * Asigna el rol de Usuario (normal) a un usuario existente.
+     *
+     * @param id El ID del usuario al que se le asignará el rol.
+     * @return Un ResponseEntity con el usuario actualizado (200 OK) o un error.
+     */
     @Operation(summary = "Asignar rol de usuario (normal) a un usuario")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Rol de usuario asignado exitosamente",
@@ -190,6 +243,12 @@ public class UsuarioController {
         }
     }
 
+    /**
+     * Métdo privado de utilidad para formatear los errores de validación.
+     *
+     * @param result El objeto BindingResult que contiene los errores.
+     * @return Un ResponseEntity de tipo 400 Bad Request con un mapa de los errores.
+     */
     private static ResponseEntity<Map<String, String>> validar(BindingResult result) {
         Map<String, String> errores = new HashMap<>();
         result.getFieldErrors().forEach(err -> {
