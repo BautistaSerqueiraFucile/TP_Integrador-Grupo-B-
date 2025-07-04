@@ -50,3 +50,11 @@ spring:
           uri: http://localhost:8003
           predicates:
             - Path=/viajes, /viajes/**
+
+        - id: auth
+          uri: http://localhost:8010
+          predicates:
+            - Path=/auth/**
+
+jwt:
+  secret: clave.super.secreta.jwt.123
