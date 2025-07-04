@@ -4,6 +4,7 @@ import org.example.msvcparada.entities.Parada;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.example.msvcparada.service.ParadaService;
 
@@ -17,12 +18,14 @@ public class ParadaController {
     @Autowired
     private ParadaService paradaService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<Parada> obtenerPorId(@PathVariable Long id) {
         return ResponseEntity.ok().body(paradaService.obtenerPorId(id).get());
 
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("")
     public List<Parada> listarParadas() {
         return paradaService.obtenerParadas();
