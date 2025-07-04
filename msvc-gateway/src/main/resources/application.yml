@@ -57,4 +57,4 @@ spring:
             - Path=/auth/**
 
 jwt:
-  secret: clave.super.secreta.jwt.123
+  secret: clave.super.secreta.jwt.1234567890!!
