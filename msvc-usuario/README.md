@@ -31,15 +31,23 @@ Gestiona los usuarios del sistema de alquiler de monopatines eléctricos.
 
 ## 📡 Endpoints principales
 
-| Método | Endpoint                        | Descripción                    |
-|--------|---------------------------------|--------------------------------|
-| GET    | `/usuarios/`                    | Listar usuarios                |
-| GET    | `/usuarios/{id}`                | Buscar usuario por ID          |
-| POST   | `/usuarios/`                    | Crear usuario                  |
-| PUT    | `/usuarios/{id}`                | Actualizar usuario             |
-| DELETE | `/usuarios/{id}`                | Eliminar usuario               |
-| PATCH  | `/usuarios/{id}/set-admin`      | Asignar rol ADMIN              |
-| PATCH  | `/usuarios/{id}/set-usuario`    | Asignar rol USUARIO            |
+| Método | Endpoint                      | Descripción                    |
+|--------|-------------------------------|--------------------------------|
+| GET    | `/usuarios`                   | Listar usuarios                |
+| GET    | `/usuarios/{id}`              | Buscar usuario por ID          |
+| POST   | `/usuarios`                   | Crear usuario                  |
+| PUT    | `/usuarios/{id}`              | Actualizar usuario             |
+| DELETE | `/usuarios/{id}`              | Eliminar usuario               |
+| PUT    | `/usuarios/{id}/set-admin`    | Asignar rol ADMIN              |
+| PUT    | `/usuarios/{id}/set-usuario`  | Asignar rol USUARIO            |
+
+---
+
+## 📖 Documentación de la API
+
+La API está documentada utilizando Swagger/OpenAPI. Una vez que el microservicio está en ejecución, puedes acceder a la documentación interactiva en la siguiente URL:
+
+http://localhost:8002/swagger-ui.html
 
 ---
 
