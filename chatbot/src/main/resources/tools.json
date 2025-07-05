@@ -2,8 +2,8 @@
   {
     "type": "function",
     "function": {
-      "name": "obtenerHistorialViajes",
-      "description": "Obtiene el historial de viajes de un usuario en un rango de fechas",
+      "name": "getViajes",
+      "description": "Obtiene el historial de viajes puede ser por usuario, fecha de inicio y fecha de fin",
       "parameters": {
         "type": "object",
         "properties": {
@@ -22,29 +22,29 @@
             "description": "Fecha de fin del período"
           }
         },
-        "required": ["idUsuario", "fechaDesde", "fechaHasta"]
+        "required": []
       }
     }
   },
   {
     "type": "function",
     "function": {
-      "name": "calcularDistanciaParadas",
-      "description": "Calcula la distancia entre dos paradas por sus IDs",
-      "parameters": {
-        "type": "object",
-        "properties": {
-          "parada1Id": {
-            "type": "integer",
-            "description": "ID de la primera parada"
-          },
-          "parada2Id": {
-            "type": "integer",
-            "description": "ID de la segunda parada"
-          }
-        },
-        "required": ["parada1Id", "parada2Id"]
+      "name": "getParadas",
+      "description": "obtiene todas las paradas para consultas relacionadas a las mismas"
       }
+    },
+  {
+    "type": "function",
+    "function": {
+      "name": "getMonopatines",
+      "description": "obtiene todos los monopatines para consultas relacionadas a los mismos"
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "getFacturacion",
+      "description": "obtiene el historial de facturacion para consultas relacionadas al mismo"
     }
   }
 ]

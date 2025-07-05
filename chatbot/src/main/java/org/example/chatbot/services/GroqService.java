@@ -57,7 +57,7 @@ public class GroqService {
                 .flatMap(response -> {
                     System.out.println("response \n" + response);
                     JsonNode toolCalls = response.path("choices").get(0).path("message").path("tool_calls");
-                    if (toolCalls.isArray() && toolCalls.size() > 0) {
+                    if (toolCalls.isArray() && !toolCalls.isEmpty()) {
                         JsonNode functionCall = toolCalls.get(0).path("function");
                         String name = functionCall.path("name").asText();
 
@@ -69,28 +69,38 @@ public class GroqService {
                             throw new RuntimeException(e);
                         }
 
-                        if ("obtenerHistorialViajes".equals(name)) {
-                            Long idUsuario = arguments.path("idUsuario").asLong();
-                            String fechaDesde = arguments.path("fechaDesde").asText();
-                            String fechaHasta = arguments.path("fechaHasta").asText();
+                        if ("getViajes".equals(name)) {
+                            return WebClient.create()
+                                    .get()
+                                    .uri("http://localhost:8003/viajes/historial")
+                                    .retrieve()
+                                    .bodyToMono(String.class)
+                                    .flatMap(viajes -> consultarGroqConHistorial(viajes, preguntaUsuario));
+                        } else if ("getParadas".equals(name)) {
 
                             return WebClient.create()
                                     .get()
-                                    .uri("http://localhost:8003/viajes/historial?idUsuario={idUsuario}&fechaDesde={fechaDesde}&fechaHasta={fechaHasta}",
-                                            idUsuario, fechaDesde, fechaHasta)
+                                    .uri("http://localhost:8008/paradas")
                                     .retrieve()
-                                    .bodyToMono(String.class);
-                        }
-                        else if ("calcularDistanciaParadas".equals(name)) {
-                            int parada1Id = arguments.path("parada1Id").asInt();
-                            int parada2Id = arguments.path("parada2Id").asInt();
+                                    .bodyToMono(String.class)
+                                    .flatMap(paradas -> consultarGroqConHistorial(paradas, preguntaUsuario));
+                        } else if ("getMonopatines".equals(name)) {
 
                             return WebClient.create()
                                     .get()
-                                    .uri("http://localhost:8008/paradas/distancia?parada1Id={parada1Id}&parada2Id={parada2Id}",
-                                            parada1Id, parada2Id)
+                                    .uri("http://localhost:8007/monopatines")
                                     .retrieve()
-                                    .bodyToMono(String.class);
+                                    .bodyToMono(String.class)
+                                    .flatMap(monopatines -> consultarGroqConHistorial(monopatines, preguntaUsuario));
+
+                        } else if("getFacturacion".equals(name)) {
+
+                            return WebClient.create()
+                                    .get()
+                                    .uri("http://localhost:8005/facturacion")
+                                    .retrieve()
+                                    .bodyToMono(String.class)
+                                    .flatMap(facturas -> consultarGroqConHistorial(facturas, preguntaUsuario));
                         }
                     }
 
@@ -101,37 +111,31 @@ public class GroqService {
                 });
     }
 
-    private Optional<Map<String, String>> extraerArgumentosFuncion(JsonNode response) {
-        JsonNode toolCalls = response.path("choices").get(0).path("message").path("tool_calls");
+    private Mono<String> consultarGroqConHistorial(String historial, String preguntaUsuario) {
+        String prompt = """
+                teniendo en cuenta estos datos:
+                %s
+                
+                Pregunta: %s
+                """.formatted(historial, preguntaUsuario);
 
-        if (toolCalls.isArray() && toolCalls.size() > 0) {
-            JsonNode functionCall = toolCalls.get(0).path("function");
-            String name = functionCall.path("name").asText();
+        Map<String, Object> groqRequest = new HashMap<>();
+        groqRequest.put("model", model);
+        groqRequest.put("messages", List.of(
+                Map.of("role", "user", "content", prompt)
+        ));
 
-            if ("obtenerHistorialViajes".equals(name)) {
-                try {
-                    JsonNode args = new ObjectMapper().readTree(functionCall.path("arguments").asText());
-                    return Optional.of(Map.of(
-                            "idUsuario", String.valueOf(args.path("idUsuario").asLong()),
-                            "fechaDesde", args.path("fechaDesde").asText(),
-                            "fechaHasta", args.path("fechaHasta").asText()
-                    ));
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException("Error al parsear argumentos de función", e);
-                }
-            }
-        }
-        return Optional.empty();
-    }
-
-    private Mono<String> llamarEndpointHistorial(Map<String, String> params) {
-        return WebClient.create()
-                .get()
-                .uri("http://localhost:8003/viajes/historial?idUsuario={idUsuario}&fechaDesde={fechaDesde}&fechaHasta={fechaHasta}",
-                        params.get("idUsuario"), params.get("fechaDesde"), params.get("fechaHasta"))
+        return groqWebClient.post()
+                .bodyValue(groqRequest)
                 .retrieve()
-                .bodyToMono(String.class);
+                .bodyToMono(JsonNode.class)
+                .map(responseJson -> {
+                    JsonNode contentNode = responseJson
+                            .path("choices")
+                            .get(0)
+                            .path("message")
+                            .path("content");
+                    return contentNode.asText();
+                });
     }
-
-
 }
