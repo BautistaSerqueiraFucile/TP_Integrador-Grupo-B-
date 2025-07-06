@@ -1,4 +1,5 @@
 package org.example.msvccuenta.controllers;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import jakarta.validation.Valid;
 import org.example.msvccuenta.entities.Cuenta;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+@Tag(name = "Cuentas", description = "Operaciones sobre cuentas")
 
 @RestController
 @RequestMapping("/cuentas")
