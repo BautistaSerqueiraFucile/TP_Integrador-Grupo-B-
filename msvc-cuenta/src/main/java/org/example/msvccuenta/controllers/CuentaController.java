@@ -325,25 +325,44 @@ public class CuentaController {
         }
     }
 
+    // En: C:/.../msvc-cuenta/src/main/java/org/example/msvccuenta/controllers/CuentaController.java
+
     /**
-     * Obtiene el historial de viajes de un usuario asociado a una cuenta.
-     * @param id El ID de la cuenta.
-     * @return Un {@link ResponseEntity} con la lista de viajes (200 OK) o un error (404).
+     * Obtiene el historial de viajes de una cuenta.
+     * Puede filtrarse opcionalmente por un usuario específico de esa cuenta.
+     * @param idCuenta El ID de la cuenta.
+     * @param idUsuario (Opcional) El ID del usuario para filtrar el historial.
+     * @return Un {@link ResponseEntity} con la lista de viajes (200 OK) o un error (400, 404).
      */
-    @Operation(summary = "Obtener historial de viajes de una cuenta", description = "Devuelve una lista con todos los viajes realizados por el usuario asociado a la cuenta.")
+    @Operation(
+            summary = "Obtener historial de viajes de una cuenta",
+            description = "Devuelve una lista con los viajes de una cuenta. Si se proporciona el parámetro 'idUsuario', " +
+                    "se filtra el historial para ese usuario específico (siempre que pertenezca a la cuenta)."
+    )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Historial de viajes obtenido exitosamente.",
                     content = @Content(mediaType = "application/json",
                             array = @ArraySchema(schema = @Schema(implementation = ViajeDto.class)))),
-            @ApiResponse(responseCode = "404", description = "Cuenta no encontrada o sin viajes registrados.")
+            @ApiResponse(responseCode = "400", description = "El usuario especificado no pertenece a esta cuenta."),
+            @ApiResponse(responseCode = "404", description = "Cuenta no encontrada.")
     })
-    @GetMapping("/viajes/{id}")
-    public ResponseEntity<?> getViajesPorUsuarioYPeriodo(@Parameter(description = "ID de la cuenta.", required = true) @PathVariable Long id) {
+    @GetMapping("/viajes/{idCuenta}") // Renombramos {id} a {idCuenta} para más claridad
+    public ResponseEntity<?> getViajesPorUsuarioYPeriodo(
+            @Parameter(description = "ID de la cuenta.", required = true) @PathVariable Long idCuenta,
+            @Parameter(description = "(Opcional) ID del usuario para filtrar el historial.") @RequestParam(required = false) Long idUsuario
+    ) {
         try {
-            List<?> viajes = cuentaService.historialViajes(id);
+            // Ahora la llamada al servicio coincide con su firma (dos parámetros)
+            List<ViajeDto> viajes = cuentaService.getViajesPorUsuarioYPeriodo(idCuenta, idUsuario);
             return ResponseEntity.ok(viajes);
-        } catch (RuntimeException e) {
+        } catch (CuentaNoEncontradaException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
+        } catch (IllegalArgumentException e) {
+            // Este catch ahora también maneja el error si el usuario no pertenece a la cuenta
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() + "\"}");
+        } catch (Exception e) {
+            // Un catch genérico por si algo más falla en la llamada Feign
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Ocurrió un error al comunicarse con el servicio de viajes: " + e.getMessage() + "\"}");
         }
     }
 

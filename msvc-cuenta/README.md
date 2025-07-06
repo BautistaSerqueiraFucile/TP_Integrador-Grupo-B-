@@ -26,16 +26,16 @@ La documentación completa, interactiva y actualizada de todos los endpoints est
 
 ## 🗂️ Entidad principal
 
-| Campo                  | Tipo         | Descripción                          |
-|------------------------|--------------|--------------------------------------|
-| id                     | Long         | Identificador único                  |
-| fechaAlta              | LocalDate    | Fecha de alta de la cuenta           |
-| tipoCuenta             | Enum         | BÁSICA / PREMIUM                     |
-| saldo                  | BigDecimal   | Saldo disponible                     |
-| mercadoPagoId          | String       | ID de MercadoPago                    |
-| estadoCuenta           | Enum         | ACTIVA / ANULADA                     |
-| kmRecorridosMesPremium | BigDecimal   | Km recorridos (solo PREMIUM)         |
-| usuariosId             | Set\<Long\>  | IDs de usuarios asociados            |
+| Campo                  | Tipo        | Descripción                          |
+|------------------------|-------------|--------------------------------------|
+| id                     | Long        | Identificador único                  |
+| fechaAlta              | LocalDate   | Fecha de alta de la cuenta           |
+| tipoCuenta             | Enum        | BÁSICA / PREMIUM                     |
+| saldo                  | Double      | Saldo disponible                     |
+| mercadoPagoId          | String      | ID de MercadoPago                    |
+| estadoCuenta           | Enum        | ACTIVA / ANULADA                     |
+| kmRecorridosMesPremium | Double      | Km recorridos (solo PREMIUM)         |
+| usuariosId             | Set\<Long\> | IDs de usuarios asociados            |
 
 ---
 
@@ -53,7 +53,8 @@ La documentación completa, interactiva y actualizada de todos los endpoints est
 | PUT    | `/cuentas/{id}/set-plan/{tipo}`             | Cambiar tipo de cuenta             |
 | PUT     | `/cuentas/recargar/{id}/monto/{monto}`      | Recargar saldo                     |
 | GET    | `/cuentas/saldo/{id}`                       | Consultar saldo                    |
-| GET    | `/cuentas/viajes/{id}`                      | Historial de viajes                |
+| GET    | `/cuentas/viajes/{idCuenta}`                | Historial de viajes de la cuenta   |
+| GET    | `/cuentas/viajes/{idCuenta}?idUsuario={id}` | Historial filtrado por usuario     |
 | GET    | `/cuentas/{idCuenta}/distancia-parada/{idParada}` | Calcular distancia a una parada |
 
 ---

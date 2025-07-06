@@ -12,11 +12,12 @@ import org.example.msvccuenta.feignClients.UsuarioFeignClient;
 import org.example.msvccuenta.feignClients.ViajeFeignClient;
 import org.example.msvccuenta.repositories.CuentaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Servicio que encapsula la lógica de negocio para la gestión de Cuentas.
@@ -53,6 +54,7 @@ public class CuentaService {
      *
      * @return Una lista de {@link Cuenta}.
      */
+    @Transactional(readOnly = true)
     public List<Cuenta> listar() {
         return cuentaRepository.findAll();
     }
@@ -65,6 +67,7 @@ public class CuentaService {
      * @throws IllegalArgumentException si el ID es nulo o no positivo.
      * @throws CuentaNoEncontradaException si no se encuentra ninguna cuenta con ese ID.
      */
+    @Transactional(readOnly = true)
     public Cuenta buscarPorId(Long id) {
         if (id <= 0) {
             throw new IllegalArgumentException("El ID debe ser un número positivo.");
@@ -79,6 +82,7 @@ public class CuentaService {
      * @param cuenta La entidad {@link Cuenta} a crear.
      * @return La cuenta guardada con su ID asignado.
      */
+    @Transactional
     public Cuenta crear(Cuenta cuenta) {
         return cuentaRepository.save(cuenta);
     }
@@ -91,6 +95,7 @@ public class CuentaService {
      * @return La cuenta actualizada.
      * @throws CuentaNoEncontradaException si no se encuentra la cuenta a actualizar.
      */
+    @Transactional
     public Cuenta actualizar(Long id, Cuenta cuenta) {
         return cuentaRepository.findById(id).map(cuentaDB -> {
             cuentaDB.setFechaAlta(cuenta.getFechaAlta());
@@ -111,6 +116,7 @@ public class CuentaService {
      * @param id El ID de la cuenta a eliminar.
      * @throws CuentaNoEncontradaException si no se encuentra la cuenta a eliminar.
      */
+    @Transactional
     public void eliminar(Long id) {
         if (!cuentaRepository.existsById(id)) {
             throw new CuentaNoEncontradaException("No se pudo eliminar. Cuenta no encontrada con ID: " + id);
@@ -125,10 +131,9 @@ public class CuentaService {
      * @return La cuenta con el estado actualizado.
      * @throws CuentaNoEncontradaException si no se encuentra la cuenta.
      */
+    @Transactional
     public Cuenta anularCuenta(Long id) {
-        Cuenta cuenta = cuentaRepository.findById(id)
-                .orElseThrow(() -> new CuentaNoEncontradaException("No se pudo anular. Cuenta no encontrada con ID: " + id));
-
+        Cuenta cuenta = this.buscarPorId(id);
         cuenta.setEstadoCuenta(EstadoCuenta.ANULADA);
         return cuentaRepository.save(cuenta);
     }
@@ -140,9 +145,9 @@ public class CuentaService {
      * @return La cuenta con el estado actualizado.
      * @throws CuentaNoEncontradaException si no se encuentra la cuenta.
      */
+    @Transactional
     public Cuenta activarCuenta(Long id) {
-        Cuenta cuenta = cuentaRepository.findById(id)
-                .orElseThrow(() -> new CuentaNoEncontradaException("No se pudo activar. Cuenta no encontrada con ID: " + id));
+        Cuenta cuenta = this.buscarPorId(id);
 
         cuenta.setEstadoCuenta(EstadoCuenta.ACTIVA);
         return cuentaRepository.save(cuenta);
@@ -155,11 +160,12 @@ public class CuentaService {
      * @param idParada El ID de la parada.
      * @return La distancia calculada como un {@link Double}. Devuelve null si no se puede calcular.
      */
+    @Transactional(readOnly = true)
     public Double calcularDistanciaAParada(Long idCuenta, Long idParada) {
-        Optional<Cuenta> cuentaOpt = cuentaRepository.findById(idCuenta);
-        if (cuentaOpt.isEmpty()) return null;
-        Cuenta cuenta = cuentaOpt.get();
-        if (cuenta.getUsuariosId().isEmpty()) return null;
+        Cuenta cuenta = this.buscarPorId(idCuenta);
+        if (cuenta.getUsuariosId().isEmpty()) {
+            return null;
+        }
         Long primerUsuarioId = cuenta.getUsuariosId().iterator().next();
 
         ParadaDto parada = paradaFeignClient.getParadaById(idParada);
@@ -182,10 +188,9 @@ public class CuentaService {
      * @return El saldo de la cuenta como {@link Double}.
      * @throws CuentaNoEncontradaException si no se encuentra la cuenta.
      */
+    @Transactional(readOnly = true)
     public Double obtenerSaldo(Long id) {
-        return cuentaRepository.findById(id)
-                .map(Cuenta::getSaldo)
-                .orElseThrow(() -> new CuentaNoEncontradaException("No se pudo obtener el saldo. Cuenta no encontrada con ID: " + id));
+        return this.buscarPorId(id).getSaldo();
     }
 
     /**
@@ -196,9 +201,9 @@ public class CuentaService {
      * @return La cuenta con el tipo de plan actualizado.
      * @throws CuentaNoEncontradaException si no se encuentra la cuenta.
      */
+    @Transactional
     public Cuenta actualizarTipoCuenta(Long id, TipoCuenta tipo) {
-        Cuenta cuenta = cuentaRepository.findById(id)
-                .orElseThrow(() -> new CuentaNoEncontradaException("No se pudo cambiar el plan. Cuenta no encontrada con ID: " + id));
+        Cuenta cuenta = this.buscarPorId(id);
         cuenta.setTipoCuenta(tipo);
         return cuentaRepository.save(cuenta);
     }
@@ -214,9 +219,9 @@ public class CuentaService {
      * @throws IllegalArgumentException si el monto es negativo o cero.
      * @throws RuntimeException si se intenta recargar una cuenta PREMIUM.
      */
+    @Transactional
     public Cuenta recargarSaldo(Long id, Double monto) {
-        Cuenta cuenta = cuentaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+        Cuenta cuenta = this.buscarPorId(id);
         if (cuenta.getEstadoCuenta() == EstadoCuenta.ANULADA) {
             throw new IllegalStateException("No se puede recargar saldo en una cuenta ANULADA.");
         }
@@ -232,13 +237,38 @@ public class CuentaService {
 
 
     /**
-     * Obtiene el historial de viajes de un usuario a través del microservicio de viajes.
+     * Obtiene el historial de viajes de una cuenta a través del microservicio de viajes.
      *
-     * @param userId El ID del usuario de la cuenta para la cual se solicita el historial.
+     * @param idCuenta El ID del usuario de la cuenta para la cual se solicita el historial.
      * @return Una lista de {@link ViajeDto}.
      */
-    public List<ViajeDto> historialViajes(Long userId) {
-        return viajeFeignClient.getViajesPorUsuarioYPeriodo(userId);
+    @Transactional(readOnly = true)
+    public List<ViajeDto> getViajesPorUsuarioYPeriodo(Long idCuenta, Long idUsuario) {
+        Cuenta cuenta = this.buscarPorId(idCuenta);
+        Set<Long> userIds = cuenta.getUsuariosId();
+
+        if (userIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        if (idUsuario != null) {
+            if (!userIds.contains(idUsuario)) {
+                throw new IllegalArgumentException("El usuario con ID " + idUsuario + " no pertenece a la cuenta con ID " + idCuenta);
+            }
+            return viajeFeignClient.getViajesPorUsuarioYPeriodo(idUsuario, null, null);
+        } else {
+            return userIds.stream()
+                    .flatMap(uid -> {
+                        try {
+                            return viajeFeignClient.getViajesPorUsuarioYPeriodo(uid, null, null).stream();
+                        } catch (Exception e) {
+                            return null;
+                        }
+                    })
+                    .filter(java.util.Objects::nonNull)
+                    .sorted(Comparator.comparing(ViajeDto::getFecha).reversed())
+                    .collect(Collectors.toList());
+        }
     }
 
     /**
@@ -247,6 +277,7 @@ public class CuentaService {
      * @param tipo El tipo de cuenta a buscar (String, ej. "BASICA").
      * @return Una lista de {@link Cuenta} del tipo especificado.
      */
+    @Transactional(readOnly = true)
     public List<Cuenta> obtenerPorTipo(String tipo) {
         return cuentaRepository.findAllByTipoCuenta(TipoCuenta.valueOf(tipo));
     }
@@ -258,19 +289,18 @@ public class CuentaService {
      * @return El DTO {@link ParadaDto} de la parada más cercana.
      * @throws IllegalStateException si no hay paradas disponibles.
      */
+    @Transactional(readOnly = true)
     public ParadaDto paradaMasCercana(Long idCuenta) {
         List<ParadaDto> paradas = paradaFeignClient.listarParadas();
         if (paradas == null || paradas.isEmpty()) {
             throw new IllegalStateException("No se encontraron paradas disponibles.");
         }
 
-        ParadaDto paradaMasCercana = paradas.stream()
-                .min((p1, p2) -> Double.compare(
-                        calcularDistanciaAParada(idCuenta, p1.getId()),
-                        calcularDistanciaAParada(idCuenta, p2.getId())
-                ))
-                .orElseThrow(() -> new IllegalStateException("No se encontraron paradas disponibles."));
-
-        return paradaMasCercana;
+        return paradas.stream()
+                .min(Comparator.comparing(parada -> {
+                    Double distancia = calcularDistanciaAParada(idCuenta, parada.getId());
+                    return distancia != null ? distancia : Double.MAX_VALUE;
+                }))
+                .orElseThrow(() -> new IllegalStateException("No se pudo determinar la parada más cercana."));
     }
 }
