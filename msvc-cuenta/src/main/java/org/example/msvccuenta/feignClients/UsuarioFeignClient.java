@@ -1,5 +1,5 @@
 package org.example.msvccuenta.feignClients;
-
+import org.springframework.web.bind.annotation.PathVariable;
 import org.example.msvccuenta.entities.dto.UsuarioDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,5 +15,5 @@ public interface UsuarioFeignClient {
      * @return Un {@link UsuarioDto}
      */
     @GetMapping("/{id}")
-    UsuarioDto getUsuarioById(Long id);
+    UsuarioDto getUsuarioById(@PathVariable("id") Long id);
 }

@@ -164,14 +164,15 @@ public class CuentaService {
 
         ParadaDto parada = paradaFeignClient.getParadaById(idParada);
         UsuarioDto usuario = usuarioFeignClient.getUsuarioById(primerUsuarioId);
-        if (parada == null || usuario == null) return null;
 
-        double x1 = parada.getPosX();
-        double y1 = parada.getPosY();
-        double x2 = usuario.getLatitud();
-        double y2 = usuario.getLongitud();
+        if (parada == null || usuario == null || usuario.getLatitud() == null || usuario.getLongitud() == null) {
+            return null;
+        }
 
-        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        double deltaX = usuario.getLongitud() - parada.getPosX();
+        double deltaY = usuario.getLatitud() - parada.getPosY();
+
+        return Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
     }
 
     /**

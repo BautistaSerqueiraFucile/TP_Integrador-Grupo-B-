@@ -11,3 +11,6 @@ VALUES
     (2009, '2023-09-01', 'BASICA', 11000.0, 'mp_2009', 'ACTIVA', NULL),
     (2010, '2023-10-01', 'PREMIUM', 27000.0, 'mp_2010', 'ACTIVA', 12.0),
     (2011, '2023-11-01', 'BASICA', 13000.0, 'mp_2011', 'ACTIVA', NULL);
+
+INSERT INTO cuenta_usuarios_id (cuenta_id, usuarios) VALUES (2001, 3);
+INSERT INTO cuenta_usuarios_id (cuenta_id, usuarios) VALUES (2002, 13);
