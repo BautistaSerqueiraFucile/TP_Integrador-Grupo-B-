@@ -1,5 +1,6 @@
 package org.example.msvccuenta.entities.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -10,6 +11,7 @@ import java.time.LocalTime;
  */
 @Schema(description = "DTO que representa los detalles de un viaje realizado.")
 @Getter
+@Data
 public class ViajeDto {
     @Schema(description = "ID único del viaje.", example = "501")
     private Long idViaje;

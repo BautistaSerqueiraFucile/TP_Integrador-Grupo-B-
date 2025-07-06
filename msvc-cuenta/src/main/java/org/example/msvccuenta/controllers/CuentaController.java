@@ -13,7 +13,6 @@ import org.example.msvccuenta.entities.Cuenta;
 import org.example.msvccuenta.entities.TipoCuenta;
 import org.example.msvccuenta.entities.dto.ParadaDto;
 import org.example.msvccuenta.entities.dto.ViajeDto;
-import org.example.msvccuenta.exceptions.CuentaNoEncontradaException;
 import org.example.msvccuenta.services.CuentaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -71,18 +70,8 @@ public class CuentaController {
                     content = @Content(mediaType = "application/json", schema = @Schema(example = "{\"error\":\"Cuenta no encontrada con ID: 999\"}")))
     })
     @GetMapping("/{id}")
-    public ResponseEntity<?> buscarPorId(@Parameter(description = "ID de la cuenta a buscar.", required = true) @PathVariable String id) {
-        try {
-            Long cuentaId = Long.parseLong(id);
-            Cuenta cuenta = cuentaService.buscarPorId(cuentaId);
-            return ResponseEntity.ok(cuenta);
-        } catch (NumberFormatException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"El ID debe ser un número válido.\"}");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() + "\"}");
-        } catch (CuentaNoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
-        }
+    public ResponseEntity<Cuenta> buscarPorId(@Parameter(description = "ID de la cuenta a buscar.", required = true) @PathVariable Long id) {
+        return ResponseEntity.ok(cuentaService.buscarPorId(id));
     }
 
     /**
@@ -121,19 +110,11 @@ public class CuentaController {
             @ApiResponse(responseCode = "404", description = "Cuenta no encontrada.")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizar(@Valid @RequestBody Cuenta cuenta, BindingResult result, @Parameter(description = "ID de la cuenta a actualizar.", required = true) @PathVariable String id) {
+    public ResponseEntity<?> actualizar(@Valid @RequestBody Cuenta cuenta, BindingResult result, @Parameter(description = "ID de la cuenta a actualizar.", required = true) @PathVariable Long id) {
         if (result.hasErrors()) {
             return validar(result);
         }
-        try {
-            Long cuentaId = Long.parseLong(id);
-            Cuenta cuentaActualizada = cuentaService.actualizar(cuentaId, cuenta);
-            return ResponseEntity.ok(cuentaActualizada);
-        } catch (NumberFormatException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"El ID debe ser un número válido.\"}");
-        } catch (CuentaNoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
-        }
+        return ResponseEntity.ok(cuentaService.actualizar(id, cuenta));
     }
 
     /**
@@ -148,16 +129,9 @@ public class CuentaController {
             @ApiResponse(responseCode = "404", description = "Cuenta no encontrada.")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminar(@Parameter(description = "ID de la cuenta a eliminar.", required = true) @PathVariable String id) {
-        try {
-            Long cuentaId = Long.parseLong(id);
-            cuentaService.eliminar(cuentaId);
-            return ResponseEntity.noContent().build();
-        } catch (NumberFormatException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"El ID debe ser un número válido.\"}");
-        } catch (CuentaNoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
-        }
+    public ResponseEntity<Void> eliminar(@Parameter(description = "ID de la cuenta a eliminar.", required = true) @PathVariable Long id) {
+        cuentaService.eliminar(id);
+        return ResponseEntity.noContent().build();
     }
 
 
@@ -174,16 +148,8 @@ public class CuentaController {
             @ApiResponse(responseCode = "404", description = "Cuenta no encontrada.")
     })
     @PutMapping("/anular/{id}")
-    public ResponseEntity<?> anular(@Parameter(description = "ID de la cuenta a anular.", required = true) @PathVariable String id) {
-        try {
-            Long cuentaId = Long.parseLong(id);
-            Cuenta cuentaAnulada = cuentaService.anularCuenta(cuentaId);
-            return ResponseEntity.ok(cuentaAnulada);
-        } catch (NumberFormatException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"El ID debe ser un número válido.\"}");
-        } catch (CuentaNoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
-        }
+    public ResponseEntity<Cuenta> anular(@Parameter(description = "ID de la cuenta a anular.", required = true) @PathVariable Long id) {
+        return ResponseEntity.ok(cuentaService.anularCuenta(id));
     }
 
     /**
@@ -199,16 +165,8 @@ public class CuentaController {
             @ApiResponse(responseCode = "404", description = "Cuenta no encontrada.")
     })
     @PutMapping("/activar/{id}")
-    public ResponseEntity<?> activar(@Parameter(description = "ID de la cuenta a activar.", required = true) @PathVariable String id) {
-        try {
-            Long cuentaId = Long.parseLong(id);
-            Cuenta cuentaActivada = cuentaService.activarCuenta(cuentaId);
-            return ResponseEntity.ok(cuentaActivada);
-        } catch (NumberFormatException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"El ID debe ser un número válido.\"}");
-        } catch (CuentaNoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
-        }
+    public ResponseEntity<Cuenta> activar(@Parameter(description = "ID de la cuenta a activar.", required = true) @PathVariable Long id) {
+        return ResponseEntity.ok(cuentaService.activarCuenta(id));
     }
 
     /**
@@ -224,16 +182,8 @@ public class CuentaController {
             @ApiResponse(responseCode = "404", description = "Cuenta no encontrada.")
     })
     @GetMapping("/saldo/{id}")
-    public ResponseEntity<?> obtenerSaldo(@Parameter(description = "ID de la cuenta.", required = true) @PathVariable String id) {
-        try {
-            Long cuentaId = Long.parseLong(id);
-            Double saldo = cuentaService.obtenerSaldo(cuentaId);
-            return ResponseEntity.ok(saldo);
-        } catch (NumberFormatException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"El ID debe ser un número válido.\"}");
-        } catch (CuentaNoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
-        }
+    public ResponseEntity<Double> obtenerSaldo(@Parameter(description = "ID de la cuenta.", required = true) @PathVariable Long id) {
+        return ResponseEntity.ok(cuentaService.obtenerSaldo(id));
     }
 
     /**
@@ -250,40 +200,34 @@ public class CuentaController {
             @ApiResponse(responseCode = "404", description = "Cuenta no encontrada.")
     })
     @PutMapping("/{id}/set-plan/{tipo}")
-    public ResponseEntity<?> setPlan(@Parameter(description = "ID de la cuenta.", required = true) @PathVariable String id,
-                                     @Parameter(description = "Tipo de cuenta a establecer (BASICA o PREMIUM).", required = true) @PathVariable TipoCuenta tipo) {
-        try {
-            Long cuentaId = Long.parseLong(id);
-            Cuenta cuentaActualizada = cuentaService.actualizarTipoCuenta(cuentaId, tipo);
-            return ResponseEntity.ok(cuentaActualizada);
-        } catch (NumberFormatException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"El ID debe ser un número válido.\"}");
-        } catch (CuentaNoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
-        }
+    public ResponseEntity<Cuenta> setPlan(@Parameter(description = "ID de la cuenta.", required = true) @PathVariable Long id,
+                                          @Parameter(description = "Tipo de cuenta a establecer (BASICA o PREMIUM).", required = true) @PathVariable TipoCuenta tipo) {
+        return ResponseEntity.ok(cuentaService.actualizarTipoCuenta(id, tipo));
     }
+
 
     /**
      * Calcula la distancia en metros desde la ubicación de un usuario a una parada específica.
      * @param idCuenta El ID de la cuenta del usuario.
-     * @param idParada El ID de la parada de colectivo.
-     * @return Un {@link ResponseEntity} con la distancia calculada (Double) o un 404 si no se encuentra la cuenta o la parada.
+     * @param idParada El ID de la parada de monopatines.
+     * @param idUsuario (Opcional) El ID del usuario específico de la cuenta. Si no se provee, se usa el primer usuario asociado.
+     * @return Un {@link ResponseEntity} con la distancia calculada (Double) o un error si no se encuentra la cuenta o la parada.
      */
-    @Operation(summary = "Calcular distancia a una parada", description = "Calcula la distancia en metros desde la ubicación de un usuario (asociado a una cuenta) a una parada específica.")
+    @Operation(summary = "Calcular distancia a una parada",
+            description = "Calcula la distancia en metros desde la ubicación de un usuario a una parada específica. " +
+                    "Se puede especificar un 'idUsuario' opcional de la cuenta.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Distancia calculada exitosamente.",
                     content = @Content(mediaType = "application/json", schema = @Schema(example = "523.45"))),
+            @ApiResponse(responseCode = "400", description = "El usuario especificado no pertenece a la cuenta."),
             @ApiResponse(responseCode = "404", description = "Cuenta o parada no encontrada.")
     })
     @GetMapping("/{idCuenta}/distancia-parada/{idParada}")
     public ResponseEntity<Double> calcularDistanciaAParada(
             @Parameter(description = "ID de la cuenta del usuario.", required = true) @PathVariable Long idCuenta,
-            @Parameter(description = "ID de la parada de colectivo.", required = true) @PathVariable Long idParada) {
-        Double distancia = cuentaService.calcularDistanciaAParada(idCuenta, idParada);
-        if (distancia == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(distancia);
+            @Parameter(description = "ID de la parada de monopatines.", required = true) @PathVariable Long idParada,
+            @Parameter(description = "(Opcional) ID del usuario específico a usar para el cálculo.") @RequestParam(required = false) Long idUsuario) {
+        return ResponseEntity.ok(cuentaService.calcularDistanciaAParada(idCuenta, idParada, idUsuario));
     }
 
 
@@ -302,30 +246,12 @@ public class CuentaController {
             @ApiResponse(responseCode = "409", description = "Conflicto de estado (ej. la cuenta está anulada).")
     })
     @PutMapping("/recargar/{id}/monto/{monto}")
-    public ResponseEntity<?> recargarSaldo(
+    public ResponseEntity<Cuenta> recargarSaldo(
             @Parameter(description = "ID de la cuenta a recargar.", required = true) @PathVariable Long id,
-            @Parameter(description = "Monto a recargar.", required = true) @PathVariable String monto) {
-        try {
-            try {
-                Double.parseDouble(monto);
-            } catch (NumberFormatException e) {
-                return ResponseEntity.badRequest().body("{\"error\":\"El monto proporcionado no es un número válido.\"}");
-            }
-            Cuenta cuenta = cuentaService.recargarSaldo(id, Double.parseDouble(monto));
-            return ResponseEntity.ok(cuenta);
-        } catch (IllegalStateException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("{\"error\":\"" + e.getMessage() + "\"}");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body("{\"error\":\"" + e.getMessage() + "\"}");
-        } catch (RuntimeException e) {
-            if (e.getMessage() != null && e.getMessage().startsWith("Cuenta no encontrada")) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
-            }
-            return ResponseEntity.badRequest().body("{\"error\":\"" + e.getMessage() + "\"}");
-        }
+            @Parameter(description = "Monto a recargar.", required = true) @PathVariable Double monto) {
+        return ResponseEntity.ok(cuentaService.recargarSaldo(id, monto));
     }
 
-    // En: C:/.../msvc-cuenta/src/main/java/org/example/msvccuenta/controllers/CuentaController.java
 
     /**
      * Obtiene el historial de viajes de una cuenta.
@@ -346,24 +272,12 @@ public class CuentaController {
             @ApiResponse(responseCode = "400", description = "El usuario especificado no pertenece a esta cuenta."),
             @ApiResponse(responseCode = "404", description = "Cuenta no encontrada.")
     })
-    @GetMapping("/viajes/{idCuenta}") // Renombramos {id} a {idCuenta} para más claridad
-    public ResponseEntity<?> getViajesPorUsuarioYPeriodo(
+    @GetMapping("/viajes/{idCuenta}")
+    public ResponseEntity<List<ViajeDto>> getViajesPorUsuarioYPeriodo(
             @Parameter(description = "ID de la cuenta.", required = true) @PathVariable Long idCuenta,
             @Parameter(description = "(Opcional) ID del usuario para filtrar el historial.") @RequestParam(required = false) Long idUsuario
     ) {
-        try {
-            // Ahora la llamada al servicio coincide con su firma (dos parámetros)
-            List<ViajeDto> viajes = cuentaService.getViajesPorUsuarioYPeriodo(idCuenta, idUsuario);
-            return ResponseEntity.ok(viajes);
-        } catch (CuentaNoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
-        } catch (IllegalArgumentException e) {
-            // Este catch ahora también maneja el error si el usuario no pertenece a la cuenta
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() + "\"}");
-        } catch (Exception e) {
-            // Un catch genérico por si algo más falla en la llamada Feign
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Ocurrió un error al comunicarse con el servicio de viajes: " + e.getMessage() + "\"}");
-        }
+        return ResponseEntity.ok(cuentaService.getViajesPorUsuarioYPeriodo(idCuenta, idUsuario));
     }
 
     /**
@@ -379,34 +293,24 @@ public class CuentaController {
             @ApiResponse(responseCode = "404", description = "No se encontraron cuentas de ese tipo.")
     })
     @GetMapping("/tipo/{tipo}")
-    public ResponseEntity<?> obtenerPorTipo(@Parameter(description = "Tipo de cuenta a buscar (BASICA o PREMIUM).", required = true) @PathVariable String tipo) {
-        try {
-            List<?> cuentas = cuentaService.obtenerPorTipo(tipo.toUpperCase());
-            return ResponseEntity.ok(cuentas);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
-        }
+    public ResponseEntity<List<Cuenta>> obtenerPorTipo(@Parameter(description = "Tipo de cuenta a buscar (BASICA o PREMIUM).", required = true) @PathVariable String tipo) {
+        return ResponseEntity.ok(cuentaService.obtenerPorTipo(tipo.toUpperCase()));
     }
 
     /**
-     * Encuentra la parada de colectivo más cercana a la ubicación de un usuario.
+     * Encuentra la parada de monopatines más cercana a la ubicación de un usuario.
      * @param idCuenta El ID de la cuenta del usuario.
      * @return Un {@link ResponseEntity} con el DTO de la parada más cercana (200 OK) o un error (404).
      */
-    @Operation(summary = "Obtener la parada más cercana a un usuario", description = "Calcula y devuelve la parada de colectivo más cercana a la ubicación actual del usuario.")
+    @Operation(summary = "Obtener la parada más cercana a un usuario", description = "Calcula y devuelve la parada de monopatines más cercana a la ubicación actual del usuario.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Parada más cercana encontrada.",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ParadaDto.class))),
             @ApiResponse(responseCode = "404", description = "Cuenta no encontrada o no se pudo determinar la ubicación.")
     })
     @GetMapping("/{idCuenta}/parada-cercana")
-    public ResponseEntity<?> obtenerParadaCercana(@Parameter(description = "ID de la cuenta del usuario.", required = true) @PathVariable Long idCuenta) {
-        try {
-            ParadaDto paradaMasCercana = cuentaService.paradaMasCercana(idCuenta);
-            return ResponseEntity.ok(paradaMasCercana);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
-        }
+    public ResponseEntity<ParadaDto> obtenerParadaCercana(@Parameter(description = "ID de la cuenta del usuario.", required = true) @PathVariable Long idCuenta) {
+        return ResponseEntity.ok(cuentaService.paradaMasCercana(idCuenta));
     }
 
     /**
