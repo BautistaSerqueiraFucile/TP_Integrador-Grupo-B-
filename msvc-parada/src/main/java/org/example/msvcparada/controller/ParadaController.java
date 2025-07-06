@@ -31,23 +31,26 @@ public class ParadaController {
         return paradaService.obtenerParadas();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("")
     public ResponseEntity<Parada> agregar(@RequestBody Parada parada) {
         Parada result = paradaService.agregar(parada);
         return ResponseEntity.accepted().body(result);
     }
 
-    // deveria poder eliminar una parada que tenga monopatines??
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id) {
         return ResponseEntity.ok().body(paradaService.eliminar(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Parada> actualizar(@RequestBody Parada parada ,@PathVariable long id) {
         Parada result = paradaService.actualizar(parada,id);
         return ResponseEntity.accepted().body(result);
     }
+    //@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/distancia")
     public ResponseEntity<?> calcularDistanciaEntreParadas(
             @RequestParam("parada1Id") Long parada1Id, // Recibe el ID de la primera parada
@@ -57,7 +60,7 @@ public class ParadaController {
         return ResponseEntity.ok().body(distancia);
     }
 
-
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping("/lote")
     public ResponseEntity<?> agregarParadas(@RequestBody List<Parada>paradas) {
         paradaService.guardarLote(paradas);

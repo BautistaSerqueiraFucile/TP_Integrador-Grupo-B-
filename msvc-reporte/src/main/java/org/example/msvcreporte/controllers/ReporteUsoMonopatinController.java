@@ -3,6 +3,7 @@ package org.example.msvcreporte.controllers;
 import org.example.msvcreporte.dto.ReporteUsoMonopatinDTO;
 import org.example.msvcreporte.services.ReporteUsoMonopatinService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ public class ReporteUsoMonopatinController {
         this.reporteService = reporteService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/uso-monopatines")
     public ResponseEntity<List<ReporteUsoMonopatinDTO>> getUsoMonopatines()
             {

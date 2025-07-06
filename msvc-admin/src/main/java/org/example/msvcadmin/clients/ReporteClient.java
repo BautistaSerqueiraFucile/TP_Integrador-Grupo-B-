@@ -1,5 +1,6 @@
 package org.example.msvcadmin.clients;
 
+import org.example.msvcadmin.config.FeignClientConfig;
 import org.example.msvcadmin.models.Factura;
 import org.example.msvcadmin.models.MonopatinViajeDTO;
 import org.example.msvcadmin.models.ReporteUsoMonopatinDTO;
@@ -17,7 +18,7 @@ import java.util.Map;
  * Cliente Feign que se comunica con el microservicio de reportes (puerto 8006).
  * Permite obtener diferentes tipos de reportes relacionados al uso de monopatines, usuarios y facturación.
  */
-@FeignClient(name = "msvc-reporte", url = "http://localhost:8006")
+@FeignClient(name = "msvc-reporte", url = "http://localhost:8006",configuration = FeignClientConfig.class)
 public interface ReporteClient {
 
 

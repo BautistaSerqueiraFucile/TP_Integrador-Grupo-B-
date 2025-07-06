@@ -7,6 +7,7 @@ import org.example.msvcusuario.services.UsuarioService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.example.msvcusuario.entities.RolUsuario;
@@ -23,11 +24,13 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("")
     public List<Usuario> listar() {
         return usuarioService.listar();
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable String id) {
         try {
@@ -41,6 +44,7 @@ public class UsuarioController {
         }
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping("")
     public ResponseEntity<?> crear(@Valid @RequestBody Usuario usuario, BindingResult result) {
         if (result.hasErrors()) {
@@ -75,6 +79,7 @@ public class UsuarioController {
     }
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizar(@Valid @RequestBody Usuario usuario, BindingResult result, @PathVariable String id) {
         if (result.hasErrors()) {
@@ -93,6 +98,7 @@ public class UsuarioController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable String id) {
         try {
@@ -106,6 +112,7 @@ public class UsuarioController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}/set-admin")
     public ResponseEntity<?> setAdmin(@PathVariable String id) {
         try {
@@ -119,6 +126,7 @@ public class UsuarioController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}/set-usuario")
     public ResponseEntity<?> setUsuario(@PathVariable String id) {
         try {

@@ -5,6 +5,7 @@ import org.example.msvcreporte.models.Viaje;
 import org.example.msvcreporte.services.ReporteUsoPorCuentaService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +24,7 @@ public class ReporteUsoPorCuentaController {
         this.reporteUsoPorCuentaService = reporteUsoPorCuentaService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/uso-por-cuenta")
     public ResponseEntity<List<Viaje>> getUsoPorCuenta(
             @RequestParam("idCuenta") Long idCuenta,

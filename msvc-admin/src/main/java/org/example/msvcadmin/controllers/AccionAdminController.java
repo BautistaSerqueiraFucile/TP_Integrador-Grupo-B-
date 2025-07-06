@@ -3,6 +3,7 @@ package org.example.msvcadmin.controllers;
 import org.example.msvcadmin.models.*;
 import org.example.msvcadmin.services.AccionAdminService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ public class AccionAdminController {
         this.accionAdminService = accionAdminService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/cuentas/{cuentaId}/bloquear")
     public ResponseEntity<Void> bloquearCuenta(
             @PathVariable Long cuentaId,
@@ -27,6 +29,7 @@ public class AccionAdminController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/cuentas/{cuentaId}/activar")
     public ResponseEntity<Void> reactivarCuenta(
             @PathVariable Long cuentaId,
@@ -36,6 +39,7 @@ public class AccionAdminController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/monopatines/{scooterId}/estado/{estado}")
     public ResponseEntity<Void> cambiarEstadoScooter(
             @PathVariable Long scooterId,
@@ -46,6 +50,7 @@ public class AccionAdminController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/monopatines")
     public ResponseEntity<Void> agregarMonopatin(
             @RequestBody Monopatin datos,
@@ -55,6 +60,7 @@ public class AccionAdminController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/monopatines/{id}")
     public ResponseEntity<Void> eliminarMonopatin(
             @PathVariable Long id,
@@ -64,6 +70,7 @@ public class AccionAdminController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/paradas")
     public ResponseEntity<Void> crearParada(
             @RequestBody Parada datos,
@@ -73,6 +80,7 @@ public class AccionAdminController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/paradas/{id}")
     public ResponseEntity<Void> editarParada(
             @PathVariable Long id,
@@ -83,6 +91,7 @@ public class AccionAdminController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/paradas/{id}")
     public ResponseEntity<Void> eliminarParada(
             @PathVariable Long id,
@@ -92,15 +101,8 @@ public class AccionAdminController {
         return ResponseEntity.noContent().build();
     }
 
-//    @PostMapping("/tarifas")
-//    public ResponseEntity<Void> crearTarifa(
-//            @RequestBody Map<String, Object> datos,
-//            @RequestParam String userIdAdmin
-//    ) {
-//        accionAdminService.crearTarifa(datos, userIdAdmin);
-//        return ResponseEntity.noContent().build();
-//    }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/tarifa/{userAdmin}")
     public ResponseEntity<Tarifa> modificarTarifa(@RequestBody Tarifa tarifa, @PathVariable String userAdmin) {
         accionAdminService.modificarTarifa(tarifa, userAdmin);
@@ -108,6 +110,7 @@ public class AccionAdminController {
     }
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/reportes/usuarios-top")
     public ResponseEntity<List<ReporteUsuarioActivoDTO>> usuariosTop(
             @RequestParam String fechaDesde,
@@ -119,6 +122,7 @@ public class AccionAdminController {
         return ResponseEntity.ok(resultado.getBody());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/reportes/uso-monopatines")
     public ResponseEntity<List<ReporteUsoMonopatinDTO>> usoMonopatines(
             @RequestParam String userIdAdmin
@@ -127,6 +131,7 @@ public class AccionAdminController {
         return ResponseEntity.ok(resultado.getBody());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/reportes/monopatines-frecuentes")
     public ResponseEntity<List<MonopatinViajeDTO>> monopatinesFrecuentes(
             @RequestParam int anio,
@@ -137,6 +142,7 @@ public class AccionAdminController {
         return ResponseEntity.ok(resultado.getBody());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/reportes/facturacion-total")
     public double facturacionTotal(
             @RequestParam LocalDate fechaDesde,

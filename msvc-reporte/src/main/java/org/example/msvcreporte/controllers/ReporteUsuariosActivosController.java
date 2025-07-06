@@ -4,6 +4,7 @@ import org.example.msvcreporte.dto.ReporteUsuarioActivoDTO;
 import org.example.msvcreporte.services.ReporteUsuariosActivosService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +23,7 @@ public class ReporteUsuariosActivosController {
         this.servicio = servicio;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/usuarios-top")
     public ResponseEntity<List<ReporteUsuarioActivoDTO>> getUsuariosActivos(
             @RequestParam("fechaDesde") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaDesde,

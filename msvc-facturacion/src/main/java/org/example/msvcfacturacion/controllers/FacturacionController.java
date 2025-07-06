@@ -7,6 +7,7 @@ import org.example.msvcfacturacion.services.FacturacionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ public class FacturacionController {
     @Autowired
     private FacturacionService facturacionService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("")
     public ResponseEntity<?> getAll() {
         try {
@@ -27,6 +29,7 @@ public class FacturacionController {
         }
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
         try {
@@ -36,6 +39,7 @@ public class FacturacionController {
         }
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("historial")
     public ResponseEntity<?> getHistorial(
             @RequestParam LocalDate fechaDesde,
@@ -49,6 +53,7 @@ public class FacturacionController {
     }
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("")
     public ResponseEntity<?> save(@Valid @RequestBody FacturaRequestDTO entity){
         try{

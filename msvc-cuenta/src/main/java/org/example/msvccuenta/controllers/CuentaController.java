@@ -8,6 +8,7 @@ import org.example.msvccuenta.exceptions.CuentaNoEncontradaException;
 import org.example.msvccuenta.services.CuentaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,11 +25,13 @@ public class CuentaController {
         this.cuentaService = cuentaService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("")
     public List<Cuenta> listar() {
         return cuentaService.listar();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable String id) {
         try {
@@ -44,6 +47,7 @@ public class CuentaController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("")
     public ResponseEntity<?> crear(@Valid @RequestBody Cuenta cuenta, BindingResult result) {
         if (result.hasErrors()) {
@@ -52,6 +56,7 @@ public class CuentaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(cuentaService.crear(cuenta));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizar(@Valid @RequestBody Cuenta cuenta, BindingResult result, @PathVariable String id) {
         if (result.hasErrors()) {
@@ -69,6 +74,7 @@ public class CuentaController {
     }
 
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable String id) {
         try {
@@ -82,6 +88,7 @@ public class CuentaController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/anular/{id}")
     public ResponseEntity<?> anular(@PathVariable String id) {
         try {
@@ -95,6 +102,7 @@ public class CuentaController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/activar/{id}")
     public ResponseEntity<?> activar(@PathVariable String id) {
         try {
@@ -107,7 +115,7 @@ public class CuentaController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
         }
     }
-
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/saldo/{id}")
     public ResponseEntity<?> obtenerSaldo(@PathVariable String id) {
         try {
@@ -120,7 +128,7 @@ public class CuentaController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"" + e.getMessage() + "\"}");
         }
     }
-
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PutMapping("/{id}/set-plan/{tipo}")
     public ResponseEntity<?> setPlan(@PathVariable String id, @PathVariable TipoCuenta tipo) {
         try {
@@ -134,6 +142,7 @@ public class CuentaController {
         }
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/{idCuenta}/distancia-parada/{idParada}")
     public ResponseEntity<Double> calcularDistanciaAParada(@PathVariable Long idCuenta, @PathVariable Long idParada) {
         Double distancia = cuentaService.calcularDistanciaAParada(idCuenta, idParada);
@@ -143,7 +152,7 @@ public class CuentaController {
         return ResponseEntity.ok(distancia);
     }
 
-
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PutMapping("/recargar/{id}/monto/{monto}")
     public ResponseEntity<?> recargarSaldo(@PathVariable Long id, @PathVariable String monto) {
         try {
@@ -166,6 +175,7 @@ public class CuentaController {
         }
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/viajes/{id}")
     public ResponseEntity<?> getViajesPorUsuarioYPeriodo(@PathVariable Long id) {
         try {
@@ -183,6 +193,7 @@ public class CuentaController {
         return ResponseEntity.badRequest().body(errores);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/tipo/{tipo}")
     public ResponseEntity<?> obtenerPorTipo(@PathVariable String tipo) {
         try {
@@ -193,6 +204,7 @@ public class CuentaController {
         }
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/{idCuenta}/parada-cercana")
     public ResponseEntity<?> obtenerParadaCercana(@PathVariable Long idCuenta) {
         try {

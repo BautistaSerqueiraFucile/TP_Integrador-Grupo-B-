@@ -4,6 +4,7 @@ import org.example.msvcreporte.dto.ReporteMonopatinFrecuenteDTO;
 import org.example.msvcreporte.models.MonopatinViajeDTO;
 import org.example.msvcreporte.services.ReporteMonopatinesFrecuentesService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +22,7 @@ public class ReporteMonopatinesFrecuentesController {
         this.servicio = servicio;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/monopatines-mas-usados")
     public ResponseEntity<List<MonopatinViajeDTO>> getMonopatinesFrecuentes(
             @RequestParam("anio") Integer anio,

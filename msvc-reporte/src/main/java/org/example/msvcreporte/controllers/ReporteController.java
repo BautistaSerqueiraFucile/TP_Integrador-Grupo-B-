@@ -2,6 +2,7 @@ package org.example.msvcreporte.controllers;
 
 import org.example.msvcreporte.entities.Reporte;
 import org.example.msvcreporte.services.ReporteService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ public class ReporteController {
         this.reporteService = reporteService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/historial")
     public List<Reporte> historial() {
         return reporteService.obtenerTodos();
