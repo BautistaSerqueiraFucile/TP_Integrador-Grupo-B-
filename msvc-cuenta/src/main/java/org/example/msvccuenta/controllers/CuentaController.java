@@ -2,6 +2,7 @@ package org.example.msvccuenta.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -11,6 +12,7 @@ import jakarta.validation.Valid;
 import org.example.msvccuenta.entities.Cuenta;
 import org.example.msvccuenta.entities.TipoCuenta;
 import org.example.msvccuenta.entities.dto.ParadaDto;
+import org.example.msvccuenta.entities.dto.ViajeDto;
 import org.example.msvccuenta.exceptions.CuentaNoEncontradaException;
 import org.example.msvccuenta.services.CuentaService;
 import org.springframework.http.HttpStatus;
@@ -22,16 +24,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controlador para gestionar las operaciones relacionadas con las Cuentas.
+ * Expone endpoints REST para crear, leer, actualizar y eliminar cuentas,
+ * así como otras operaciones de negocio.
+ */
 @Tag(name = "Cuentas", description = "API para la gestión de cuentas de usuarios")
 @RestController
 @RequestMapping("/cuentas")
 public class CuentaController {
     private final CuentaService cuentaService;
 
+    /**
+     * Constructor para inyección de dependencias del servicio de cuentas.
+     * @param cuentaService El servicio que maneja la lógica de negocio de las cuentas.
+     */
     public CuentaController(CuentaService cuentaService) {
         this.cuentaService = cuentaService;
     }
 
+    /**
+     * Obtiene una lista de todas las cuentas registradas.
+     * @return Una lista de objetos {@link Cuenta}.
+     */
     @Operation(summary = "Listar todas las cuentas", description = "Devuelve una lista con todas las cuentas existentes.")
     @ApiResponse(responseCode = "200", description = "Lista de cuentas obtenida exitosamente.")
     @GetMapping("")
@@ -39,6 +54,13 @@ public class CuentaController {
         return cuentaService.listar();
     }
 
+    /**
+     * Busca una cuenta por su identificador único.
+     * @param id El ID de la cuenta a buscar.
+     * @return Un {@link ResponseEntity} con la cuenta si se encuentra (200 OK),
+     *         o un mensaje de error si el ID es inválido (400 Bad Request)
+     *         o si la cuenta no existe (404 Not Found).
+     */
     @Operation(summary = "Buscar una cuenta por su ID", description = "Obtiene los detalles de una cuenta específica a través de su ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Cuenta encontrada exitosamente.",
@@ -63,6 +85,12 @@ public class CuentaController {
         }
     }
 
+    /**
+     * Crea una nueva cuenta en el sistema.
+     * @param cuenta El objeto {@link Cuenta} a crear, validado.
+     * @param result El resultado de la validación de los datos de la cuenta.
+     * @return Un {@link ResponseEntity} con la cuenta creada (201 Created) o un mapa de errores de validación (400 Bad Request).
+     */
     @Operation(summary = "Crear una nueva cuenta", description = "Registra una nueva cuenta en el sistema.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Cuenta creada exitosamente.",
@@ -78,6 +106,13 @@ public class CuentaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(cuentaService.crear(cuenta));
     }
 
+    /**
+     * Actualiza los datos de una cuenta existente.
+     * @param cuenta Los nuevos datos de la cuenta.
+     * @param result El resultado de la validación de los datos.
+     * @param id El ID de la cuenta a actualizar.
+     * @return Un {@link ResponseEntity} con la cuenta actualizada (200 OK) o un mensaje de error (400 o 404).
+     */
     @Operation(summary = "Actualizar una cuenta existente", description = "Modifica los datos de una cuenta existente.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Cuenta actualizada exitosamente.",
@@ -101,7 +136,11 @@ public class CuentaController {
         }
     }
 
-
+    /**
+     * Elimina una cuenta del sistema por su ID.
+     * @param id El ID de la cuenta a eliminar.
+     * @return Un {@link ResponseEntity} sin contenido (204 No Content) si la eliminación fue exitosa, o un error (400 o 404).
+     */
     @Operation(summary = "Eliminar una cuenta por su ID", description = "Elimina permanentemente una cuenta del sistema.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Cuenta eliminada exitosamente."),
@@ -121,6 +160,12 @@ public class CuentaController {
         }
     }
 
+
+    /**
+     * Cambia el estado de una cuenta a 'ANULADA'.
+     * @param id El ID de la cuenta a anular.
+     * @return Un {@link ResponseEntity} con la cuenta actualizada (200 OK) o un error (400 o 404).
+     */
     @Operation(summary = "Anular el estado de una cuenta", description = "Cambia el estado de una cuenta a 'ANULADA'.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Cuenta anulada exitosamente.",
@@ -141,6 +186,11 @@ public class CuentaController {
         }
     }
 
+    /**
+     * Cambia el estado de una cuenta a 'ACTIVA'.
+     * @param id El ID de la cuenta a activar.
+     * @return Un {@link ResponseEntity} con la cuenta actualizada (200 OK) o un error (400 o 404).
+     */
     @Operation(summary = "Activar el estado de una cuenta", description = "Cambia el estado de una cuenta a 'ACTIVA'.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Cuenta activada exitosamente.",
@@ -161,6 +211,11 @@ public class CuentaController {
         }
     }
 
+    /**
+     * Obtiene el saldo actual de una cuenta específica.
+     * @param id El ID de la cuenta.
+     * @return Un {@link ResponseEntity} con el saldo (Double) de la cuenta (200 OK) o un error (400 o 404).
+     */
     @Operation(summary = "Obtener el saldo de una cuenta", description = "Devuelve el saldo actual de una cuenta específica.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Saldo obtenido exitosamente.",
@@ -181,6 +236,12 @@ public class CuentaController {
         }
     }
 
+    /**
+     * Establece el tipo de plan de una cuenta (BASICA o PREMIUM).
+     * @param id El ID de la cuenta a modificar.
+     * @param tipo El nuevo {@link TipoCuenta} a establecer.
+     * @return Un {@link ResponseEntity} con la cuenta actualizada (200 OK) o un error (400 o 404).
+     */
     @Operation(summary = "Establecer el tipo de plan de una cuenta", description = "Permite cambiar el tipo de cuenta entre BASICA y PREMIUM.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Tipo de cuenta actualizado exitosamente.",
@@ -202,6 +263,12 @@ public class CuentaController {
         }
     }
 
+    /**
+     * Calcula la distancia en metros desde la ubicación de un usuario a una parada específica.
+     * @param idCuenta El ID de la cuenta del usuario.
+     * @param idParada El ID de la parada de colectivo.
+     * @return Un {@link ResponseEntity} con la distancia calculada (Double) o un 404 si no se encuentra la cuenta o la parada.
+     */
     @Operation(summary = "Calcular distancia a una parada", description = "Calcula la distancia en metros desde la ubicación de un usuario (asociado a una cuenta) a una parada específica.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Distancia calculada exitosamente.",
@@ -220,6 +287,12 @@ public class CuentaController {
     }
 
 
+    /**
+     * Recarga saldo a una cuenta específica.
+     * @param id El ID de la cuenta a recargar.
+     * @param monto El monto a añadir al saldo.
+     * @return Un {@link ResponseEntity} con la cuenta actualizada (200 OK) o un error (400, 404, o 409).
+     */
     @Operation(summary = "Recargar saldo a una cuenta", description = "Añade un monto específico al saldo de una cuenta.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Saldo recargado exitosamente.",
@@ -252,9 +325,16 @@ public class CuentaController {
         }
     }
 
+    /**
+     * Obtiene el historial de viajes de un usuario asociado a una cuenta.
+     * @param id El ID de la cuenta.
+     * @return Un {@link ResponseEntity} con la lista de viajes (200 OK) o un error (404).
+     */
     @Operation(summary = "Obtener historial de viajes de una cuenta", description = "Devuelve una lista con todos los viajes realizados por el usuario asociado a la cuenta.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Historial de viajes obtenido exitosamente."),
+            @ApiResponse(responseCode = "200", description = "Historial de viajes obtenido exitosamente.",
+                    content = @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = ViajeDto.class)))),
             @ApiResponse(responseCode = "404", description = "Cuenta no encontrada o sin viajes registrados.")
     })
     @GetMapping("/viajes/{id}")
@@ -267,9 +347,16 @@ public class CuentaController {
         }
     }
 
+    /**
+     * Obtiene una lista de cuentas filtradas por su tipo (BASICA o PREMIUM).
+     * @param tipo El tipo de cuenta a buscar.
+     * @return Un {@link ResponseEntity} con la lista de cuentas (200 OK) o un error (404).
+     */
     @Operation(summary = "Obtener cuentas por tipo", description = "Devuelve una lista de cuentas que coinciden con el tipo especificado (BASICA o PREMIUM).")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista de cuentas obtenida exitosamente."),
+            @ApiResponse(responseCode = "200", description = "Lista de cuentas obtenida exitosamente.",
+                    content = @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = Cuenta.class)))),
             @ApiResponse(responseCode = "404", description = "No se encontraron cuentas de ese tipo.")
     })
     @GetMapping("/tipo/{tipo}")
@@ -282,6 +369,11 @@ public class CuentaController {
         }
     }
 
+    /**
+     * Encuentra la parada de colectivo más cercana a la ubicación de un usuario.
+     * @param idCuenta El ID de la cuenta del usuario.
+     * @return Un {@link ResponseEntity} con el DTO de la parada más cercana (200 OK) o un error (404).
+     */
     @Operation(summary = "Obtener la parada más cercana a un usuario", description = "Calcula y devuelve la parada de colectivo más cercana a la ubicación actual del usuario.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Parada más cercana encontrada.",
@@ -298,6 +390,11 @@ public class CuentaController {
         }
     }
 
+    /**
+     * Métdo de utilidad para procesar y empaquetar errores de validación.
+     * @param result El objeto {@link BindingResult} que contiene los errores.
+     * @return Un {@link ResponseEntity} con un mapa de errores y estado 400 Bad Request.
+     */
     private static ResponseEntity<Map<String, String>> validar(BindingResult result) {
         Map<String, String> errores = new HashMap<>();
         result.getFieldErrors().forEach(err -> {
