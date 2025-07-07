@@ -12,15 +12,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8001/cuentas/",
+					"raw": "http://localhost:8001/cuentas",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8001",
 					"path": [
-						"cuentas",
-						""
+						"cuentas"
 					]
 				}
 			},
@@ -80,7 +79,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"fechaAlta\": \"2024-10-28\",\r\n  \"tipoCuenta\": \"BASICA\",\r\n  \"saldo\": 1500.00,\r\n  \"mercadoPagoId\": \"mp-78910\",\r\n  \"estadoCuenta\": \"ACTIVA\",\r\n  \"usuariosId\": [3]\r\n}",
+					"raw": "{\r\n  \"fechaAlta\": \"2024-10-28\",\r\n  \"tipoCuenta\": \"BASICA\",\r\n  \"saldo\": 1500.00,\r\n  \"mercadoPagoId\": \"mp-78910\",\r\n  \"estadoCuenta\": \"ACTIVA\",\r\n  \"usuariosId\": [2009]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -88,15 +87,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8001/cuentas/",
+					"raw": "http://localhost:8001/cuentas",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8001",
 					"path": [
-						"cuentas",
-						""
+						"cuentas"
 					]
 				}
 			},
@@ -164,7 +162,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8001/cuentas/3",
+					"raw": "http://localhost:8001/cuentas/2001",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -172,7 +170,7 @@
 					"port": "8001",
 					"path": [
 						"cuentas",
-						"3"
+						"2001"
 					]
 				}
 			},
@@ -232,7 +230,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"fechaAlta\": \"2024-10-28\",\r\n  \"tipoCuenta\": \"BASICA\",\r\n  \"saldo\": 550.70,\r\n  \"mercadoPagoId\": \"11\",\r\n  \"estadoCuenta\": \"ACTIVA\",\r\n  \"usuariosId\": [1]\r\n}",
+					"raw": "{\r\n  \"fechaAlta\": \"2024-10-28\",\r\n  \"tipoCuenta\": \"BASICA\",\r\n  \"saldo\": 550.30,\r\n  \"mercadoPagoId\": \"11\",\r\n  \"estadoCuenta\": \"ACTIVA\",\r\n  \"usuariosId\": [1]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -240,7 +238,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8001/cuentas/3",
+					"raw": "http://localhost:8001/cuentas/2011",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -248,7 +246,7 @@
 					"port": "8001",
 					"path": [
 						"cuentas",
-						"3"
+						"2011"
 					]
 				}
 			},
@@ -316,7 +314,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8001/cuentas/5",
+					"raw": "http://localhost:8001/cuentas/2007",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -324,7 +322,7 @@
 					"port": "8001",
 					"path": [
 						"cuentas",
-						"5"
+						"2007"
 					]
 				}
 			},
@@ -376,10 +374,10 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"id\": 1,\r\n  \"nombre\": \"Sofía\",\r\n  \"apellido\": \"Pérez\",\r\n  \"numeroCelular\": \"1199998888\",\r\n  \"email\": \"sofia.actualizada@example.com\"\r\n}"
+					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8001/cuentas/anular/3",
+					"raw": "http://localhost:8001/cuentas/anular/2011",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -388,7 +386,7 @@
 					"path": [
 						"cuentas",
 						"anular",
-						"3"
+						"2011"
 					]
 				}
 			},
@@ -452,7 +450,7 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8001/cuentas/activar/3",
+					"raw": "http://localhost:8001/cuentas/activar/2011",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -461,7 +459,7 @@
 					"path": [
 						"cuentas",
 						"activar",
-						"3"
+						"2011"
 					]
 				}
 			},
@@ -525,18 +523,19 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"id\": 1,\r\n  \"nombre\": \"Sofía\",\r\n  \"apellido\": \"Pérez\",\r\n  \"numeroCelular\": \"1199998888\",\r\n  \"email\": \"sofia.actualizada@example.com\"\r\n}"
+					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8001/saldo/1",
+					"raw": "http://localhost:8001/cuentas/saldo/2011",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8001",
 					"path": [
+						"cuentas",
 						"saldo",
-						"1"
+						"2011"
 					]
 				}
 			},
@@ -600,7 +599,7 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8001/cuentas/3/set-plan/BASICA",
+					"raw": "http://localhost:8001/cuentas/2011/set-plan/BASICA",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -608,7 +607,7 @@
 					"port": "8001",
 					"path": [
 						"cuentas",
-						"3",
+						"2011",
 						"set-plan",
 						"BASICA"
 					]
@@ -671,7 +670,7 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8001/cuentas/recargar/3/monto/10",
+					"raw": "http://localhost:8001/cuentas/recargar/2011/monto/100",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -680,9 +679,9 @@
 					"path": [
 						"cuentas",
 						"recargar",
-						"3",
+						"2011",
 						"monto",
-						"10"
+						"100"
 					]
 				}
 			},
@@ -735,6 +734,460 @@
 					],
 					"cookie": [],
 					"body": "{\n    \"id\": 3,\n    \"fechaAlta\": \"2024-10-28\",\n    \"tipoCuenta\": \"BASICA\",\n    \"saldo\": 560.5,\n    \"mercadoPagoId\": \"11\",\n    \"estadoCuenta\": \"ACTIVA\",\n    \"kmRecorridosMesPremium\": null,\n    \"usuariosId\": [\n        1\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "distancia a una parada desde el primer usuario de la cuenta",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8001/cuentas/2001/distancia-parada/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"cuentas",
+						"2001",
+						"distancia-parada",
+						"1"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "distancia parada",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8001/cuentas/2001/distancia-parada/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"cuentas",
+								"2001",
+								"distancia-parada",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 07 Jul 2025 00:07:54 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "13570026.706818666"
+				}
+			]
+		},
+		{
+			"name": "Distancia a una parada desde un usuario especifico de la cuenta",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8001/cuentas/2001/distancia-parada/1?idUsuario=2003",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"cuentas",
+						"2001",
+						"distancia-parada",
+						"1"
+					],
+					"query": [
+						{
+							"key": "idUsuario",
+							"value": "2003"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "distancia parada",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8001/cuentas/2001/distancia-parada/1?idUsuario=2003",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"cuentas",
+								"2001",
+								"distancia-parada",
+								"1"
+							],
+							"query": [
+								{
+									"key": "idUsuario",
+									"value": "2003"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 06 Jul 2025 22:15:33 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "13570066.732654821"
+				}
+			]
+		},
+		{
+			"name": "Historial de viajes de una cuenta",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8001/cuentas/viajes/2001",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"cuentas",
+						"viajes",
+						"2001"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "historial",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8001/cuentas/viajes/2001",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"cuentas",
+								"viajes",
+								"2001"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 06 Jul 2025 22:17:59 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"idViaje\": 20,\n        \"idUsuario\": 2003,\n        \"idMonopatin\": \"9\",\n        \"idParadaInicio\": 2,\n        \"idParadaFin\": 3,\n        \"fecha\": \"2025-06-30\",\n        \"horaInicio\": \"17:10:00\",\n        \"horaFin\": \"17:45:00\",\n        \"tiempoPausa\": 2,\n        \"estado\": \"finalizado\",\n        \"kilometros\": 2.8\n    },\n    {\n        \"idViaje\": 19,\n        \"idUsuario\": 2003,\n        \"idMonopatin\": \"9\",\n        \"idParadaInicio\": 1,\n        \"idParadaFin\": 2,\n        \"fecha\": \"2025-06-28\",\n        \"horaInicio\": \"15:50:00\",\n        \"horaFin\": \"16:30:00\",\n        \"tiempoPausa\": 2,\n        \"estado\": \"finalizado\",\n        \"kilometros\": 2.4\n    },\n    {\n        \"idViaje\": 18,\n        \"idUsuario\": 2003,\n        \"idMonopatin\": \"9\",\n        \"idParadaInicio\": 3,\n        \"idParadaFin\": 4,\n        \"fecha\": \"2025-06-25\",\n        \"horaInicio\": \"14:40:00\",\n        \"horaFin\": \"15:20:00\",\n        \"tiempoPausa\": 1.5,\n        \"estado\": \"finalizado\",\n        \"kilometros\": 3.1\n    },\n    {\n        \"idViaje\": 17,\n        \"idUsuario\": 2003,\n        \"idMonopatin\": \"9\",\n        \"idParadaInicio\": 5,\n        \"idParadaFin\": 1,\n        \"fecha\": \"2025-06-20\",\n        \"horaInicio\": \"13:10:00\",\n        \"horaFin\": \"13:50:00\",\n        \"tiempoPausa\": 2,\n        \"estado\": \"finalizado\",\n        \"kilometros\": 2.7\n    },\n    {\n        \"idViaje\": 16,\n        \"idUsuario\": 2003,\n        \"idMonopatin\": \"9\",\n        \"idParadaInicio\": 2,\n        \"idParadaFin\": 5,\n        \"fecha\": \"2025-06-15\",\n        \"horaInicio\": \"11:30:00\",\n        \"horaFin\": \"12:10:00\",\n        \"tiempoPausa\": 1,\n        \"estado\": \"finalizado\",\n        \"kilometros\": 2.9\n    },\n    {\n        \"idViaje\": 4,\n        \"idUsuario\": 2001,\n        \"idMonopatin\": \"2\",\n        \"idParadaInicio\": 4,\n        \"idParadaFin\": 1,\n        \"fecha\": \"2025-02-22\",\n        \"horaInicio\": \"12:00:00\",\n        \"horaFin\": \"12:35:00\",\n        \"tiempoPausa\": 3,\n        \"estado\": \"finalizado\",\n        \"kilometros\": 3\n    },\n    {\n        \"idViaje\": 3,\n        \"idUsuario\": 2001,\n        \"idMonopatin\": \"2\",\n        \"idParadaInicio\": 2,\n        \"idParadaFin\": 4,\n        \"fecha\": \"2025-02-10\",\n        \"horaInicio\": \"10:30:00\",\n        \"horaFin\": \"11:10:00\",\n        \"tiempoPausa\": 1,\n        \"estado\": \"finalizado\",\n        \"kilometros\": 2.7\n    },\n    {\n        \"idViaje\": 2,\n        \"idUsuario\": 2001,\n        \"idMonopatin\": \"2\",\n        \"idParadaInicio\": 3,\n        \"idParadaFin\": 2,\n        \"fecha\": \"2025-01-15\",\n        \"horaInicio\": \"09:15:00\",\n        \"horaFin\": \"09:50:00\",\n        \"tiempoPausa\": 4,\n        \"estado\": \"finalizado\",\n        \"kilometros\": 2.1\n    },\n    {\n        \"idViaje\": 1,\n        \"idUsuario\": 2001,\n        \"idMonopatin\": \"2\",\n        \"idParadaInicio\": 1,\n        \"idParadaFin\": 3,\n        \"fecha\": \"2025-01-05\",\n        \"horaInicio\": \"08:00:00\",\n        \"horaFin\": \"08:35:00\",\n        \"tiempoPausa\": 2,\n        \"estado\": \"finalizado\",\n        \"kilometros\": 3.2\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Historial de viajes de un usuario de una cuenta",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8001/cuentas/viajes/2001?idUsuario=2003",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"cuentas",
+						"viajes",
+						"2001"
+					],
+					"query": [
+						{
+							"key": "idUsuario",
+							"value": "2003"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "historial",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8001/cuentas/viajes/2001?idUsuario=2003",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"cuentas",
+								"viajes",
+								"2001"
+							],
+							"query": [
+								{
+									"key": "idUsuario",
+									"value": "2003"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 06 Jul 2025 22:18:09 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"idViaje\": 16,\n        \"idUsuario\": 2003,\n        \"idMonopatin\": \"9\",\n        \"idParadaInicio\": 2,\n        \"idParadaFin\": 5,\n        \"fecha\": \"2025-06-15\",\n        \"horaInicio\": \"11:30:00\",\n        \"horaFin\": \"12:10:00\",\n        \"tiempoPausa\": 1,\n        \"estado\": \"finalizado\",\n        \"kilometros\": 2.9\n    },\n    {\n        \"idViaje\": 17,\n        \"idUsuario\": 2003,\n        \"idMonopatin\": \"9\",\n        \"idParadaInicio\": 5,\n        \"idParadaFin\": 1,\n        \"fecha\": \"2025-06-20\",\n        \"horaInicio\": \"13:10:00\",\n        \"horaFin\": \"13:50:00\",\n        \"tiempoPausa\": 2,\n        \"estado\": \"finalizado\",\n        \"kilometros\": 2.7\n    },\n    {\n        \"idViaje\": 18,\n        \"idUsuario\": 2003,\n        \"idMonopatin\": \"9\",\n        \"idParadaInicio\": 3,\n        \"idParadaFin\": 4,\n        \"fecha\": \"2025-06-25\",\n        \"horaInicio\": \"14:40:00\",\n        \"horaFin\": \"15:20:00\",\n        \"tiempoPausa\": 1.5,\n        \"estado\": \"finalizado\",\n        \"kilometros\": 3.1\n    },\n    {\n        \"idViaje\": 19,\n        \"idUsuario\": 2003,\n        \"idMonopatin\": \"9\",\n        \"idParadaInicio\": 1,\n        \"idParadaFin\": 2,\n        \"fecha\": \"2025-06-28\",\n        \"horaInicio\": \"15:50:00\",\n        \"horaFin\": \"16:30:00\",\n        \"tiempoPausa\": 2,\n        \"estado\": \"finalizado\",\n        \"kilometros\": 2.4\n    },\n    {\n        \"idViaje\": 20,\n        \"idUsuario\": 2003,\n        \"idMonopatin\": \"9\",\n        \"idParadaInicio\": 2,\n        \"idParadaFin\": 3,\n        \"fecha\": \"2025-06-30\",\n        \"horaInicio\": \"17:10:00\",\n        \"horaFin\": \"17:45:00\",\n        \"tiempoPausa\": 2,\n        \"estado\": \"finalizado\",\n        \"kilometros\": 2.8\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Encontrar la parada mas cercana al primer usuario de la cuenta",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8001/cuentas/2001/paradas-cercanas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"cuentas",
+						"2001",
+						"paradas-cercanas"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "paradas cercanas",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8001/cuentas/2001/paradas-cercanas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"cuentas",
+								"2001",
+								"paradas-cercanas"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 07 Jul 2025 00:12:52 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 5,\n        \"nombre\": \"Parada 5\",\n        \"posX\": 300,\n        \"posY\": 400,\n        \"activa\": false\n    },\n    {\n        \"id\": 13,\n        \"nombre\": \"Parada 5\",\n        \"posX\": 300,\n        \"posY\": 400,\n        \"activa\": false\n    },\n    {\n        \"id\": 21,\n        \"nombre\": \"Parada 5\",\n        \"posX\": 300,\n        \"posY\": 400,\n        \"activa\": false\n    },\n    {\n        \"id\": 4,\n        \"nombre\": \"Parada 4\",\n        \"posX\": 250,\n        \"posY\": 350,\n        \"activa\": true\n    },\n    {\n        \"id\": 12,\n        \"nombre\": \"Parada 4\",\n        \"posX\": 250,\n        \"posY\": 350,\n        \"activa\": true\n    },\n    {\n        \"id\": 20,\n        \"nombre\": \"Parada 4\",\n        \"posX\": 250,\n        \"posY\": 350,\n        \"activa\": true\n    },\n    {\n        \"id\": 1,\n        \"nombre\": \"Parada 1\",\n        \"posX\": 100,\n        \"posY\": 200,\n        \"activa\": true\n    },\n    {\n        \"id\": 9,\n        \"nombre\": \"Parada 1\",\n        \"posX\": 100,\n        \"posY\": 200,\n        \"activa\": true\n    },\n    {\n        \"id\": 17,\n        \"nombre\": \"Parada 1\",\n        \"posX\": 100,\n        \"posY\": 200,\n        \"activa\": true\n    },\n    {\n        \"id\": 8,\n        \"nombre\": \"Parada 8\",\n        \"posX\": 450,\n        \"posY\": 550,\n        \"activa\": false\n    },\n    {\n        \"id\": 16,\n        \"nombre\": \"Parada 8\",\n        \"posX\": 450,\n        \"posY\": 550,\n        \"activa\": false\n    },\n    {\n        \"id\": 24,\n        \"nombre\": \"Parada 8\",\n        \"posX\": 450,\n        \"posY\": 550,\n        \"activa\": false\n    },\n    {\n        \"id\": 3,\n        \"nombre\": \"Parada 3\",\n        \"posX\": 200,\n        \"posY\": 300,\n        \"activa\": false\n    },\n    {\n        \"id\": 11,\n        \"nombre\": \"Parada 3\",\n        \"posX\": 200,\n        \"posY\": 300,\n        \"activa\": false\n    },\n    {\n        \"id\": 19,\n        \"nombre\": \"Parada 3\",\n        \"posX\": 200,\n        \"posY\": 300,\n        \"activa\": false\n    },\n    {\n        \"id\": 6,\n        \"nombre\": \"Parada 6\",\n        \"posX\": 350,\n        \"posY\": 450,\n        \"activa\": true\n    },\n    {\n        \"id\": 14,\n        \"nombre\": \"Parada 6\",\n        \"posX\": 350,\n        \"posY\": 450,\n        \"activa\": true\n    },\n    {\n        \"id\": 22,\n        \"nombre\": \"Parada 6\",\n        \"posX\": 350,\n        \"posY\": 450,\n        \"activa\": true\n    },\n    {\n        \"id\": 2,\n        \"nombre\": \"Parada 2\",\n        \"posX\": 150,\n        \"posY\": 250,\n        \"activa\": true\n    },\n    {\n        \"id\": 10,\n        \"nombre\": \"Parada 2\",\n        \"posX\": 150,\n        \"posY\": 250,\n        \"activa\": true\n    },\n    {\n        \"id\": 18,\n        \"nombre\": \"Parada 2\",\n        \"posX\": 150,\n        \"posY\": 250,\n        \"activa\": true\n    },\n    {\n        \"id\": 7,\n        \"nombre\": \"Parada 7\",\n        \"posX\": 400,\n        \"posY\": 500,\n        \"activa\": true\n    },\n    {\n        \"id\": 15,\n        \"nombre\": \"Parada 7\",\n        \"posX\": 400,\n        \"posY\": 500,\n        \"activa\": true\n    },\n    {\n        \"id\": 23,\n        \"nombre\": \"Parada 7\",\n        \"posX\": 400,\n        \"posY\": 500,\n        \"activa\": true\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Encontrar la parada mas cercana a un usuario determinado de la cuenta",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8001/cuentas/2001/paradas-cercanas?idUsuario=2003",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"cuentas",
+						"2001",
+						"paradas-cercanas"
+					],
+					"query": [
+						{
+							"key": "idUsuario",
+							"value": "2003"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Encontrar la parada mas cercana a un usuario determinado de la cuenta",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8001/cuentas/2001/paradas-cercanas?idUsuario=2003",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"cuentas",
+								"2001",
+								"paradas-cercanas"
+							],
+							"query": [
+								{
+									"key": "idUsuario",
+									"value": "2003"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 07 Jul 2025 00:11:45 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 1,\n        \"nombre\": \"Parada 1\",\n        \"posX\": 100,\n        \"posY\": 200,\n        \"activa\": true\n    },\n    {\n        \"id\": 9,\n        \"nombre\": \"Parada 1\",\n        \"posX\": 100,\n        \"posY\": 200,\n        \"activa\": true\n    },\n    {\n        \"id\": 17,\n        \"nombre\": \"Parada 1\",\n        \"posX\": 100,\n        \"posY\": 200,\n        \"activa\": true\n    },\n    {\n        \"id\": 8,\n        \"nombre\": \"Parada 8\",\n        \"posX\": 450,\n        \"posY\": 550,\n        \"activa\": false\n    },\n    {\n        \"id\": 16,\n        \"nombre\": \"Parada 8\",\n        \"posX\": 450,\n        \"posY\": 550,\n        \"activa\": false\n    },\n    {\n        \"id\": 24,\n        \"nombre\": \"Parada 8\",\n        \"posX\": 450,\n        \"posY\": 550,\n        \"activa\": false\n    },\n    {\n        \"id\": 2,\n        \"nombre\": \"Parada 2\",\n        \"posX\": 150,\n        \"posY\": 250,\n        \"activa\": true\n    },\n    {\n        \"id\": 10,\n        \"nombre\": \"Parada 2\",\n        \"posX\": 150,\n        \"posY\": 250,\n        \"activa\": true\n    },\n    {\n        \"id\": 18,\n        \"nombre\": \"Parada 2\",\n        \"posX\": 150,\n        \"posY\": 250,\n        \"activa\": true\n    },\n    {\n        \"id\": 7,\n        \"nombre\": \"Parada 7\",\n        \"posX\": 400,\n        \"posY\": 500,\n        \"activa\": true\n    },\n    {\n        \"id\": 15,\n        \"nombre\": \"Parada 7\",\n        \"posX\": 400,\n        \"posY\": 500,\n        \"activa\": true\n    },\n    {\n        \"id\": 23,\n        \"nombre\": \"Parada 7\",\n        \"posX\": 400,\n        \"posY\": 500,\n        \"activa\": true\n    },\n    {\n        \"id\": 6,\n        \"nombre\": \"Parada 6\",\n        \"posX\": 350,\n        \"posY\": 450,\n        \"activa\": true\n    },\n    {\n        \"id\": 14,\n        \"nombre\": \"Parada 6\",\n        \"posX\": 350,\n        \"posY\": 450,\n        \"activa\": true\n    },\n    {\n        \"id\": 22,\n        \"nombre\": \"Parada 6\",\n        \"posX\": 350,\n        \"posY\": 450,\n        \"activa\": true\n    },\n    {\n        \"id\": 3,\n        \"nombre\": \"Parada 3\",\n        \"posX\": 200,\n        \"posY\": 300,\n        \"activa\": false\n    },\n    {\n        \"id\": 11,\n        \"nombre\": \"Parada 3\",\n        \"posX\": 200,\n        \"posY\": 300,\n        \"activa\": false\n    },\n    {\n        \"id\": 19,\n        \"nombre\": \"Parada 3\",\n        \"posX\": 200,\n        \"posY\": 300,\n        \"activa\": false\n    },\n    {\n        \"id\": 5,\n        \"nombre\": \"Parada 5\",\n        \"posX\": 300,\n        \"posY\": 400,\n        \"activa\": false\n    },\n    {\n        \"id\": 13,\n        \"nombre\": \"Parada 5\",\n        \"posX\": 300,\n        \"posY\": 400,\n        \"activa\": false\n    },\n    {\n        \"id\": 21,\n        \"nombre\": \"Parada 5\",\n        \"posX\": 300,\n        \"posY\": 400,\n        \"activa\": false\n    },\n    {\n        \"id\": 4,\n        \"nombre\": \"Parada 4\",\n        \"posX\": 250,\n        \"posY\": 350,\n        \"activa\": true\n    },\n    {\n        \"id\": 12,\n        \"nombre\": \"Parada 4\",\n        \"posX\": 250,\n        \"posY\": 350,\n        \"activa\": true\n    },\n    {\n        \"id\": 20,\n        \"nombre\": \"Parada 4\",\n        \"posX\": 250,\n        \"posY\": 350,\n        \"activa\": true\n    }\n]"
 				}
 			]
 		}

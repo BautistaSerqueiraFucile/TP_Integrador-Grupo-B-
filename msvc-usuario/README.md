@@ -42,6 +42,17 @@ Gestiona los usuarios del sistema de alquiler de monopatines eléctricos.
 | PUT    | `/usuarios/{id}/set-usuario`  | Asignar rol USUARIO            |
 
 ---
+---
+
+### 🛡️ Notas de Seguridad sobre la Actualización de Usuarios
+
+Es importante destacar que, por diseño y para garantizar la integridad del sistema, ciertas operaciones en la actualización de usuarios están restringidas:
+
+-   **Actualización de `rol` y `password`**: El endpoint `PUT /usuarios/{id}` está diseñado para actualizar datos del perfil del usuario (como nombre, email, etc.). Sin embargo, **ignora intencionadamente** los campos `rol` y `password` aunque se envíen en el cuerpo de la petición.
+
+    -   **Motivo**: Esta es una medida de seguridad crucial para prevenir que un usuario pueda asignarse a sí mismo el rol de `ADMIN` o que se cambie una contraseña sin seguir el flujo de seguridad adecuado (que podría implicar, por ejemplo, la verificación de la contraseña anterior).
+
+    -   **Operaciones correctas**: La gestión de roles de administrador y el cambio de contraseñas deben realizarse a través de endpoints dedicados y protegidos, diseñados específicamente para esas tareas.
 
 ## 📖 Documentación de la API
 
