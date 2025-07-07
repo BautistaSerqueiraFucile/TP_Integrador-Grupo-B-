@@ -12,7 +12,6 @@ import jakarta.validation.Valid;
 import org.example.msvccuenta.entities.Cuenta;
 import org.example.msvccuenta.entities.TipoCuenta;
 import org.example.msvccuenta.entities.dto.ParadaConDistanciaDto;
-import org.example.msvccuenta.entities.dto.ParadaDto;
 import org.example.msvccuenta.entities.dto.ViajeDto;
 import org.example.msvccuenta.services.CuentaService;
 import org.springframework.http.HttpStatus;
@@ -311,7 +310,6 @@ public class CuentaController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Listado de paradas cercanas obtenido.",
                     content = @Content(mediaType = "application/json",
-                            // ¡CAMBIO CLAVE! Actualiza el schema para reflejar el nuevo DTO.
                             array = @ArraySchema(schema = @Schema(implementation = ParadaConDistanciaDto.class)))),
             @ApiResponse(responseCode = "400", description = "El usuario especificado no pertenece a la cuenta."),
             @ApiResponse(responseCode = "404", description = "Cuenta no encontrada o no se pudo determinar la ubicación.")

@@ -167,39 +167,14 @@ public class CuentaService {
      */
     @Transactional(readOnly = true)
     public Double calcularDistanciaAParada(Long idCuenta, Long idParada, Long idUsuario) {
-        Cuenta cuenta = this.buscarPorId(idCuenta);
-
-        Hibernate.initialize(cuenta.getUsuariosId());
-        Set<Long> usuariosDeLaCuenta = cuenta.getUsuariosId();
-
-        if (usuariosDeLaCuenta == null || usuariosDeLaCuenta.isEmpty()) {
-            throw new IllegalStateException("La cuenta con ID " + idCuenta + " no tiene usuarios asociados.");
-        }
-
-        Long idUsuarioAUtilizar;
-        if (idUsuario != null) {
-            if (!usuariosDeLaCuenta.contains(idUsuario)) {
-                throw new IllegalArgumentException("El usuario con ID " + idUsuario + " no pertenece a la cuenta con ID " + idCuenta);
-            }
-            idUsuarioAUtilizar = idUsuario;
-        } else {
-            idUsuarioAUtilizar = usuariosDeLaCuenta.iterator().next();
-        }
-
-        UsuarioDto usuario = usuarioFeignClient.getUsuarioById(idUsuarioAUtilizar);
-        if (usuario == null || usuario.getLatitud() == null || usuario.getLongitud() == null) {
-            throw new IllegalStateException("No se pudo obtener la ubicación para el usuario con ID " + idUsuarioAUtilizar + ".");
-        }
-
+        UsuarioDto usuario = obtenerUsuarioVerificado(idCuenta, idUsuario);
         ParadaDto parada = paradaFeignClient.getParadaById(idParada);
         if (parada == null || parada.getPosX() == null || parada.getPosY() == null) {
             throw new IllegalStateException("No se pudo obtener la ubicación para la parada con ID " + idParada + ".");
         }
-
         double distancia = calcularDistanciaEuclidiana(usuario.getLatitud(), usuario.getLongitud(), parada.getPosY(), parada.getPosX());
-
-        return Math.round(distancia * 100.0) / 100.0;    }
-
+        return Math.round(distancia * 100.0) / 100.0;
+    }
     /**
      * Función de utilidad privada para calcular la distancia Euclidiana.
      * @return distancia Euclidiana.
@@ -324,10 +299,42 @@ public class CuentaService {
      * @throws IllegalArgumentException si el idUsuario especificado no pertenece a la cuenta.
      */
     @Transactional(readOnly = true)
-    public List<ParadaConDistanciaDto> paradasCercanas(Long idCuenta, Long idUsuario) {        Hibernate.initialize(this.buscarPorId(idCuenta).getUsuariosId());
-        Set<Long> usuariosDeLaCuenta = this.buscarPorId(idCuenta).getUsuariosId();
+    public List<ParadaConDistanciaDto> paradasCercanas(Long idCuenta, Long idUsuario) {
+        UsuarioDto usuario = obtenerUsuarioVerificado(idCuenta, idUsuario);
+        List<ParadaDto> paradas = paradaFeignClient.listarParadas();
+        if (paradas == null || paradas.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return paradas.stream()
+                .map(parada -> {
+                    double distancia = calcularDistanciaEuclidiana(
+                            usuario.getLatitud(),
+                            usuario.getLongitud(),
+                            parada.getPosY(),
+                            parada.getPosX()
+                    );
+                    double distanciaRedondeada = Math.round(distancia * 100.0) / 100.0;
+                    return new ParadaConDistanciaDto(parada, distanciaRedondeada);
+                })
+                .sorted(Comparator.comparing(ParadaConDistanciaDto::getDistancia))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Métdo de utilidad para obtener un usuario validado, asegurando que pertenece a la cuenta
+     * y que su ubicación es válida. Centraliza la lógica repetida.
+     *
+     * @param idCuenta ID de la cuenta.
+     * @param idUsuario ID opcional del usuario.
+     * @return El DTO del usuario con su ubicación.
+     */
+    private UsuarioDto obtenerUsuarioVerificado(Long idCuenta, Long idUsuario) {
+        Cuenta cuenta = this.buscarPorId(idCuenta);
+        Hibernate.initialize(cuenta.getUsuariosId());
+        Set<Long> usuariosDeLaCuenta = cuenta.getUsuariosId();
+
         if (usuariosDeLaCuenta == null || usuariosDeLaCuenta.isEmpty()) {
-            throw new IllegalStateException("La cuenta con ID " + idCuenta + " no tiene usuarios asociados para calcular la distancia.");
+            throw new IllegalStateException("La cuenta con ID " + idCuenta + " no tiene usuarios asociados.");
         }
 
         Long idUsuarioAUtilizar;
@@ -344,25 +351,7 @@ public class CuentaService {
         if (usuario == null || usuario.getLatitud() == null || usuario.getLongitud() == null) {
             throw new IllegalStateException("No se pudo obtener la ubicación para el usuario con ID " + idUsuarioAUtilizar + ".");
         }
-
-        List<ParadaDto> paradas = paradaFeignClient.listarParadas();
-        if (paradas == null || paradas.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        return paradas.stream()
-                .map(parada -> {
-                    double distancia = calcularDistanciaEuclidiana(
-                            usuario.getLatitud(),
-                            usuario.getLongitud(),
-                            parada.getPosY(),
-                            parada.getPosX()
-                    );
-                    distancia = Math.round(distancia * 100.0) / 100.0;
-                    return new ParadaConDistanciaDto(parada, distancia);
-                })
-                .sorted(Comparator.comparing(ParadaConDistanciaDto::getDistancia))
-                .collect(Collectors.toList());
+        return usuario;
     }
 
 }
