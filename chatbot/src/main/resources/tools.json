@@ -1,0 +1,50 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "getViajes",
+      "description": "Obtiene el historial de viajes puede ser por usuario, fecha de inicio y fecha de fin",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "idUsuario": {
+            "type": "integer",
+            "description": "ID del usuario"
+          },
+          "fechaDesde": {
+            "type": "string",
+            "format": "date",
+            "description": "Fecha de inicio del período"
+          },
+          "fechaHasta": {
+            "type": "string",
+            "format": "date",
+            "description": "Fecha de fin del período"
+          }
+        },
+        "required": []
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "getParadas",
+      "description": "obtiene todas las paradas para consultas relacionadas a las mismas"
+      }
+    },
+  {
+    "type": "function",
+    "function": {
+      "name": "getMonopatines",
+      "description": "obtiene todos los monopatines para consultas relacionadas a los mismos"
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "getFacturacion",
+      "description": "obtiene el historial de facturacion para consultas relacionadas al mismo"
+    }
+  }
+]

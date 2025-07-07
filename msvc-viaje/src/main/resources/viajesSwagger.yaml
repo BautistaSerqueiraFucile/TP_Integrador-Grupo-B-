@@ -1,0 +1,246 @@
+openapi: 3.0.1
+info:
+  title: API de Viajes
+  version: 1.0.0
+  description: API para gestionar viajes de monopatines eléctricos.
+
+servers:
+  - url: http://localhost:8003
+
+paths:
+  /viajes:
+    get:
+      summary: Obtener todos los viajes
+      responses:
+        '200':
+          description: Lista de viajes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Viaje'
+        '404':
+          description: Error al obtener los viajes
+    post:
+      summary: Crear un nuevo viaje
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ViajeRequestDTO'
+      responses:
+        '200':
+          description: Viaje creado exitosamente
+        '400':
+          description: Error al crear el viaje
+
+  /viajes/{id}:
+    get:
+      summary: Obtener viaje por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalle del viaje
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Viaje'
+        '404':
+          description: Viaje no encontrado
+    delete:
+      summary: Eliminar un viaje por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Viaje eliminado correctamente
+        '404':
+          description: Viaje no encontrado
+
+  /viajes/historial:
+    get:
+      summary: Obtener historial de viajes filtrado
+      parameters:
+        - name: idUsuario
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: fechaDesde
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: fechaHasta
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Historial filtrado de viajes
+        '400':
+          description: Error en los parámetros
+
+  /viajes/{id}/finalizar:
+    put:
+      summary: Finalizar un viaje
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FinalizarViajeDTO'
+      responses:
+        '200':
+          description: Viaje finalizado correctamente
+        '400':
+          description: Error al finalizar el viaje
+
+  /viajes/{id}/pausar:
+    put:
+      summary: Pausar un viaje
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Viaje pausado correctamente
+        '400':
+          description: Error al pausar el viaje
+
+  /viajes/{id}/reanudar:
+    put:
+      summary: Reanudar un viaje
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Viaje reanudado correctamente
+        '400':
+          description: Error al reanudar el viaje
+
+  /viajes/monopatines:
+    get:
+      summary: Obtener viajes por cantidad mínima y año
+      parameters:
+        - name: minViaje
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: anio
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Lista de viajes filtrados por monopatín y fecha
+        '400':
+          description: Error en los parámetros
+
+components:
+  schemas:
+    ViajeRequestDTO:
+      type: object
+      properties:
+        idUsuario:
+          type: integer
+        idParadaInicio:
+          type: integer
+        idParadaFin:
+          type: integer
+        fecha:
+          type: string
+          format: date
+          example: "2025-07-07"
+        horaInicio:
+          type: string
+          pattern: "^\\d{2}:\\d{2}:\\d{2}$"
+          example: "14:30:00"
+      required:
+        - idUsuario
+        - idParadaInicio
+        - idParadaFin
+        - fecha
+        - horaInicio
+
+    FinalizarViajeDTO:
+      type: object
+      properties:
+        horaFin:
+          type: string
+          pattern: "^\\d{2}:\\d{2}:\\d{2}$"
+          example: "15:00:00"
+        tiempoPausa:
+          type: number
+          format: float
+          example: 12.5
+      required:
+        - horaFin
+        - tiempoPausa
+
+    Viaje:
+      type: object
+      properties:
+        idViaje:
+          type: integer
+        idUsuario:
+          type: integer
+        idMonopatin:
+          type: string
+        idParadaInicio:
+          type: integer
+        idParadaFin:
+          type: integer
+        fecha:
+          type: string
+          format: date
+          example: "2025-07-07"
+        horaInicio:
+          type: string
+          pattern: "^\\d{2}:\\d{2}:\\d{2}$"
+          example: "14:30:00"
+        horaFin:
+          type: string
+          pattern: "^\\d{2}:\\d{2}:\\d{2}$"
+          nullable: true
+          example: "15:00:00"
+        tiempoPausa:
+          type: number
+          format: float
+          example: 5.0
+        estado:
+          type: string
+          enum: [activo, pausado, finalizado]
+        kilometros:
+          type: number
+          format: float
+          example: 3.2

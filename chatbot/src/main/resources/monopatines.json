@@ -1,0 +1,263 @@
+[
+  {
+    "_id": "1",
+    "kilometrosActuales": 120.5,
+    "estado": "ocupado",
+    "ubicacion": { "posX": 100, "posY": 200 },
+    "paradaActual": "1",
+    "tiempoDeUso": 50.0,
+    "tiempoDePausa": 10.0
+  },
+  {
+    "_id": "2",
+    "kilometrosActuales": 95.2,
+    "estado": "ocupado",
+    "ubicacion": { "posX": 100, "posY": 200 },
+    "paradaActual": "1",
+    "tiempoDeUso": 60.0,
+    "tiempoDePausa": 5.0
+  },
+  {
+    "_id": "3",
+    "kilometrosActuales": 56778.54249492381,
+    "estado": "mantenimiento",
+    "ubicacion": { "posX": 100, "posY": 200 },
+    "paradaActual": "3",
+    "tiempoDeUso": 172.0,
+    "tiempoDePausa": 16.0
+  },
+  {
+    "_id": "4",
+    "kilometrosActuales": 300.3,
+    "estado": "feo",
+    "ubicacion": { "posX": 150, "posY": 250 },
+    "paradaActual": "2",
+    "tiempoDeUso": 90.0,
+    "tiempoDePausa": 20.0
+  },
+  {
+    "_id": "5",
+    "kilometrosActuales": 125.7,
+    "estado": "mantenimiento",
+    "ubicacion": { "posX": 150, "posY": 250 },
+    "paradaActual": "2",
+    "tiempoDeUso": 15.0,
+    "tiempoDePausa": 15.0
+  },
+  {
+    "_id": "6",
+    "kilometrosActuales": 289.9,
+    "estado": "disponible",
+    "ubicacion": { "posX": 150, "posY": 250 },
+    "paradaActual": "2",
+    "tiempoDeUso": 75.0,
+    "tiempoDePausa": 12.0
+  },
+  {
+    "_id": "7",
+    "kilometrosActuales": 180.2,
+    "estado": "disponible",
+    "ubicacion": { "posX": 200, "posY": 300 },
+    "paradaActual": "3",
+    "tiempoDeUso": 55.0,
+    "tiempoDePausa": 9.0
+  },
+  {
+    "_id": "8",
+    "kilometrosActuales": 342.5,
+    "estado": "disponible",
+    "ubicacion": { "posX": 200, "posY": 300 },
+    "paradaActual": "3",
+    "tiempoDeUso": 95.0,
+    "tiempoDePausa": 6.0
+  },
+  {
+    "_id": "9",
+    "kilometrosActuales": 78.8,
+    "estado": "inactivo",
+    "ubicacion": { "posX": 200, "posY": 300 },
+    "paradaActual": "3",
+    "tiempoDeUso": 10.0,
+    "tiempoDePausa": 30.0
+  },
+  {
+    "_id": "10",
+    "kilometrosActuales": 153.4,
+    "estado": "disponible",
+    "ubicacion": { "posX": 250, "posY": 350 },
+    "paradaActual": "4",
+    "tiempoDeUso": 32.0,
+    "tiempoDePausa": 11.0
+  },
+  {
+    "_id": "11",
+    "kilometrosActuales": 67.3,
+    "estado": "disponible",
+    "ubicacion": { "posX": 250, "posY": 350 },
+    "paradaActual": "4",
+    "tiempoDeUso": 18.0,
+    "tiempoDePausa": 4.0
+  },
+  {
+    "_id": "12",
+    "kilometrosActuales": 201.6,
+    "estado": "ocupado",
+    "ubicacion": { "posX": 250, "posY": 350 },
+    "paradaActual": "4",
+    "tiempoDeUso": 78.0,
+    "tiempoDePausa": 16.0
+  },
+  {
+    "_id": "13",
+    "kilometrosActuales": 101.9,
+    "estado": "disponible",
+    "ubicacion": { "posX": 300, "posY": 400 },
+    "paradaActual": "5",
+    "tiempoDeUso": 45.0,
+    "tiempoDePausa": 10.0
+  },
+  {
+    "_id": "14",
+    "kilometrosActuales": 263.8,
+    "estado": "disponible",
+    "ubicacion": { "posX": 300, "posY": 400 },
+    "paradaActual": "5",
+    "tiempoDeUso": 65.0,
+    "tiempoDePausa": 14.0
+  },
+  {
+    "_id": "15",
+    "kilometrosActuales": 144.1,
+    "estado": "mantenimiento",
+    "ubicacion": { "posX": 300, "posY": 400 },
+    "paradaActual": "5",
+    "tiempoDeUso": 21.0,
+    "tiempoDePausa": 7.0
+  },
+  {
+    "_id": "16",
+    "kilometrosActuales": 378.6,
+    "estado": "disponible",
+    "ubicacion": { "posX": 350, "posY": 450 },
+    "paradaActual": "6",
+    "tiempoDeUso": 88.0,
+    "tiempoDePausa": 20.0
+  },
+  {
+    "_id": "17",
+    "kilometrosActuales": 95.1,
+    "estado": "ocupado",
+    "ubicacion": { "posX": 350, "posY": 450 },
+    "paradaActual": "6",
+    "tiempoDeUso": 34.0,
+    "tiempoDePausa": 8.0
+  },
+  {
+    "_id": "18",
+    "kilometrosActuales": 226.4,
+    "estado": "disponible",
+    "ubicacion": { "posX": 350, "posY": 450 },
+    "paradaActual": "6",
+    "tiempoDeUso": 59.0,
+    "tiempoDePausa": 12.0
+  },
+  {
+    "_id": "20",
+    "kilometrosActuales": 157.2,
+    "estado": "disponible",
+    "ubicacion": { "posX": 400, "posY": 500 },
+    "paradaActual": "7",
+    "tiempoDeUso": 43.0,
+    "tiempoDePausa": 6.0
+  },
+  {
+    "_id": "21",
+    "kilometrosActuales": 80.4,
+    "estado": "inactivo",
+    "ubicacion": { "posX": 400, "posY": 500 },
+    "paradaActual": "7",
+    "tiempoDeUso": 12.0,
+    "tiempoDePausa": 21.0
+  },
+  {
+    "_id": "22",
+    "kilometrosActuales": 200.5,
+    "estado": "disponible",
+    "ubicacion": { "posX": 450, "posY": 550 },
+    "paradaActual": "8",
+    "tiempoDeUso": 61.0,
+    "tiempoDePausa": 9.0
+  },
+  {
+    "_id": "23",
+    "kilometrosActuales": 298.3,
+    "estado": "disponible",
+    "ubicacion": { "posX": 450, "posY": 550 },
+    "paradaActual": "8",
+    "tiempoDeUso": 94.0,
+    "tiempoDePausa": 22.0
+  },
+  {
+    "_id": "24",
+    "kilometrosActuales": 132.9,
+    "estado": "mantenimiento",
+    "ubicacion": { "posX": 450, "posY": 550 },
+    "paradaActual": "8",
+    "tiempoDeUso": 28.0,
+    "tiempoDePausa": 10.0
+  },
+  {
+    "_id": "25",
+    "kilometrosActuales": 14229.135623730952,
+    "estado": "disponible",
+    "ubicacion": { "posX": 100, "posY": 200 },
+    "paradaActual": "3",
+    "tiempoDeUso": 55.0,
+    "tiempoDePausa": 8.0
+  },
+  {
+    "_id": "31",
+    "kilometrosActuales": 14417.135623730952,
+    "estado": "disponible",
+    "ubicacion": { "posX": 100, "posY": 200 },
+    "paradaActual": "3",
+    "tiempoDeUso": 85.0,
+    "tiempoDePausa": 15.0
+  },
+  {
+    "_id": "32",
+    "kilometrosActuales": 198.3,
+    "estado": "ocupado",
+    "ubicacion": { "posX": 250, "posY": 350 },
+    "paradaActual": "4",
+    "tiempoDeUso": 61.0,
+    "tiempoDePausa": 19.0
+  },
+  {
+    "_id": "33",
+    "kilometrosActuales": 342.6,
+    "estado": "disponible",
+    "ubicacion": { "posX": 450, "posY": 550 },
+    "paradaActual": "8",
+    "tiempoDeUso": 70.0,
+    "tiempoDePausa": 10.0
+  },
+  {
+    "_id": "34",
+    "kilometrosActuales": 123.9,
+    "estado": "mantenimiento",
+    "ubicacion": { "posX": 300, "posY": 400 },
+    "paradaActual": "5",
+    "tiempoDeUso": 22.0,
+    "tiempoDePausa": 14.0
+  },
+  {
+    "_id": "35",
+    "kilometrosActuales": 159.5,
+    "estado": "disponible",
+    "ubicacion": { "posX": 350, "posY": 450 },
+    "paradaActual": "6",
+    "tiempoDeUso": 47.0,
+    "tiempoDePausa": 9.0
+  }
+]

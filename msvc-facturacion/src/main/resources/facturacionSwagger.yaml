@@ -1,0 +1,245 @@
+openapi: 3.0.3
+info:
+  title: API de Facturación
+  version: 1.0.0
+  description: Endpoints para la gestión de facturas y tarifas.
+
+servers:
+  - url: http://localhost:8005
+    description: Servidor local
+
+paths:
+  /facturacion:
+    get:
+      summary: Obtener todas las facturas
+      tags: [Facturación]
+      responses:
+        '200':
+          description: Lista de facturas
+          content:
+            application/json:
+
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Factura'
+        '404':
+          description: No se encontraron datos
+
+    post:
+      summary: Crear una nueva factura
+      tags: [Facturación]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FacturaRequestDTO'
+      responses:
+        '200':
+          description: Factura creada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Factura'
+        '400':
+          description: Error en los datos enviados
+
+  /facturacion/{id}:
+    get:
+      summary: Obtener factura por ID
+      tags: [Facturación]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: ID de la factura
+      responses:
+        '200':
+          description: Factura encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Factura'
+        '404':
+          description: Factura no encontrada
+
+  /facturacion/historial:
+    get:
+      summary: Obtener facturas entre fechas
+      tags: [Facturación]
+      parameters:
+        - in: query
+          name: fechaDesde
+          required: true
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: fechaHasta
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Lista de facturas en el rango de fechas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Factura'
+        '404':
+          description: No se encontraron resultados
+
+  /facturacion/tarifas:
+    get:
+      summary: Obtener todas las tarifas
+      tags: [Tarifas]
+      responses:
+        '200':
+          description: Lista de tarifas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tarifa'
+        '404':
+          description: No se encontraron tarifas
+
+  /facturacion/tarifa:
+    put:
+      summary: Actualizar una tarifa
+      tags: [Tarifas]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TarifaRequestDTO'
+      responses:
+        '200':
+          description: Tarifa actualizada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tarifa'
+        '404':
+          description: Error al actualizar la tarifa
+
+components:
+  schemas:
+    FacturaRequestDTO:
+      type: object
+      properties:
+        idUsuario:
+          type: integer
+          example: 12
+        idViaje:
+          type: integer
+          example: 34
+        fecha:
+          type: string
+          format: date
+          example: "2025-04-10"
+        tiempoTotal:
+          type: number
+          format: float
+          example: 35.5
+        tiempoPausa:
+          type: number
+          format: float
+          example: 5.0
+      required:
+        - idUsuario
+        - idViaje
+        - fecha
+        - tiempoTotal
+        - tiempoPausa
+
+    TarifaRequestDTO:
+      type: object
+      properties:
+        tarifaBasica:
+          type: number
+          format: float
+          example: 100.0
+        tarifaPremium:
+          type: number
+          format: float
+          example: 150.0
+        tarifaPausa:
+          type: number
+          format: float
+          example: 10.0
+        fechaAumento:
+          type: string
+          format: date
+          example: "2025-07-01"
+        porcentajeAumento:
+          type: number
+          format: float
+          example: 15.0
+
+    Factura:
+      type: object
+      properties:
+        idFactura:
+          type: integer
+          example: 1
+        idUsuario:
+          type: integer
+          example: 12
+        idViaje:
+          type: integer
+          example: 34
+        tipoCuenta:
+          type: string
+          example: "premium"
+        costoTarifa:
+          type: number
+          format: float
+          example: 100.0
+        tarifaPausa:
+          type: number
+          format: float
+          example: 10.0
+        precioViaje:
+          type: number
+          format: float
+          example: 110.0
+        fecha:
+          type: string
+          format: date
+          example: "2025-04-10"
+
+    Tarifa:
+      type: object
+      properties:
+        idTarifa:
+          type: integer
+          example: 1
+        tarifaBasica:
+          type: number
+          format: float
+          example: 100.0
+        tarifaPremium:
+          type: number
+          format: float
+          example: 150.0
+        tarifaPausa:
+          type: number
+          format: float
+          example: 10.0
+        fechaAumento:
+          type: string
+          format: date
+          example: "2025-07-01"
+        porcentajeAumento:
+          type: number
+          format: float
+          example: 15.0

@@ -19,6 +19,7 @@
         <module>msvc-reporte</module>
         <module>msvc-gateway</module>
         <module>msvc-auth</module>
+        <module>chatbot</module>
     </modules>
 
     <groupId>org.example</groupId>
