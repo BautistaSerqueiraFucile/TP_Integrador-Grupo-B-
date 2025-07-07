@@ -13,9 +13,14 @@ VALUES
     (2011, '2023-11-01', 'BASICA', 13000.0, 'mp_2011', 'ACTIVA', NULL);
 
 
--- Asociamos la cuenta 2001 con dos usuarios que tienen viajes: 2001 y 2003.
 INSERT INTO cuenta_usuarios_id (cuenta_id, usuarios) VALUES (2001, 2001);
-INSERT INTO cuenta_usuarios_id (cuenta_id, usuarios) VALUES (2001, 2003);
-
 INSERT INTO cuenta_usuarios_id (cuenta_id, usuarios) VALUES (2002, 2002);
+INSERT INTO cuenta_usuarios_id (cuenta_id, usuarios) VALUES (2001, 2003); -- Usuario 2003 también en la cuenta 2001
 INSERT INTO cuenta_usuarios_id (cuenta_id, usuarios) VALUES (2003, 2003);
+INSERT INTO cuenta_usuarios_id (cuenta_id, usuarios) VALUES (2004, 2004);
+INSERT INTO cuenta_usuarios_id (cuenta_id, usuarios) VALUES (2005, 2005);
+INSERT INTO cuenta_usuarios_id (cuenta_id, usuarios) VALUES (2006, 2006);
+INSERT INTO cuenta_usuarios_id (cuenta_id, usuarios) VALUES (2007, 2007);
+INSERT INTO cuenta_usuarios_id (cuenta_id, usuarios) VALUES (2008, 2008);
+INSERT INTO cuenta_usuarios_id (cuenta_id, usuarios) VALUES (2009, 2009);
+INSERT INTO cuenta_usuarios_id (cuenta_id, usuarios) VALUES (2010, 2010);

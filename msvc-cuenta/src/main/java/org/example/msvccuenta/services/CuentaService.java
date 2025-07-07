@@ -15,8 +15,6 @@ import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -156,12 +154,12 @@ public class CuentaService {
 
 
     /**
-     * Calcula la distancia geodésica (Haversine) entre la ubicación de un usuario y una parada.
+     * Calcula la distancia Euclidiana entre la ubicación de un usuario y una parada.
      *
      * @param idCuenta El ID de la cuenta.
      * @param idParada El ID de la parada.
      * @param idUsuario (Opcional) El ID del usuario específico. Si es nulo, se usa el primer usuario de la cuenta.
-     * @return La distancia calculada en metros.
+     * @return La distancia Euclidiana calculada.
      * @throws CuentaNoEncontradaException si la cuenta no existe.
      * @throws IllegalStateException si la cuenta no tiene usuarios, o si no se pueden obtener las coordenadas.
      * @throws IllegalArgumentException si el idUsuario especificado no pertenece a la cuenta.
@@ -197,21 +195,20 @@ public class CuentaService {
             throw new IllegalStateException("No se pudo obtener la ubicación para la parada con ID " + idParada + ".");
         }
 
-        final int RADIO_TIERRA_KM = 6371;
-        double latitudUsuarioRad = Math.toRadians(usuario.getLatitud());
-        double latitudParadaRad = Math.toRadians(parada.getPosX());
-
-        double difLatitud = Math.toRadians(parada.getPosX() - usuario.getLatitud());
-        double difLongitud = Math.toRadians(parada.getPosY() - usuario.getLongitud());
-
-        double a = Math.sin(difLatitud / 2) * Math.sin(difLatitud / 2) +
-                Math.cos(latitudUsuarioRad) * Math.cos(latitudParadaRad) *
-                        Math.sin(difLongitud / 2) * Math.sin(difLongitud / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-        return RADIO_TIERRA_KM * c * 1000;
+        return calcularDistanciaEuclidiana(usuario.getLatitud(), usuario.getLongitud(), parada.getPosY(), parada.getPosX());
     }
 
+    /**
+     * Función de utilidad privada para calcular la distancia Euclidiana.
+     * @return distancia Euclidiana.
+     */
+    private double calcularDistanciaEuclidiana(double lat1, double lon1, Double lat2, Double lon2) {
+        if (lat2 == null || lon2 == null) {
+            return Double.MAX_VALUE;
+        }
+
+        return Math.sqrt(Math.pow(lat2 - lat1, 2) + Math.pow(lon2 - lon1, 2));
+    }
     /**
      * Obtiene el saldo de una cuenta.
      *
@@ -314,11 +311,9 @@ public class CuentaService {
     }
 
 
-    // En: C:/.../msvc-cuenta/src/main/java/org/example/msvccuenta/services/CuentaService.java
 
     /**
-     * Encuentra y devuelve una lista de todas las paradas, ordenadas por cercanía a un usuario.
-     * Esta versión está optimizada para minimizar las llamadas de red.
+     * Encuentra y devuelve una lista de todas las paradas, ordenadas por cercanía a un usuario,
      *
      * @param idCuenta El ID de la cuenta del usuario.
      * @param idUsuario (Opcional) El ID del usuario específico. Si es nulo, se usa el primer usuario de la cuenta.
@@ -328,7 +323,6 @@ public class CuentaService {
      */
     @Transactional(readOnly = true)
     public List<ParadaDto> paradasCercanas(Long idCuenta, Long idUsuario) {
-        // 1. Obtener la ubicación del usuario (la lógica optimizada no cambia)
         Hibernate.initialize(this.buscarPorId(idCuenta).getUsuariosId());
         Set<Long> usuariosDeLaCuenta = this.buscarPorId(idCuenta).getUsuariosId();
         if (usuariosDeLaCuenta == null || usuariosDeLaCuenta.isEmpty()) {
@@ -350,42 +344,16 @@ public class CuentaService {
             throw new IllegalStateException("No se pudo obtener la ubicación para el usuario con ID " + idUsuarioAUtilizar + ".");
         }
 
-        // 2. Obtener todas las paradas
         List<ParadaDto> paradas = paradaFeignClient.listarParadas();
         if (paradas == null || paradas.isEmpty()) {
-            return Collections.emptyList(); // Si no hay paradas, devuelve una lista vacía.
+            return Collections.emptyList();
         }
 
-        // 3. ORDENAR la lista de paradas por distancia, en lugar de solo buscar el mínimo.
         return paradas.stream()
                 .sorted(Comparator.comparing(parada ->
-                        // Usamos la misma función de cálculo de distancia para comparar
-                        calcularDistanciaHaversine(usuario.getLatitud(), usuario.getLongitud(), parada.getPosX(), parada.getPosY())
+                        calcularDistanciaEuclidiana(usuario.getLatitud(), usuario.getLongitud(), parada.getPosY(), parada.getPosX())
                 ))
-                .collect(Collectors.toList()); // Recolectamos todos los resultados en una lista ordenada.
+                .collect(Collectors.toList());
     }
-
-    /**
-     * Función de utilidad privada para calcular la distancia Haversine.
-     * @return distancia en metros.
-     */
-    private double calcularDistanciaHaversine(double lat1, double lon1, Double lat2, Double lon2) {
-        if (lat2 == null || lon2 == null) {
-            return Double.MAX_VALUE;
-        }
-        final int RADIO_TIERRA_KM = 6371;
-        double latitudUsuarioRad = Math.toRadians(lat1);
-        double latitudParadaRad = Math.toRadians(lat2);
-        double difLatitud = Math.toRadians(lat2 - lat1);
-        double difLongitud = Math.toRadians(lon2 - lon1);
-
-        double a = Math.sin(difLatitud / 2) * Math.sin(difLatitud / 2) +
-                Math.cos(latitudUsuarioRad) * Math.cos(latitudParadaRad) *
-                        Math.sin(difLongitud / 2) * Math.sin(difLongitud / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-        return RADIO_TIERRA_KM * c * 1000;
-    }
-
 
 }

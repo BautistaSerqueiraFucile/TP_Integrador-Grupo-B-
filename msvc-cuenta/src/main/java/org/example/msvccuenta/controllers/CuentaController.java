@@ -207,18 +207,18 @@ public class CuentaController {
 
 
     /**
-     * Calcula la distancia en metros desde la ubicación de un usuario a una parada específica.
+     * Calcula la distancia en kilometros desde la ubicación de un usuario a una parada específica.
      * @param idCuenta El ID de la cuenta del usuario.
      * @param idParada El ID de la parada de monopatines.
      * @param idUsuario (Opcional) El ID del usuario específico de la cuenta. Si no se provee, se usa el primer usuario asociado.
      * @return Un {@link ResponseEntity} con la distancia calculada (Double) o un error si no se encuentra la cuenta o la parada.
      */
-    @Operation(summary = "Calcular distancia a una parada",
-            description = "Calcula la distancia en metros desde la ubicación de un usuario a una parada específica. " +
+    @Operation(summary = "Calcular distancia a una parada en KM",
+            description = "Calcula la distancia en KILÓMETROS desde la ubicación de un usuario a una parada específica. " +
                     "Se puede especificar un 'idUsuario' opcional de la cuenta.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Distancia calculada exitosamente.",
-                    content = @Content(mediaType = "application/json", schema = @Schema(example = "523.45"))),
+                    content = @Content(mediaType = "application/json", schema = @Schema(example = "0.523"))),
             @ApiResponse(responseCode = "400", description = "El usuario especificado no pertenece a la cuenta."),
             @ApiResponse(responseCode = "404", description = "Cuenta o parada no encontrada.")
     })
@@ -310,16 +310,14 @@ public class CuentaController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Listado de paradas cercanas obtenido.",
                     content = @Content(mediaType = "application/json",
-                            // Indicamos que la respuesta es un array de ParadaDto
                             array = @ArraySchema(schema = @Schema(implementation = ParadaDto.class)))),
             @ApiResponse(responseCode = "400", description = "El usuario especificado no pertenece a la cuenta."),
             @ApiResponse(responseCode = "404", description = "Cuenta no encontrada o no se pudo determinar la ubicación.")
     })
-    @GetMapping("/{idCuenta}/paradas-cercanas") // Endpoint renombrado para mayor claridad
+    @GetMapping("/{idCuenta}/paradas-cercanas")
     public ResponseEntity<List<ParadaDto>> obtenerParadasCercanas(
             @Parameter(description = "ID de la cuenta del usuario.", required = true) @PathVariable Long idCuenta,
             @Parameter(description = "(Opcional) ID del usuario específico a usar para el cálculo.") @RequestParam(required = false) Long idUsuario) {
-        // Llamamos al nuevo método del servicio que devuelve una lista
         return ResponseEntity.ok(cuentaService.paradasCercanas(idCuenta, idUsuario));
     }
 
