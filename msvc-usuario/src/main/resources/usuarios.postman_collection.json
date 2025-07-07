@@ -24,15 +24,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8002/usuarios/",
+					"raw": "http://localhost:8002/usuarios",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8002",
 					"path": [
-						"usuarios",
-						""
+						"usuarios"
 					]
 				}
 			},
@@ -101,7 +100,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"nombre\": \"Carlos\",\r\n  \"apellido\": \"Santana\",\r\n  \"numeroCelular\": \"55112\",\r\n  \"email\": \"carlos.santana@examle.com\",\r\n  \"password\": \"mipasswrd123\",\r\n  \"rol\": \"USUARIO\",\r\n    \"longitud\":22.5,\r\n    \"latitud\":23.5\r\n\r\n}\r\n",
+					"raw": "{\r\n\r\n  \"nombre\": \"Carlos\",\r\n  \"apellido\": \"Santana\",\r\n  \"numeroCelular\": \"5512\",\r\n  \"email\": \"carlos.santana@examle.com\",\r\n  \"password\": \"mipasswrd123\",\r\n  \"rol\": \"USUARIO\",\r\n    \"longitud\":22.5,\r\n    \"latitud\":23.5\r\n\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -185,7 +184,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"nombre\": \"Juan Carlos\",\r\n  \"apellido\": \"Perez\",\r\n  \"email\": \"juan.perez@example.com\",\r\n    \"password\": \"passwordValida123\",\r\n  \"numeroCelular\": \"111222333\",\r\n  \"rol\": \"ADMIN\",\r\n  \"longitud\":33.4,\r\n  \"latitud\":33.2\r\n}",
+					"raw": "{\r\n  \"nombre\": \"Juan Carlos\",\r\n  \"apellido\": \"Perez\",\r\n  \"email\": \"juan.perez@example.com\",\r\n    \"password\": \"passwordValida123\",\r\n  \"numeroCelular\": \"111222303\",\r\n  \"rol\": \"ADMIN\",\r\n  \"longitud\":33.4,\r\n  \"latitud\":33.2\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -193,7 +192,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8002/usuarios/3",
+					"raw": "http://localhost:8002/usuarios/2001",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -201,7 +200,7 @@
 					"port": "8002",
 					"path": [
 						"usuarios",
-						"3"
+						"2001"
 					]
 				}
 			},
@@ -273,7 +272,7 @@
 					"raw": "{\r\n  \"id\": 1,\r\n  \"nombre\": \"Sofía\",\r\n  \"apellido\": \"Pérez\",\r\n  \"numeroCelular\": \"1199998888\",\r\n  \"email\": \"sofia.actualizada@example.com\"\r\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8002/usuarios/17",
+					"raw": "http://localhost:8002/usuarios/24",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -281,7 +280,7 @@
 					"port": "8002",
 					"path": [
 						"usuarios",
-						"17"
+						"24"
 					]
 				}
 			},
@@ -336,7 +335,7 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8002/usuarios/3/set-admin",
+					"raw": "http://localhost:8002/usuarios/2001/set-admin",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -344,7 +343,7 @@
 					"port": "8002",
 					"path": [
 						"usuarios",
-						"3",
+						"2001",
 						"set-admin"
 					]
 				}
@@ -405,7 +404,7 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8002/usuarios/3/set-usuario",
+					"raw": "http://localhost:8002/usuarios/2001/set-usuario",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -413,7 +412,7 @@
 					"port": "8002",
 					"path": [
 						"usuarios",
-						"3",
+						"2001",
 						"set-usuario"
 					]
 				}
@@ -474,7 +473,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8002/usuarios/3",
+					"raw": "http://localhost:8002/usuarios/2001",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -482,7 +481,7 @@
 					"port": "8002",
 					"path": [
 						"usuarios",
-						"3"
+						"2001"
 					]
 				}
 			},

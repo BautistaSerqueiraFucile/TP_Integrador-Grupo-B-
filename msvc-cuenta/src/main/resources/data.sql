@@ -11,3 +11,16 @@ VALUES
     (2009, '2023-09-01', 'BASICA', 11000.0, 'mp_2009', 'ACTIVA', NULL),
     (2010, '2023-10-01', 'PREMIUM', 27000.0, 'mp_2010', 'ACTIVA', 12.0),
     (2011, '2023-11-01', 'BASICA', 13000.0, 'mp_2011', 'ACTIVA', NULL);
+
+
+INSERT INTO cuenta_usuarios_id (cuenta_id, usuarios) VALUES (2001, 2001);
+INSERT INTO cuenta_usuarios_id (cuenta_id, usuarios) VALUES (2002, 2002);
+INSERT INTO cuenta_usuarios_id (cuenta_id, usuarios) VALUES (2001, 2003); -- Usuario 2003 también en la cuenta 2001
+INSERT INTO cuenta_usuarios_id (cuenta_id, usuarios) VALUES (2003, 2003);
+INSERT INTO cuenta_usuarios_id (cuenta_id, usuarios) VALUES (2004, 2004);
+INSERT INTO cuenta_usuarios_id (cuenta_id, usuarios) VALUES (2005, 2005);
+INSERT INTO cuenta_usuarios_id (cuenta_id, usuarios) VALUES (2006, 2006);
+INSERT INTO cuenta_usuarios_id (cuenta_id, usuarios) VALUES (2007, 2007);
+INSERT INTO cuenta_usuarios_id (cuenta_id, usuarios) VALUES (2008, 2008);
+INSERT INTO cuenta_usuarios_id (cuenta_id, usuarios) VALUES (2009, 2009);
+INSERT INTO cuenta_usuarios_id (cuenta_id, usuarios) VALUES (2010, 2010);
