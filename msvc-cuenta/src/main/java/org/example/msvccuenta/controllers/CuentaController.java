@@ -16,6 +16,7 @@ import org.example.msvccuenta.entities.dto.ViajeDto;
 import org.example.msvccuenta.services.CuentaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,6 +49,7 @@ public class CuentaController {
      */
     @Operation(summary = "Listar todas las cuentas", description = "Devuelve una lista con todas las cuentas existentes.")
     @ApiResponse(responseCode = "200", description = "Lista de cuentas obtenida exitosamente.")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("")
     public List<Cuenta> listar() {
         return cuentaService.listar();
@@ -69,6 +71,7 @@ public class CuentaController {
             @ApiResponse(responseCode = "404", description = "La cuenta con el ID especificado no fue encontrada.",
                     content = @Content(mediaType = "application/json", schema = @Schema(example = "{\"error\":\"Cuenta no encontrada con ID: 999\"}")))
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<Cuenta> buscarPorId(@Parameter(description = "ID de la cuenta a buscar.", required = true) @PathVariable Long id) {
         return ResponseEntity.ok(cuentaService.buscarPorId(id));
@@ -87,6 +90,7 @@ public class CuentaController {
             @ApiResponse(responseCode = "400", description = "Datos de la cuenta inválidos debido a errores de validación.",
                     content = @Content(mediaType = "application/json", schema = @Schema(example = "{\"saldo\":\"El campo saldo no puede ser nulo\"}")))
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("")
     public ResponseEntity<?> crear(@Valid @RequestBody Cuenta cuenta, BindingResult result) {
         if (result.hasErrors()) {
@@ -109,6 +113,7 @@ public class CuentaController {
             @ApiResponse(responseCode = "400", description = "Datos inválidos o ID no numérico."),
             @ApiResponse(responseCode = "404", description = "Cuenta no encontrada.")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizar(@Valid @RequestBody Cuenta cuenta, BindingResult result, @Parameter(description = "ID de la cuenta a actualizar.", required = true) @PathVariable Long id) {
         if (result.hasErrors()) {
@@ -128,6 +133,7 @@ public class CuentaController {
             @ApiResponse(responseCode = "400", description = "El ID proporcionado no es un número válido."),
             @ApiResponse(responseCode = "404", description = "Cuenta no encontrada.")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@Parameter(description = "ID de la cuenta a eliminar.", required = true) @PathVariable Long id) {
         cuentaService.eliminar(id);
@@ -147,6 +153,7 @@ public class CuentaController {
             @ApiResponse(responseCode = "400", description = "El ID proporcionado no es un número válido."),
             @ApiResponse(responseCode = "404", description = "Cuenta no encontrada.")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/anular/{id}")
     public ResponseEntity<Cuenta> anular(@Parameter(description = "ID de la cuenta a anular.", required = true) @PathVariable Long id) {
         return ResponseEntity.ok(cuentaService.anularCuenta(id));
@@ -164,6 +171,7 @@ public class CuentaController {
             @ApiResponse(responseCode = "400", description = "El ID proporcionado no es un número válido."),
             @ApiResponse(responseCode = "404", description = "Cuenta no encontrada.")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/activar/{id}")
     public ResponseEntity<Cuenta> activar(@Parameter(description = "ID de la cuenta a activar.", required = true) @PathVariable Long id) {
         return ResponseEntity.ok(cuentaService.activarCuenta(id));
@@ -181,6 +189,7 @@ public class CuentaController {
             @ApiResponse(responseCode = "400", description = "El ID proporcionado no es un número válido."),
             @ApiResponse(responseCode = "404", description = "Cuenta no encontrada.")
     })
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/saldo/{id}")
     public ResponseEntity<Double> obtenerSaldo(@Parameter(description = "ID de la cuenta.", required = true) @PathVariable Long id) {
         return ResponseEntity.ok(cuentaService.obtenerSaldo(id));
@@ -199,6 +208,7 @@ public class CuentaController {
             @ApiResponse(responseCode = "400", description = "El ID proporcionado no es un número válido."),
             @ApiResponse(responseCode = "404", description = "Cuenta no encontrada.")
     })
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PutMapping("/{id}/set-plan/{tipo}")
     public ResponseEntity<Cuenta> setPlan(@Parameter(description = "ID de la cuenta.", required = true) @PathVariable Long id,
                                           @Parameter(description = "Tipo de cuenta a establecer (BASICA o PREMIUM).", required = true) @PathVariable TipoCuenta tipo) {
@@ -222,6 +232,7 @@ public class CuentaController {
             @ApiResponse(responseCode = "400", description = "El usuario especificado no pertenece a la cuenta."),
             @ApiResponse(responseCode = "404", description = "Cuenta o parada no encontrada.")
     })
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/{idCuenta}/distancia-parada/{idParada}")
     public ResponseEntity<Double> calcularDistanciaAParada(
             @Parameter(description = "ID de la cuenta del usuario.", required = true) @PathVariable Long idCuenta,
@@ -245,6 +256,7 @@ public class CuentaController {
             @ApiResponse(responseCode = "404", description = "Cuenta no encontrada."),
             @ApiResponse(responseCode = "409", description = "Conflicto de estado (ej. la cuenta está anulada).")
     })
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PutMapping("/recargar/{id}/monto/{monto}")
     public ResponseEntity<Cuenta> recargarSaldo(
             @Parameter(description = "ID de la cuenta a recargar.", required = true) @PathVariable Long id,
@@ -272,6 +284,7 @@ public class CuentaController {
             @ApiResponse(responseCode = "400", description = "El usuario especificado no pertenece a esta cuenta."),
             @ApiResponse(responseCode = "404", description = "Cuenta no encontrada.")
     })
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/viajes/{idCuenta}")
     public ResponseEntity<List<ViajeDto>> getViajesPorUsuarioYPeriodo(
             @Parameter(description = "ID de la cuenta.", required = true) @PathVariable Long idCuenta,
@@ -292,6 +305,7 @@ public class CuentaController {
                             array = @ArraySchema(schema = @Schema(implementation = Cuenta.class)))),
             @ApiResponse(responseCode = "404", description = "No se encontraron cuentas de ese tipo.")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/tipo/{tipo}")
     public ResponseEntity<List<Cuenta>> obtenerPorTipo(@Parameter(description = "Tipo de cuenta a buscar (BASICA o PREMIUM).", required = true) @PathVariable String tipo) {
         return ResponseEntity.ok(cuentaService.obtenerPorTipo(tipo.toUpperCase()));
@@ -314,6 +328,7 @@ public class CuentaController {
             @ApiResponse(responseCode = "400", description = "El usuario especificado no pertenece a la cuenta."),
             @ApiResponse(responseCode = "404", description = "Cuenta no encontrada o no se pudo determinar la ubicación.")
     })
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/{idCuenta}/paradas-cercanas")
     public ResponseEntity<List<ParadaConDistanciaDto>> obtenerParadasCercanas(@Parameter(description = "ID de la cuenta del usuario.", required = true) @PathVariable Long idCuenta,
                                                                               @Parameter(description = "(Opcional) ID del usuario específico a usar para el cálculo.") @RequestParam(required = false) Long idUsuario) {
