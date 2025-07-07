@@ -168,33 +168,25 @@ public class CuentaService {
      */
     @Transactional(readOnly = true)
     public Double calcularDistanciaAParada(Long idCuenta, Long idParada, Long idUsuario) {
-        // 1. Obtener la entidad Cuenta completa.
         Cuenta cuenta = this.buscarPorId(idCuenta);
 
-        // 2. FORZAR LA INICIALIZACIÓN de la colección para evitar la LazyInitializationException.
-        //    Esta es la clave para que no falle con un error 500.
         Hibernate.initialize(cuenta.getUsuariosId());
         Set<Long> usuariosDeLaCuenta = cuenta.getUsuariosId();
 
-        // 3. Validar que la cuenta tenga usuarios.
         if (usuariosDeLaCuenta == null || usuariosDeLaCuenta.isEmpty()) {
             throw new IllegalStateException("La cuenta con ID " + idCuenta + " no tiene usuarios asociados.");
         }
 
-        // 4. Decidir qué ID de usuario utilizar, siguiendo la lógica del historial.
         Long idUsuarioAUtilizar;
         if (idUsuario != null) {
-            // Si se especifica un usuario, validamos que pertenezca a la cuenta.
             if (!usuariosDeLaCuenta.contains(idUsuario)) {
                 throw new IllegalArgumentException("El usuario con ID " + idUsuario + " no pertenece a la cuenta con ID " + idCuenta);
             }
             idUsuarioAUtilizar = idUsuario;
         } else {
-            // Si no se especifica, usamos el primero que encontremos.
             idUsuarioAUtilizar = usuariosDeLaCuenta.iterator().next();
         }
 
-        // 5. Obtener la ubicación del usuario y la parada.
         UsuarioDto usuario = usuarioFeignClient.getUsuarioById(idUsuarioAUtilizar);
         if (usuario == null || usuario.getLatitud() == null || usuario.getLongitud() == null) {
             throw new IllegalStateException("No se pudo obtener la ubicación para el usuario con ID " + idUsuarioAUtilizar + ".");
@@ -205,20 +197,18 @@ public class CuentaService {
             throw new IllegalStateException("No se pudo obtener la ubicación para la parada con ID " + idParada + ".");
         }
 
-        // 6. Calcular la distancia con la fórmula de Haversine (mucho más precisa para coordenadas geográficas).
         final int RADIO_TIERRA_KM = 6371;
         double latitudUsuarioRad = Math.toRadians(usuario.getLatitud());
-        double latitudParadaRad = Math.toRadians(parada.getPosX()); // Asumo que posX es latitud
+        double latitudParadaRad = Math.toRadians(parada.getPosX());
 
         double difLatitud = Math.toRadians(parada.getPosX() - usuario.getLatitud());
-        double difLongitud = Math.toRadians(parada.getPosY() - usuario.getLongitud()); // Asumo que posY es longitud
+        double difLongitud = Math.toRadians(parada.getPosY() - usuario.getLongitud());
 
         double a = Math.sin(difLatitud / 2) * Math.sin(difLatitud / 2) +
                 Math.cos(latitudUsuarioRad) * Math.cos(latitudParadaRad) *
                         Math.sin(difLongitud / 2) * Math.sin(difLongitud / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-        // Devolvemos la distancia en metros.
         return RADIO_TIERRA_KM * c * 1000;
     }
 
@@ -323,24 +313,79 @@ public class CuentaService {
         return cuentaRepository.findAllByTipoCuenta(TipoCuenta.valueOf(tipo));
     }
 
+
+    // En: C:/.../msvc-cuenta/src/main/java/org/example/msvccuenta/services/CuentaService.java
+
     /**
-     * Encuentra la parada más cercana a la ubicación de un usuario.
+     * Encuentra y devuelve una lista de todas las paradas, ordenadas por cercanía a un usuario.
+     * Esta versión está optimizada para minimizar las llamadas de red.
      *
      * @param idCuenta El ID de la cuenta del usuario.
-     * @return El DTO {@link ParadaDto} de la parada más cercana.
-     * @throws IllegalStateException si no hay paradas disponibles.
+     * @param idUsuario (Opcional) El ID del usuario específico. Si es nulo, se usa el primer usuario de la cuenta.
+     * @return Una lista de {@link ParadaDto} ordenada por distancia ascendente.
+     * @throws IllegalStateException si no se puede obtener la ubicación del usuario.
+     * @throws IllegalArgumentException si el idUsuario especificado no pertenece a la cuenta.
      */
     @Transactional(readOnly = true)
-    public ParadaDto paradaMasCercana(Long idCuenta) {
-        List<ParadaDto> paradas = paradaFeignClient.listarParadas();
-        if (paradas == null || paradas.isEmpty()) {
-            throw new IllegalStateException("No se encontraron paradas disponibles.");
+    public List<ParadaDto> paradasCercanas(Long idCuenta, Long idUsuario) {
+        // 1. Obtener la ubicación del usuario (la lógica optimizada no cambia)
+        Hibernate.initialize(this.buscarPorId(idCuenta).getUsuariosId());
+        Set<Long> usuariosDeLaCuenta = this.buscarPorId(idCuenta).getUsuariosId();
+        if (usuariosDeLaCuenta == null || usuariosDeLaCuenta.isEmpty()) {
+            throw new IllegalStateException("La cuenta con ID " + idCuenta + " no tiene usuarios asociados para calcular la distancia.");
         }
 
+        Long idUsuarioAUtilizar;
+        if (idUsuario != null) {
+            if (!usuariosDeLaCuenta.contains(idUsuario)) {
+                throw new IllegalArgumentException("El usuario con ID " + idUsuario + " no pertenece a la cuenta con ID " + idCuenta);
+            }
+            idUsuarioAUtilizar = idUsuario;
+        } else {
+            idUsuarioAUtilizar = usuariosDeLaCuenta.iterator().next();
+        }
+
+        UsuarioDto usuario = usuarioFeignClient.getUsuarioById(idUsuarioAUtilizar);
+        if (usuario == null || usuario.getLatitud() == null || usuario.getLongitud() == null) {
+            throw new IllegalStateException("No se pudo obtener la ubicación para el usuario con ID " + idUsuarioAUtilizar + ".");
+        }
+
+        // 2. Obtener todas las paradas
+        List<ParadaDto> paradas = paradaFeignClient.listarParadas();
+        if (paradas == null || paradas.isEmpty()) {
+            return Collections.emptyList(); // Si no hay paradas, devuelve una lista vacía.
+        }
+
+        // 3. ORDENAR la lista de paradas por distancia, en lugar de solo buscar el mínimo.
         return paradas.stream()
-                .min(Comparator.comparing(parada -> {
-                    Double distancia = calcularDistanciaAParada(idCuenta, parada.getId(), null);                    return distancia != null ? distancia : Double.MAX_VALUE;
-                }))
-                .orElseThrow(() -> new IllegalStateException("No se pudo determinar la parada más cercana."));
+                .sorted(Comparator.comparing(parada ->
+                        // Usamos la misma función de cálculo de distancia para comparar
+                        calcularDistanciaHaversine(usuario.getLatitud(), usuario.getLongitud(), parada.getPosX(), parada.getPosY())
+                ))
+                .collect(Collectors.toList()); // Recolectamos todos los resultados en una lista ordenada.
     }
+
+    /**
+     * Función de utilidad privada para calcular la distancia Haversine.
+     * @return distancia en metros.
+     */
+    private double calcularDistanciaHaversine(double lat1, double lon1, Double lat2, Double lon2) {
+        if (lat2 == null || lon2 == null) {
+            return Double.MAX_VALUE;
+        }
+        final int RADIO_TIERRA_KM = 6371;
+        double latitudUsuarioRad = Math.toRadians(lat1);
+        double latitudParadaRad = Math.toRadians(lat2);
+        double difLatitud = Math.toRadians(lat2 - lat1);
+        double difLongitud = Math.toRadians(lon2 - lon1);
+
+        double a = Math.sin(difLatitud / 2) * Math.sin(difLatitud / 2) +
+                Math.cos(latitudUsuarioRad) * Math.cos(latitudParadaRad) *
+                        Math.sin(difLongitud / 2) * Math.sin(difLongitud / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return RADIO_TIERRA_KM * c * 1000;
+    }
+
+
 }

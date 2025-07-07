@@ -297,20 +297,30 @@ public class CuentaController {
         return ResponseEntity.ok(cuentaService.obtenerPorTipo(tipo.toUpperCase()));
     }
 
+
     /**
-     * Encuentra la parada de monopatines más cercana a la ubicación de un usuario.
+     * Encuentra las paradas de monopatines y las devuelve ordenadas por cercanía a un usuario.
      * @param idCuenta El ID de la cuenta del usuario.
-     * @return Un {@link ResponseEntity} con el DTO de la parada más cercana (200 OK) o un error (404).
+     * @param idUsuario (Opcional) El ID del usuario específico a usar. Si no se provee, se usa el primer usuario de la cuenta.
+     * @return Un {@link ResponseEntity} con la lista de DTOs de paradas ordenadas (200 OK) o un error.
      */
-    @Operation(summary = "Obtener la parada más cercana a un usuario", description = "Calcula y devuelve la parada de monopatines más cercana a la ubicación actual del usuario.")
+    @Operation(summary = "Obtener un listado de paradas ordenadas por cercanía",
+            description = "Devuelve una lista de todas las paradas, ordenadas por distancia ascendente desde la ubicación de un usuario. " +
+                    "Se puede especificar un 'idUsuario' opcional de la cuenta.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Parada más cercana encontrada.",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ParadaDto.class))),
+            @ApiResponse(responseCode = "200", description = "Listado de paradas cercanas obtenido.",
+                    content = @Content(mediaType = "application/json",
+                            // Indicamos que la respuesta es un array de ParadaDto
+                            array = @ArraySchema(schema = @Schema(implementation = ParadaDto.class)))),
+            @ApiResponse(responseCode = "400", description = "El usuario especificado no pertenece a la cuenta."),
             @ApiResponse(responseCode = "404", description = "Cuenta no encontrada o no se pudo determinar la ubicación.")
     })
-    @GetMapping("/{idCuenta}/parada-cercana")
-    public ResponseEntity<ParadaDto> obtenerParadaCercana(@Parameter(description = "ID de la cuenta del usuario.", required = true) @PathVariable Long idCuenta) {
-        return ResponseEntity.ok(cuentaService.paradaMasCercana(idCuenta));
+    @GetMapping("/{idCuenta}/paradas-cercanas") // Endpoint renombrado para mayor claridad
+    public ResponseEntity<List<ParadaDto>> obtenerParadasCercanas(
+            @Parameter(description = "ID de la cuenta del usuario.", required = true) @PathVariable Long idCuenta,
+            @Parameter(description = "(Opcional) ID del usuario específico a usar para el cálculo.") @RequestParam(required = false) Long idUsuario) {
+        // Llamamos al nuevo método del servicio que devuelve una lista
+        return ResponseEntity.ok(cuentaService.paradasCercanas(idCuenta, idUsuario));
     }
 
     /**
