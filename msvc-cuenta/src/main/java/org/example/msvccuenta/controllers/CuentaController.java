@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.example.msvccuenta.entities.Cuenta;
 import org.example.msvccuenta.entities.TipoCuenta;
+import org.example.msvccuenta.entities.dto.ParadaConDistanciaDto;
 import org.example.msvccuenta.entities.dto.ParadaDto;
 import org.example.msvccuenta.entities.dto.ViajeDto;
 import org.example.msvccuenta.services.CuentaService;
@@ -304,22 +305,21 @@ public class CuentaController {
      * @param idUsuario (Opcional) El ID del usuario específico a usar. Si no se provee, se usa el primer usuario de la cuenta.
      * @return Un {@link ResponseEntity} con la lista de DTOs de paradas ordenadas (200 OK) o un error.
      */
-    @Operation(summary = "Obtener un listado de paradas ordenadas por cercanía",
+    @Operation(summary = "Obtener un listado de paradas ordenadas por cercanía (con distancia)",
             description = "Devuelve una lista de todas las paradas, ordenadas por distancia ascendente desde la ubicación de un usuario. " +
-                    "Se puede especificar un 'idUsuario' opcional de la cuenta.")
+                    "Cada parada incluye la distancia calculada. Se puede especificar un 'idUsuario' opcional de la cuenta.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Listado de paradas cercanas obtenido.",
                     content = @Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = ParadaDto.class)))),
+                            // ¡CAMBIO CLAVE! Actualiza el schema para reflejar el nuevo DTO.
+                            array = @ArraySchema(schema = @Schema(implementation = ParadaConDistanciaDto.class)))),
             @ApiResponse(responseCode = "400", description = "El usuario especificado no pertenece a la cuenta."),
             @ApiResponse(responseCode = "404", description = "Cuenta no encontrada o no se pudo determinar la ubicación.")
     })
     @GetMapping("/{idCuenta}/paradas-cercanas")
-    public ResponseEntity<List<ParadaDto>> obtenerParadasCercanas(
-            @Parameter(description = "ID de la cuenta del usuario.", required = true) @PathVariable Long idCuenta,
-            @Parameter(description = "(Opcional) ID del usuario específico a usar para el cálculo.") @RequestParam(required = false) Long idUsuario) {
-        return ResponseEntity.ok(cuentaService.paradasCercanas(idCuenta, idUsuario));
-    }
+    public ResponseEntity<List<ParadaConDistanciaDto>> obtenerParadasCercanas(@Parameter(description = "ID de la cuenta del usuario.", required = true) @PathVariable Long idCuenta,
+                                                                              @Parameter(description = "(Opcional) ID del usuario específico a usar para el cálculo.") @RequestParam(required = false) Long idUsuario) {
+        return ResponseEntity.ok(cuentaService.paradasCercanas(idCuenta, idUsuario));    }
 
     /**
      * Métdo de utilidad para procesar y empaquetar errores de validación.

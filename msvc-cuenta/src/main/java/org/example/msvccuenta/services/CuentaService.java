@@ -3,6 +3,7 @@ package org.example.msvccuenta.services;
 import org.example.msvccuenta.entities.Cuenta;
 import org.example.msvccuenta.entities.EstadoCuenta;
 import org.example.msvccuenta.entities.TipoCuenta;
+import org.example.msvccuenta.entities.dto.ParadaConDistanciaDto;
 import org.example.msvccuenta.entities.dto.ParadaDto;
 import org.example.msvccuenta.entities.dto.UsuarioDto;
 import org.example.msvccuenta.entities.dto.ViajeDto;
@@ -195,8 +196,9 @@ public class CuentaService {
             throw new IllegalStateException("No se pudo obtener la ubicación para la parada con ID " + idParada + ".");
         }
 
-        return calcularDistanciaEuclidiana(usuario.getLatitud(), usuario.getLongitud(), parada.getPosY(), parada.getPosX());
-    }
+        double distancia = calcularDistanciaEuclidiana(usuario.getLatitud(), usuario.getLongitud(), parada.getPosY(), parada.getPosX());
+
+        return Math.round(distancia * 100.0) / 100.0;    }
 
     /**
      * Función de utilidad privada para calcular la distancia Euclidiana.
@@ -322,8 +324,7 @@ public class CuentaService {
      * @throws IllegalArgumentException si el idUsuario especificado no pertenece a la cuenta.
      */
     @Transactional(readOnly = true)
-    public List<ParadaDto> paradasCercanas(Long idCuenta, Long idUsuario) {
-        Hibernate.initialize(this.buscarPorId(idCuenta).getUsuariosId());
+    public List<ParadaConDistanciaDto> paradasCercanas(Long idCuenta, Long idUsuario) {        Hibernate.initialize(this.buscarPorId(idCuenta).getUsuariosId());
         Set<Long> usuariosDeLaCuenta = this.buscarPorId(idCuenta).getUsuariosId();
         if (usuariosDeLaCuenta == null || usuariosDeLaCuenta.isEmpty()) {
             throw new IllegalStateException("La cuenta con ID " + idCuenta + " no tiene usuarios asociados para calcular la distancia.");
@@ -350,9 +351,17 @@ public class CuentaService {
         }
 
         return paradas.stream()
-                .sorted(Comparator.comparing(parada ->
-                        calcularDistanciaEuclidiana(usuario.getLatitud(), usuario.getLongitud(), parada.getPosY(), parada.getPosX())
-                ))
+                .map(parada -> {
+                    double distancia = calcularDistanciaEuclidiana(
+                            usuario.getLatitud(),
+                            usuario.getLongitud(),
+                            parada.getPosY(),
+                            parada.getPosX()
+                    );
+                    distancia = Math.round(distancia * 100.0) / 100.0;
+                    return new ParadaConDistanciaDto(parada, distancia);
+                })
+                .sorted(Comparator.comparing(ParadaConDistanciaDto::getDistancia))
                 .collect(Collectors.toList());
     }
 
