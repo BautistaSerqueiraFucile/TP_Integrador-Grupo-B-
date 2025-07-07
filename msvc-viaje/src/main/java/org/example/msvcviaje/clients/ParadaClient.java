@@ -1,10 +1,11 @@
 package org.example.msvcviaje.clients;
 
+import org.example.msvcviaje.config.FeignClientConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "msvc-parada", url= "http://localhost:8008")
+@FeignClient(name = "msvc-parada", url= "http://localhost:8008",configuration = FeignClientConfig.class)
 public interface ParadaClient {
 
     @GetMapping("/paradas/distancia")

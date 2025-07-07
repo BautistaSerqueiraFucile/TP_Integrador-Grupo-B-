@@ -1,5 +1,6 @@
 package org.example.msvcadmin.clients;
 
+import org.example.msvcadmin.config.FeignClientConfig;
 import org.example.msvcadmin.models.Parada;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +11,7 @@ import java.util.Map;
  * Cliente Feign que se comunica con el microservicio de paradas (puerto 8008).
  * Permite crear, editar y eliminar paradas desde el microservicio de administración.
  */
-@FeignClient(name = "parada", url = "http://localhost:8008")
+@FeignClient(name = "parada", url = "http://localhost:8008",configuration = FeignClientConfig.class)
 public interface ParadaClient {
 
     /**

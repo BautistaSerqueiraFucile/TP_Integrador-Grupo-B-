@@ -1,11 +1,12 @@
 package org.example.msvcviaje.clients;
 
+import org.example.msvcviaje.config.FeignClientConfig;
 import org.example.msvcviaje.model.Monopatin;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "msvc-monopatin", url= "http://localhost:8007")
+@FeignClient(name = "msvc-monopatin", url= "http://localhost:8007",configuration = FeignClientConfig.class)
 public interface MonopatinClient {
 
     @PutMapping("/monopatines/{id}/tiemposYKilometros")

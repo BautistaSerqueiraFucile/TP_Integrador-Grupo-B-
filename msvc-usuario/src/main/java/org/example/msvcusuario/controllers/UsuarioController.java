@@ -14,6 +14,7 @@ import org.example.msvcusuario.services.UsuarioService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.example.msvcusuario.entities.RolUsuario;
@@ -41,6 +42,7 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     /**
      * Obtiene una lista de todos los usuarios existentes.
      *
@@ -54,6 +56,7 @@ public class UsuarioController {
         return usuarioService.listar();
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     /**
      * Busca y devuelve un usuario por su ID.
      *
@@ -82,6 +85,7 @@ public class UsuarioController {
         }
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     /**
      * Crea un nuevo usuario con los datos proporcionados.
      *
@@ -124,6 +128,7 @@ public class UsuarioController {
         }
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     /**
      * Actualiza un usuario existente con los datos proporcionados.
      *
@@ -160,6 +165,7 @@ public class UsuarioController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     /**
      * Elimina un usuario por su ID.
      *
@@ -187,6 +193,7 @@ public class UsuarioController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     /**
      * Asigna el rol de administrador a un usuario.
      *
@@ -215,6 +222,7 @@ public class UsuarioController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     /**
      * Asigna el rol de Usuario (normal) a un usuario existente.
      *

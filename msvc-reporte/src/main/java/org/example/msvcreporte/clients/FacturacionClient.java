@@ -1,5 +1,6 @@
 package org.example.msvcreporte.clients;
 
+import org.example.msvcreporte.config.FeignClientConfig;
 import org.example.msvcreporte.models.Factura;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 import java.util.List;
 
-@FeignClient(name = "msvc-facturacion", url = "http://localhost:8005")
+@FeignClient(name = "msvc-facturacion", url = "http://localhost:8005",configuration = FeignClientConfig.class)
 public interface FacturacionClient {
 
     @GetMapping("/facturacion/historial")

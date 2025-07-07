@@ -1,5 +1,6 @@
 package org.example.msvcreporte.clients;
 
+import org.example.msvcreporte.config.FeignClientConfig;
 import org.example.msvcreporte.dto.ReporteUsoMonopatinDTO;
 import org.example.msvcreporte.models.Monopatin;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 import java.util.Map;
 
-@FeignClient(name = "msvc-monopatin", url = "http://localhost:8007")
+@FeignClient(name = "msvc-monopatin", url = "http://localhost:8007",configuration = FeignClientConfig.class)
 public interface ScooterClient {
     @GetMapping("/monopatines")
     List<Monopatin> obtenerTodosLosScooters();

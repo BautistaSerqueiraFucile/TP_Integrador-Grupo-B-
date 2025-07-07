@@ -1,5 +1,6 @@
 package org.example.msvcreporte.clients;
 
+import org.example.msvcreporte.config.FeignClientConfig;
 import org.example.msvcreporte.models.MonopatinViajeDTO;
 import org.example.msvcreporte.models.Viaje;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.Map;
 
-@FeignClient(name = "msvc-viaje", url = "http://localhost:8003")
+@FeignClient(name = "msvc-viaje", url = "http://localhost:8003",configuration = FeignClientConfig.class)
 public interface ViajeClient {
 
     @GetMapping("/viajes/historial")

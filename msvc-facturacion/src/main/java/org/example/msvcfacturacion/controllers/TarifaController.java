@@ -6,6 +6,7 @@ import org.example.msvcfacturacion.services.TarifaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,6 +16,7 @@ public class TarifaController {
     @Autowired
     private TarifaService tarifaService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("tarifas")
     public ResponseEntity<?> getTarifas() {
         try {
@@ -24,6 +26,7 @@ public class TarifaController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("tarifa")
     public ResponseEntity<?> updateBasica(@RequestBody TarifaRequestDTO tarifaDTO) {
         try {

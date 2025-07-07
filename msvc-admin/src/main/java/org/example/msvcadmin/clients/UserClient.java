@@ -1,5 +1,6 @@
 package org.example.msvcadmin.clients;
 
+import org.example.msvcadmin.config.FeignClientConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +12,7 @@ import java.util.Map;
  * Cliente Feign que se comunica con el microservicio de usuarios (puerto 8002).
  * Permite consultar datos de usuarios y modificar su rol (admin o usuario común).
  */
-@FeignClient(name = "user", url = "http://localhost:8002")
+@FeignClient(name = "user", url = "http://localhost:8002",configuration = FeignClientConfig.class)
 public interface UserClient {
 
     /**
