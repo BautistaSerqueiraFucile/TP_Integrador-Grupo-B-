@@ -9,6 +9,7 @@ import org.example.msvcreporte.models.Viaje;
 import org.example.msvcreporte.services.ReporteUsoPorCuentaService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,6 +39,7 @@ public class ReporteUsoPorCuentaController {
             @ApiResponse(responseCode = "400", description = "Parámetros inválidos"),
             @ApiResponse(responseCode = "404", description = "Cuenta no encontrada o sin viajes")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/uso-por-cuenta")
     public ResponseEntity<List<Viaje>> getUsoPorCuenta(
             @Parameter(description = "ID de la cuenta")

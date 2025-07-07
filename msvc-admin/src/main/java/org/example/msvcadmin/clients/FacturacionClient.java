@@ -1,5 +1,6 @@
 package org.example.msvcadmin.clients;
 
+import org.example.msvcadmin.config.FeignClientConfig;
 import org.example.msvcadmin.models.Factura;
 import org.example.msvcadmin.models.Tarifa;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -14,7 +15,7 @@ import java.util.Map;
  * Cliente Feign que se comunica con el microservicio de facturación (puerto 8005).
  * Permite a la administración crear y modificar tarifas y tarifas adicionales del sistema.
  */
-@FeignClient(name = "msvc-facturacion", url = "http://localhost:8005")
+@FeignClient(name = "msvc-facturacion", url = "http://localhost:8005",configuration = FeignClientConfig.class)
 public interface FacturacionClient {
 
 

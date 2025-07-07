@@ -9,6 +9,7 @@ import org.example.msvcadmin.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -24,12 +25,14 @@ public class AdminController {
             @ApiResponse(responseCode = "200", description = "Rol de administrador asignado correctamente"),
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/usuarios/{userId}")
     public ResponseEntity<Admin> asignarAdmin(
             @Parameter(description = "ID del usuario") @PathVariable String userId) {
         return ResponseEntity.ok(adminService.asignarRolAdmin(userId));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Quitar rol de administrador", description = "Quita el rol de administrador a un usuario por su ID.")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Rol de administrador quitado exitosamente"),
@@ -42,6 +45,7 @@ public class AdminController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Obtener administrador", description = "Obtiene un administrador por su ID de usuario.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Administrador encontrado"),
@@ -55,6 +59,7 @@ public class AdminController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Listar administradores", description = "Lista todos los administradores del sistema. Puede filtrar por si están activos o no.")
     @ApiResponse(responseCode = "200", description = "Lista de administradores")
     @GetMapping("/usuarios")

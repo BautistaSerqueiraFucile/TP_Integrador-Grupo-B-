@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.example.msvcreporte.dto.ReporteFacturacionPeriodoDTO;
 import org.example.msvcreporte.services.ReporteFacturacionPeriodoService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,6 +34,7 @@ public class ReporteFacturacionController {
             @ApiResponse(responseCode = "200", description = "Consulta exitosa de la facturación total"),
             @ApiResponse(responseCode = "400", description = "Parámetros inválidos")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/facturacion-total")
     public double facturacionTotal(
             @Parameter(description = "Fecha de inicio del periodo (formato yyyy-MM-dd)", example = "2024-01-01")

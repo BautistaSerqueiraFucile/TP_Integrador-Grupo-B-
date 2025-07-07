@@ -8,6 +8,7 @@ import org.example.msvcreporte.dto.ReporteUsuarioActivoDTO;
 import org.example.msvcreporte.services.ReporteUsuariosActivosService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,6 +37,7 @@ public class ReporteUsuariosActivosController {
             @ApiResponse(responseCode = "200", description = "Lista de usuarios obtenida correctamente"),
             @ApiResponse(responseCode = "400", description = "Parámetros inválidos")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/usuarios-top")
     public ResponseEntity<List<ReporteUsuarioActivoDTO>> getUsuariosActivos(
             @Parameter(description = "Fecha de inicio del período (formato yyyy-MM-dd)", example = "2024-01-01")

@@ -10,6 +10,7 @@ import org.example.msvcadmin.services.AuditoriaAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -25,6 +26,7 @@ public class AuditoriaAdminController {
 
     @Operation(summary = "Listar auditorías", description = "Devuelve una lista de auditorías realizadas por administradores. Se puede filtrar por ID de admin, tipo de acción y fechas.")
     @ApiResponse(responseCode = "200", description = "Lista de auditorías")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<AuditoriaAdmin>> listarAuditoria(
             @Parameter(description = "ID del administrador (opcional)")
@@ -48,6 +50,7 @@ public class AuditoriaAdminController {
             @ApiResponse(responseCode = "200", description = "Auditoría encontrada"),
             @ApiResponse(responseCode = "404", description = "Auditoría no encontrada")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<AuditoriaAdmin> obtenerAuditoriaPorId(
             @Parameter(description = "UUID de la auditoría")@PathVariable UUID id) {

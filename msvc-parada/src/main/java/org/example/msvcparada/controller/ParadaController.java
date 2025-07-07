@@ -4,6 +4,7 @@ import org.example.msvcparada.entities.Parada;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.example.msvcparada.service.ParadaService;
 
@@ -17,34 +18,39 @@ public class ParadaController {
     @Autowired
     private ParadaService paradaService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<Parada> obtenerPorId(@PathVariable Long id) {
         return ResponseEntity.ok().body(paradaService.obtenerPorId(id).get());
 
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("")
     public List<Parada> listarParadas() {
         return paradaService.obtenerParadas();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("")
     public ResponseEntity<Parada> agregar(@RequestBody Parada parada) {
         Parada result = paradaService.agregar(parada);
         return ResponseEntity.accepted().body(result);
     }
 
-    // deveria poder eliminar una parada que tenga monopatines??
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id) {
         return ResponseEntity.ok().body(paradaService.eliminar(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Parada> actualizar(@RequestBody Parada parada ,@PathVariable long id) {
         Parada result = paradaService.actualizar(parada,id);
         return ResponseEntity.accepted().body(result);
     }
+    //@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/distancia")
     public ResponseEntity<?> calcularDistanciaEntreParadas(
             @RequestParam("parada1Id") Long parada1Id, // Recibe el ID de la primera parada
@@ -54,7 +60,7 @@ public class ParadaController {
         return ResponseEntity.ok().body(distancia);
     }
 
-
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping("/lote")
     public ResponseEntity<?> agregarParadas(@RequestBody List<Parada>paradas) {
         paradaService.guardarLote(paradas);

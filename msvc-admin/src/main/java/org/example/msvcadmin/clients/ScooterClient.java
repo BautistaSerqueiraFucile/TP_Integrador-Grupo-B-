@@ -1,5 +1,6 @@
 package org.example.msvcadmin.clients;
 
+import org.example.msvcadmin.config.FeignClientConfig;
 import org.example.msvcadmin.models.Monopatin;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +11,7 @@ import java.util.Map;
  * Cliente Feign que se comunica con el microservicio de monopatines (puerto 8007).
  * Define los endpoints que el microservicio de administración puede consumir.
  */
-@FeignClient(name = "msvc-monopatin", url = "http://localhost:8007")
+@FeignClient(name = "msvc-monopatin", url = "http://localhost:8007",configuration = FeignClientConfig.class)
 public interface ScooterClient {
     /**
      * Cambia el estado de un monopatín (por ejemplo: "activo", "en reparacion", etc.).

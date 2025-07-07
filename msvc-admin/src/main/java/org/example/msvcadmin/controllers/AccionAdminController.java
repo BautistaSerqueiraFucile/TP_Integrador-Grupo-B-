@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.example.msvcadmin.models.*;
 import org.example.msvcadmin.services.AccionAdminService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -22,6 +23,7 @@ public class AccionAdminController {
         this.accionAdminService = accionAdminService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(
             summary = "Bloquear cuenta",
             description = "Bloquea una cuenta existente. Solo puede ser realizada por un administrador autorizado."
@@ -40,6 +42,8 @@ public class AccionAdminController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping("/cuentas/{cuentaId}/activar")
     @Operation(summary = "Reactivar cuenta", description = "Reactiva una cuenta bloqueada.")
     @PutMapping("/cuentas/{cuentaId}/activar")
     public ResponseEntity<Void> reactivarCuenta(
@@ -50,6 +54,7 @@ public class AccionAdminController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Cambiar estado de monopatín", description = "Cambia el estado de un monopatín (activo, fuera de servicio, etc.).")
     @PutMapping("/monopatines/{scooterId}/estado/{estado}")
     public ResponseEntity<Void> cambiarEstadoScooter(
@@ -61,6 +66,7 @@ public class AccionAdminController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Agregar monopatín", description = "Agrega un nuevo monopatín al sistema.")
     @PostMapping("/monopatines")
     public ResponseEntity<Void> agregarMonopatin(
@@ -71,6 +77,7 @@ public class AccionAdminController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Eliminar monopatín", description = "Elimina un monopatín existente.")
     @DeleteMapping("/monopatines/{id}")
     public ResponseEntity<Void> eliminarMonopatin(
@@ -81,6 +88,7 @@ public class AccionAdminController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Crear parada", description = "Crea una nueva parada para monopatines.")
     @PostMapping("/paradas")
     public ResponseEntity<Void> crearParada(
@@ -91,6 +99,7 @@ public class AccionAdminController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Editar parada", description = "Edita una parada existente.")
     @PutMapping("/paradas/{id}")
     public ResponseEntity<Void> editarParada(
@@ -102,6 +111,7 @@ public class AccionAdminController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Eliminar parada", description = "Elimina una parada existente.")
     @DeleteMapping("/paradas/{id}")
     public ResponseEntity<Void> eliminarParada(
@@ -112,6 +122,8 @@ public class AccionAdminController {
         return ResponseEntity.noContent().build();
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Modificar tarifa", description = "Modifica los valores de una tarifa existente.")
     @PutMapping("/tarifa/{userAdmin}")
     public ResponseEntity<Tarifa> modificarTarifa(
@@ -121,6 +133,8 @@ public class AccionAdminController {
         return ResponseEntity.noContent().build();
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Obtener usuarios más activos", description = "Obtiene una lista de usuarios más activos en un periodo y tipo específico.")
     @GetMapping("/reportes/usuarios-top")
     public ResponseEntity<List<ReporteUsuarioActivoDTO>> usuariosTop(
@@ -133,6 +147,7 @@ public class AccionAdminController {
         return ResponseEntity.ok(resultado.getBody());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Obtener reporte de uso de monopatines", description = "Consulta el uso general de los monopatines.")
     @GetMapping("/reportes/uso-monopatines")
     public ResponseEntity<List<ReporteUsoMonopatinDTO>> usoMonopatines(
@@ -142,6 +157,7 @@ public class AccionAdminController {
         return ResponseEntity.ok(resultado.getBody());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Monopatines más usados", description = "Obtiene los monopatines con más viajes en un año.")
     @GetMapping("/reportes/monopatines-frecuentes")
     public ResponseEntity<List<MonopatinViajeDTO>> monopatinesFrecuentes(
@@ -153,6 +169,7 @@ public class AccionAdminController {
         return ResponseEntity.ok(resultado.getBody());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Facturación total", description = "Consulta la facturación total del sistema en un periodo dado.")
     @GetMapping("/reportes/facturacion-total")
     public double facturacionTotal(

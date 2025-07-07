@@ -8,6 +8,7 @@ import org.example.msvcreporte.dto.ReporteMonopatinFrecuenteDTO;
 import org.example.msvcreporte.models.MonopatinViajeDTO;
 import org.example.msvcreporte.services.ReporteMonopatinesFrecuentesService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,6 +35,7 @@ public class ReporteMonopatinesFrecuentesController {
             @ApiResponse(responseCode = "200", description = "Lista de monopatines frecuentes obtenida correctamente"),
             @ApiResponse(responseCode = "400", description = "Parámetros inválidos")
     })
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/monopatines-mas-usados")
     public ResponseEntity<List<MonopatinViajeDTO>> getMonopatinesFrecuentes(
             @Parameter(description = "Año de análisis", example = "2024")
