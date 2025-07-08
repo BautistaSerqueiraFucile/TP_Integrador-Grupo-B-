@@ -41,7 +41,7 @@ public class GroqService {
         }
     }
 
-    public Mono<String> procesarConsulta(String preguntaUsuario, String authHeader) throws JsonProcessingException {
+    public Mono<String> procesarConsulta(String preguntaUsuario, String authHeader, String username) throws JsonProcessingException {
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("model", model);
         requestBody.put("messages", List.of(
@@ -75,7 +75,7 @@ public class GroqService {
                             return WebClient.create()
                                     .get()
                                     .uri("http://localhost:8003/viajes/historial")
-                                    .header("X-User", "je")
+                                    .header("X-User", username)
                                     .header("X-Role", "ROLE_ADMIN")
                                     .header(HttpHeaders.AUTHORIZATION, authHeader)
                                     .retrieve()
@@ -87,26 +87,38 @@ public class GroqService {
                             return WebClient.create()
                                     .get()
                                     .uri("http://localhost:8008/paradas")
+                                    .header("X-User", username)
+                                    .header("X-Role", "ROLE_ADMIN")
+                                    .header(HttpHeaders.AUTHORIZATION, authHeader)
                                     .retrieve()
                                     .bodyToMono(String.class)
-                                    .flatMap(paradas -> consultarGroqConHistorial(paradas, preguntaUsuario));
+                                    .flatMap(paradas -> consultarGroqConHistorial(paradas, preguntaUsuario))
+                                    .doOnNext(resp -> System.out.println("groq response real: " + resp));
                         } else if ("getMonopatines".equals(name)) {
 
                             return WebClient.create()
                                     .get()
                                     .uri("http://localhost:8007/monopatines")
+                                    .header("X-User", username)
+                                    .header("X-Role", "ROLE_ADMIN")
+                                    .header(HttpHeaders.AUTHORIZATION, authHeader)
                                     .retrieve()
                                     .bodyToMono(String.class)
-                                    .flatMap(monopatines -> consultarGroqConHistorial(monopatines, preguntaUsuario));
+                                    .flatMap(monopatines -> consultarGroqConHistorial(monopatines, preguntaUsuario))
+                                    .doOnNext(resp -> System.out.println("groq response real: " + resp));
 
                         } else if("getFacturacion".equals(name)) {
 
                             return WebClient.create()
                                     .get()
                                     .uri("http://localhost:8005/facturacion")
+                                    .header("X-User", username)
+                                    .header("X-Role", "ROLE_ADMIN")
+                                    .header(HttpHeaders.AUTHORIZATION, authHeader)
                                     .retrieve()
                                     .bodyToMono(String.class)
-                                    .flatMap(facturas -> consultarGroqConHistorial(facturas, preguntaUsuario));
+                                    .flatMap(facturas -> consultarGroqConHistorial(facturas, preguntaUsuario))
+                                    .doOnNext(resp -> System.out.println("groq response real: " + resp));
                         }
                     }
 

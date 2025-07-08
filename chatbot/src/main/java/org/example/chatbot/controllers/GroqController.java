@@ -23,9 +23,10 @@ public class GroqController {
     @PostMapping("consulta")
     public Mono<String> procesarConsulta(
             @RequestBody ChatRequestDTO request,
-            @RequestHeader("Authorization") String authHeader
+            @RequestHeader("Authorization") String authHeader,
+            @RequestHeader("X-User") String username
     ) throws JsonProcessingException {
-        return groqService.procesarConsulta(request.getMensaje(), authHeader)
+        return groqService.procesarConsulta(request.getMensaje(), authHeader, username)
                 .doOnSubscribe(s -> System.out.println("🔍 Controller: iniciando consulta..."))
                 .doOnNext(r -> System.out.println("✅ Controller: resultado recibido => " + r))
                 .doOnError(e -> System.out.println("❌ Controller: error => " + e.getMessage()));
