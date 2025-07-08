@@ -5,13 +5,9 @@ import org.example.chatbot.dtos.ChatRequestDTO;
 import org.example.chatbot.services.GroqService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/chat")
@@ -23,15 +19,16 @@ public class GroqController {
         this.groqService = groqService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("consulta")
-    public Mono<ResponseEntity<String>> procesarConsulta(@RequestBody ChatRequestDTO request) throws JsonProcessingException {
-
-        return groqService.procesarConsulta(request.getMensaje())
-                .map(respuesta -> ResponseEntity.ok(respuesta))
-                .onErrorResume(e ->
-                        Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                .body("Error procesando la solicitud: " + e.getMessage()))
-                );
+    public Mono<String> procesarConsulta(
+            @RequestBody ChatRequestDTO request,
+            @RequestHeader("Authorization") String authHeader
+    ) throws JsonProcessingException {
+        return groqService.procesarConsulta(request.getMensaje(), authHeader)
+                .doOnSubscribe(s -> System.out.println("🔍 Controller: iniciando consulta..."))
+                .doOnNext(r -> System.out.println("✅ Controller: resultado recibido => " + r))
+                .doOnError(e -> System.out.println("❌ Controller: error => " + e.getMessage()));
     }
 }
 

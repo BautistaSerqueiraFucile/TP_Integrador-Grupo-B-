@@ -56,5 +56,10 @@ spring:
           predicates:
             - Path=/auth/**
 
+        - id: chat
+          uri: http://localhost:8015
+          predicates:
+            - Path=/chat, /chat/**
+
 jwt:
   secret: clave.super.secreta.jwt.1234567890!!

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -40,7 +41,7 @@ public class GroqService {
         }
     }
 
-    public Mono<String> procesarConsulta(String preguntaUsuario) throws JsonProcessingException {
+    public Mono<String> procesarConsulta(String preguntaUsuario, String authHeader) throws JsonProcessingException {
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("model", model);
         requestBody.put("messages", List.of(
@@ -70,12 +71,17 @@ public class GroqService {
                         }
 
                         if ("getViajes".equals(name)) {
+                            System.out.println(authHeader);
                             return WebClient.create()
                                     .get()
                                     .uri("http://localhost:8003/viajes/historial")
+                                    .header("X-User", "je")
+                                    .header("X-Role", "ROLE_ADMIN")
+                                    .header(HttpHeaders.AUTHORIZATION, authHeader)
                                     .retrieve()
                                     .bodyToMono(String.class)
-                                    .flatMap(viajes -> consultarGroqConHistorial(viajes, preguntaUsuario));
+                                    .flatMap(viajes -> consultarGroqConHistorial(viajes, preguntaUsuario))
+                                    .doOnNext(resp -> System.out.println("groq response real: " + resp));
                         } else if ("getParadas".equals(name)) {
 
                             return WebClient.create()
